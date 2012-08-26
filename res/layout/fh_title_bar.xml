@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+ style="@style/TitleBarLayout">
+  <ImageButton android:id="@+id/leftpanelbtn" 
+  		android:layout_gravity="left|center_vertical"
+  		android:src="@drawable/fh_setting_btn"
+  	    style="@style/TitleBarButtonStyle"
+  		>
+  </ImageButton>
+
+<ImageView android:id="@+id/fhtitletv"
+		style="@style/TitleBarTextViewStyle"
+		android:background="@color/purple"
+		android:src="@drawable/fh_title_bg"
+>
+</ImageView>
+  <ImageButton android:id="@+id/writefeedbtn" 
+  		android:layout_gravity="right"
+  		android:src="@drawable/fh_pub_icon"
+  		style="@style/TitleBarButtonStyle"
+  		>
+  </ImageButton>
+  <ImageButton android:id="@+id/refreshbtn"
+  		android:layout_gravity="right"
+  		android:src="@drawable/fh_back_top"
+  		style="@style/TitleBarButtonStyle"
+  		>
+  </ImageButton>
+</LinearLayout>

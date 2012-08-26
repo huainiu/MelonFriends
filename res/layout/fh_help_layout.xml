@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  style="@style/DialogStyle"
+ >
+   <include android:id="@+id/fhCustTitle" layout="@layout/fh_cust_title_bar"/>
+ 
+  <ExpandableListView 
+  	android:id="@+id/helpExpandLst"
+  	android:cacheColorHint="#00000000"
+  	style="@style/DialogExpLstView" 
+  	> 
+  </ExpandableListView> 
+
+</LinearLayout>
+

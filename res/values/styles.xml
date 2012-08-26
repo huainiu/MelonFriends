@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Style for Title Bar -->
+ <style name="TitleBarLayout">
+  <item name="android:orientation">horizontal</item>
+  <item name="android:layout_width">match_parent</item>
+  <item name="android:layout_height">45dip</item>
+ </style>
+ 
+ <style name="WindowTitleBackground">     
+        <item name="android:background">@color/purple</item>
+ </style>
+ 
+<style name="TitleBarTextViewStyle">
+	<item name="android:layout_width">match_parent</item>
+	<item name="android:layout_height">match_parent</item>
+	<item name="android:layout_gravity">center</item>
+	<item name="android:layout_weight">0.5</item>
+	<item name="android:textSize">20dip</item>
+	<item name="android:gravity">center</item>
+</style>
+ 
+ <style name="TitleBarButtonStyle">
+ 	  <item name="android:layout_width">match_parent</item>
+  	  <item name="android:layout_height">match_parent</item>
+  	  <item name="android:layout_weight">1</item>
+  	   <item name="android:background">@drawable/title_btn_selector</item>
+ </style>
+ 
+<!-- <item name="android:background">@drawable/fh_title_btn_bg</item>-->
+ 
+ <style name="TitleBarButtonStyle.Pos">
+ 	 <item name="android:layout_marginTop">5dip</item>
+  	 <item name="android:layout_marginBottom">5dip</item>
+  	 <item name="android:layout_marginLeft">5dip</item>
+  	 <item name="android:layout_marginRight">5dip</item>
+  	 <item name="android:background">@drawable/cust_title_btn_selector</item>
+  	 <item name="android:scaleType">fitCenter</item> 
+</style>
+
+
+
+ <style name="TitleBarCancelButtonStyle">
+ 	  <item name="android:layout_width">match_parent</item>
+  	  <item name="android:layout_height">match_parent</item>
+  	  <item name="android:layout_weight">1</item>
+  	   <item name="android:background">@drawable/cancel_title_btn_selector</item>
+ </style>
+<!--  	   <item name="android:src">@drawable/fh_btn_cancel</item>-->
+
+<style name="TitleBarDetailButton">
+	<item name="android:layout_weight">1</item>
+  	<item name="android:layout_marginRight">3dip</item>
+  	<item name="android:layout_width">match_parent</item>
+  	<item name="android:layout_height">match_parent</item>	
+  	<item name="android:background">@drawable/cust_title_btn_selector</item>
+ </style>
+ 
+ <style name="BottomBarButtonStyle">
+   		<item name = "android:layout_marginTop">3dip</item> 
+  		<item name = "android:layout_marginBottom">3dip</item>
+  		<item name = "android:layout_height">35dip</item>
+  		<item name = "android:layout_width">35dip</item>
+  		<item name = "android:background">@drawable/cust_title_btn_selector</item>
+  		<item name = "android:scaleType">fitCenter</item>
+ </style>
+ 
+
+ <!-- Style for scroll Bar -->
+  <style name="CustomTabPageIndicator" >
+     <item name="android:gravity">center_horizontal</item>
+     <item name="android:paddingLeft">22dip</item>
+     <item name="android:paddingRight">22dip</item>
+     <item name="android:paddingTop">12dp</item>
+     <item name="android:paddingBottom">12dp</item>
+     <item name="android:background">@drawable/custom_tab_indicator</item>
+  </style>
+  
+   <style name="CustomTabPageIndicatorText">
+   		<item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">#FF555555</item>
+    </style>
+    
+    
+  <style name="LeftPanel">
+  	<item name="android:layout_width">match_parent</item>
+  	<item name="android:layout_height">wrap_content</item>
+  	<item name="android:layout_marginLeft">10dip</item>
+  	<item name="android:textSize">17dip</item>
+  </style>
+  
+  <style name="LeftPanel.ExpandGroupTV" >
+     <item name="android:paddingTop">4dip</item>
+     <item name="android:paddingBottom">4dip</item>
+<!--     <item name="android:height">35dip</item>-->
+  	 <item name="android:gravity">center_vertical</item>
+  </style>
+  
+    <style name="LeftPanel.ExpandGroupTV.ChildTV" >
+<!--     <item name="android:height">30dip</item>-->
+  	 <item name="android:gravity">center_vertical</item>
+  </style>
+  
+ <style name="DialogStyle">
+ 	<item name = "android:layout_width">match_parent</item> 
+ 	<item name = "android:layout_height">match_parent</item>
+ 	<item name="android:background">@drawable/fh_dialog_bg</item>
+ </style>
+ 
+ <style name="RadioBtnStyle">
+   <item name="android:textColor">@color/black</item>
+   <item name="android:layout_width">match_parent</item>
+   <item name="android:layout_height">wrap_content</item>
+   <item name="android:gravity">center_horizontal</item>
+ </style>
+ 
+ <style name="RadioBtnLayout">
+  <item name="android:layout_width">match_parent</item> 
+  <item name="android:layout_height">wrap_content</item>
+   <item name="android:layout_weight">1</item>
+   <item name="android:layout_marginLeft">3dip</item>
+   <item name="android:layout_marginRight">3dip</item>
+   <item name="android:layout_gravity">center_horizontal</item>
+   <item name="android:gravity">center_horizontal</item>
+ </style>
+ 
+ <style name = "RadioBtnText">
+  <item name="android:layout_width">wrap_content</item>
+  <item name="android:layout_height">match_parent</item>
+  <item name="android:textSize">10dip</item> 
+  <item name="android:gravity">center_horizontal</item>
+  <item name="android:layout_gravity">center_horizontal</item>
+ </style>
+ 
+ <style name="DialogSettingBtn">
+ <item name="android:layout_width">match_parent</item> 
+ <item name="android:layout_height">wrap_content</item> 
+ <item name="android:layout_weight">1</item>
+ <item name="android:layout_margin">7dip</item>
+ </style>
+ 
+ <style name="DialogExpLstView">
+	 <item	name="android:layout_width">match_parent</item>
+	 <item 	name="android:layout_height">match_parent</item>
+	 <item  name="android:clickable">false</item>
+	 <item	name="android:groupIndicator">@drawable/fh_group_ind</item> 
+ </style>
+ 
+</resources>
