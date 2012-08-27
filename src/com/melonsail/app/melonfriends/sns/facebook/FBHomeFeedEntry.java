@@ -10,15 +10,15 @@ public class FBHomeFeedEntry {
 	private String name;
 	private String message;
 	private String story;
-	//private String story_tags;
 	private String picture;
+	private String raw_picture;
 	private String link;
 	private String description;
 	private String source;
 	private String attribution;
 	private String updated_time;
 	private String created_time;
-	private String type; //link, photo, status
+	private String type;
 	   
 	//Nested classes for From entries
 	private FBHomeFeedEntryFrom from;
@@ -173,5 +173,12 @@ public class FBHomeFeedEntry {
 
 	public FBHomeeedEntryLikes getLikes() {
 		return likes;
+	}
+
+	public void getRawPhoto(String links) {
+		this.raw_picture = links;
+	}
+	public String getRawPhoto() {
+		return raw_picture;
 	}
 }
