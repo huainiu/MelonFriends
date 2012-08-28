@@ -4,13 +4,16 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.melonsail.app.melonfriends.sns.facebook.FBHomeFeedEntry;
-
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import com.melonsail.app.melonfriends.sns.facebook.FBHomeFeedEntry;
+import com.melonsail.app.melonfriends.utils.Const;
 
 public class DBHelper {
 
@@ -33,6 +36,7 @@ public class DBHelper {
     static final String T_FEED = "Feed";
     static final String T_COMMENTS = "Comments";
     static final String T_ACTIONS = "Actions";
+    static final String T_TAGS = "Tags";
     static final String T_ERRORS = "Errors";
     
     // User Columns
@@ -195,13 +199,11 @@ public class DBHelper {
 	public long fInsertFeed(FBHomeFeedEntry entry) {
 		// check if exist
 		long ret = 0;
-//		if (fIfItemExist(entry.getId(), SNS_FACEBOOK, T_FEED)) {
-//			return ret;
-//		}
 		
 		ContentValues values  = new ContentValues();
 
 		values.put(C_FEED_SNS, SNS_FACEBOOK);
+		values.put(C_FEED_ISREAD, "0");
 		values.put(C_FEED_ID, entry.getId());
 		values.put(C_FEED_MSG, entry.getMessage());
 		values.put(C_FEED_STORY, entry.getStory());
@@ -221,7 +223,6 @@ public class DBHelper {
 		} else {
 			values.put(C_FEED_CNT_LIKE, 0);
 		}
-		values.put(C_FEED_ISREAD, "0");
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss+SSSS");
 		try {
@@ -233,9 +234,44 @@ public class DBHelper {
 			Log.w(TAG, "Unable to parse date string \"" + entry.getCreated_time() + "\"");
 		}
 		
-		ret = mSQLiteDB.insert(T_FEED, null, values);
-		
+		if (fIfItemExist(entry.getId(), Const.SNS_FACEBOOK, T_FEED)) {
+			ret = mSQLiteDB.update(T_FEED, values, C_FEED_ID + "?", new String[] {entry.getId()});
+		} else {
+			ret = mSQLiteDB.insert(T_FEED, null, values);
+		}
 		return ret;
+	}
+	
+	private boolean fIfItemExist(String id, String sns, String table) {
+		String item = fGetItemByID(id, sns, table);
+		if (item != null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public String fGetItemByID (String id, String sns, String table) {
+		String where = C_FEED_SNS + " = ? and " 
+						+ C_FEED_ID + " = ?";
+		String[] selectionArgs = new String[] {sns, id};
+		Cursor cursor = null;
+		String result = null;
+		
+		try {
+			cursor = mSQLiteDB.query(table, null, where, selectionArgs, null, null, null);
+			cursor.moveToFirst();
+			if (cursor.getCount() > 0 ) {
+				result = cursor.getString(0) +" : "+ cursor.getString(1);
+			}
+		} catch (SQLException e) {
+			Log.v(TAG, "Get all birthday failed.", e);
+		} finally {
+			if (cursor != null && !cursor.isClosed()) {
+				cursor.close();
+			}
+		}
+		return result;
 	}
 
 }
