@@ -8,9 +8,12 @@ public class FeedEntry /*implements Parcelable*/{
 	private String sHeadImg;
 	
 	private String sID;
+	private String sSNS;
 	private String sName;
 	private String sOwnerID;
 	private String sCreatedTime;
+	private String sUpdatedTime;
+	private String sSource;
 	private String sFeedType;
 	private String sMsgBody;
 	private String sStory;
@@ -22,7 +25,10 @@ public class FeedEntry /*implements Parcelable*/{
 	private String sPhotoPreviewCaption;
 	private String sPhotoPreviewDescription;
 	
+	private String sType;
+	private String sIcon;
 	private String sCntLikes;
+	private String sIsRead;
 	private String sCntCmt;
 	
 	
@@ -52,6 +58,14 @@ public class FeedEntry /*implements Parcelable*/{
 	public String getsCreatedTime() {
 		return sCreatedTime;
 	}
+	public void setsUpdatedTime(String sUpdatedTime) {
+		this.sUpdatedTime = sUpdatedTime;
+	}
+
+	public String getsUpdatedTime() {
+		return sUpdatedTime;
+	}
+
 	public void setsPhotoPreviewLink(String sPhotoPreviewLink) {
 		this.sPhotoPreviewLink = sPhotoPreviewLink;
 	}
@@ -163,6 +177,46 @@ public class FeedEntry /*implements Parcelable*/{
 
 	public void setsCntCmt(String sCntCmt) {
 		this.sCntCmt = sCntCmt;
+	}
+
+	public void setsSNS(String sSNS) {
+		this.sSNS = sSNS;
+	}
+
+	public String getsSNS() {
+		return sSNS;
+	}
+
+	public void setsSource(String sSource) {
+		this.sSource = sSource;
+	}
+
+	public String getsSource() {
+		return sSource;
+	}
+
+	public void setsType(String sType) {
+		this.sType = sType;
+	}
+
+	public String getsType() {
+		return sType;
+	}
+
+	public void setsIcon(String sIcon) {
+		this.sIcon = sIcon;
+	}
+
+	public String getsIcon() {
+		return sIcon;
+	}
+
+	public void setsIsRead(String sIsRead) {
+		this.sIsRead = sIsRead;
+	}
+
+	public String getsIsRead() {
+		return sIsRead;
 	}
 
 	

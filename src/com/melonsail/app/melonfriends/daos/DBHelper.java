@@ -87,6 +87,15 @@ public class DBHelper {
     static final String C_ERROR_TIME = "created_time";
     static final String C_ERROR_SRC = "source";
     
+    // Tags DB
+    static final String C_TAGS_ID = "id";
+    static final String C_TAGS_FEEDID = "feedid";
+    static final String C_TAGS_SNS = "sns";
+    static final String C_TAGS_NAME = "name";
+    static final String C_TAGS_OFFSET = "offset";
+    static final String C_TAGS_LENTH = "length";
+    static final String C_TAGS_TYPE = "type";
+    
     // Create table SQL statement
     static final String CREATE_USER_TABLE = "CREATE TABLE " + T_USER + " ("
 										    + C_USER_ID + " TEXT PRIMARY KEY,"
@@ -139,6 +148,16 @@ public class DBHelper {
 										    + C_ERROR_SRC + " TEXT PRIMARY KEY,"
 										    + C_ERROR_MSG + " TEXT,"
 										    + C_ERROR_TIME + " TEXT"
+										    + ");";
+    
+    static final String CREATE_TAGS_TABLE = "CREATE TABLE " + T_TAGS + " ("
+										    + C_TAGS_ID + " TEXT PRIMARY KEY,"
+										    + C_TAGS_SNS + " TEXT,"
+										    + C_TAGS_FEEDID + " TEXT,"
+										    + C_TAGS_NAME + " TEXT,"
+										    + C_TAGS_TYPE + " TEXT,"
+										    + C_TAGS_OFFSET + " TEXT,"
+										    + C_TAGS_LENTH + " TEXT"
 										    + ");";
 	private static final String TAG = "DBHelper";
 
@@ -195,11 +214,22 @@ public class DBHelper {
 	public SQLiteDatabase fGetDB() {
 		return mSQLiteDB;
 	}
+	
+	public String[] fGetColNammes(String tableName) {
+		String[] result = null;
+		Cursor cursor = mSQLiteDB.rawQuery(String.format("PRAGMA table_info(%s)", tableName), null);
+		int rows = cursor.getCount();
+		result = new String[rows];
+		for (int i = 0; i < rows; ++i) {
+			result[i] = cursor.getString(1);
+		}
+	    return result;
+	}
+	
 
 	public long fInsertFeed(FBHomeFeedEntry entry) {
 		// check if exist
 		long ret = 0;
-		
 		ContentValues values  = new ContentValues();
 
 		values.put(C_FEED_SNS, SNS_FACEBOOK);
@@ -234,16 +264,20 @@ public class DBHelper {
 			Log.w(TAG, "Unable to parse date string \"" + entry.getCreated_time() + "\"");
 		}
 		
-		if (fIfItemExist(entry.getId(), Const.SNS_FACEBOOK, T_FEED)) {
-			ret = mSQLiteDB.update(T_FEED, values, C_FEED_ID + "?", new String[] {entry.getId()});
+		if (fIfItemExist(T_FEED, entry.getId(), Const.SNS_FACEBOOK)) {
+			String whereClause = C_FEED_ID + "=? and " + C_FEED_SNS + "=?";
+			String[] selectArgs = new String[] {entry.getId(), Const.SNS_FACEBOOK};
+			ret = mSQLiteDB.update(T_FEED, values, whereClause, selectArgs);
 		} else {
 			ret = mSQLiteDB.insert(T_FEED, null, values);
 		}
 		return ret;
 	}
 	
-	private boolean fIfItemExist(String id, String sns, String table) {
-		String item = fGetItemByID(id, sns, table);
+	private boolean fIfItemExist(String table, String id, String sns ) {
+		String whereClause = C_FEED_ID + "=? and " + C_FEED_SNS + "=?";
+		String[] selectArgs = new String[] {id, Const.SNS_FACEBOOK};
+		String[][] item = fGetItems(table, whereClause, selectArgs, ORDER_DESC);
 		if (item != null) {
 			return true;
 		} else {
@@ -251,21 +285,27 @@ public class DBHelper {
 		}
 	}
 	
-	public String fGetItemByID (String id, String sns, String table) {
-		String where = C_FEED_SNS + " = ? and " 
-						+ C_FEED_ID + " = ?";
-		String[] selectionArgs = new String[] {sns, id};
+	private String[][] fGetItems (String table, String where, String[] selectArgs, String orderby) {
+		//String where = C_FEED_SNS + " = ? and " + C_FEED_ID + " = ?";
+		//String[] selectionArgs = new String[] {sns, id};
 		Cursor cursor = null;
-		String result = null;
+		String[][] result = null;
 		
 		try {
-			cursor = mSQLiteDB.query(table, null, where, selectionArgs, null, null, null);
+			cursor = mSQLiteDB.query(table, null, where, selectArgs, null, null, orderby);
 			cursor.moveToFirst();
-			if (cursor.getCount() > 0 ) {
-				result = cursor.getString(0) +" : "+ cursor.getString(1);
+			int rows = cursor.getCount();
+			int cols = cursor.getColumnCount();
+			result = new String[rows][cols];
+			//cursor.moveToFirst();
+			for (int i = 0; i < rows; ++i) {
+				for (int j = 0; j < cols; ++j) {
+					result[i][j] = cursor.getString(j);
+				}
+				cursor.moveToNext();
 			}
 		} catch (SQLException e) {
-			Log.v(TAG, "Get all birthday failed.", e);
+			Log.v(TAG, "Fail to get item by where = " + where, e);
 		} finally {
 			if (cursor != null && !cursor.isClosed()) {
 				cursor.close();
@@ -273,5 +313,23 @@ public class DBHelper {
 		}
 		return result;
 	}
-
+	
+	public String[][] fGetAllItems( String table, String sns ) {
+		String where = C_FEED_SNS + " = ? and " ;
+		String[] selectArgs = new String[] {sns};
+		return fGetItems(table, where, selectArgs, ORDER_DESC);
+	}
+	
+	public String[][] fGetItemsCondition (String table, String sns, String where) {
+		String where2 = C_FEED_SNS + " = ? and ";
+		//some protection on where clause input
+		if (where == null) {
+			where = "";
+		} else {
+			where = " and " + where;
+		}
+		String[] selectArgs = new String[] {sns};
+		return fGetItems(table, where2 + where, selectArgs, ORDER_DESC + LIMIT);
+	}
+	
 }
