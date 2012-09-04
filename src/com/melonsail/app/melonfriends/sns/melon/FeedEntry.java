@@ -25,7 +25,7 @@ public class FeedEntry /*implements Parcelable*/{
 	private String sPhotoPreviewCaption;
 	private String sPhotoPreviewDescription;
 	
-	private String sType;
+	//private String sType;
 	private String sIcon;
 	private String sCntLikes;
 	private String sIsRead;
@@ -195,13 +195,13 @@ public class FeedEntry /*implements Parcelable*/{
 		return sSource;
 	}
 
-	public void setsType(String sType) {
-		this.sType = sType;
-	}
-
-	public String getsType() {
-		return sType;
-	}
+//	public void setsType(String sType) {
+//		this.sType = sType;
+//	}
+//
+//	public String getsType() {
+//		return sType;
+//	}
 
 	public void setsIcon(String sIcon) {
 		this.sIcon = sIcon;
@@ -218,83 +218,5 @@ public class FeedEntry /*implements Parcelable*/{
 	public String getsIsRead() {
 		return sIsRead;
 	}
-
-	
-//	public FeedEntry(Parcel in)
-//	{
-//		Bundle bundle = Bundle.CREATOR.createFromParcel(in);
-//		
-//		this.sHeadImg = bundle.getString(Const.SHEADIMG);
-//		this.sName = bundle.getString(Const.SNAME);
-//		this.sOwnerID = bundle.getString(Const.SOWNERID);
-//		this.sCreatedTime = bundle.getString(Const.SCREATEDTIME);
-//		this.sFeedType = bundle.getString(Const.SFEEDTYPE);
-//		this.sMsgBody = bundle.getString(Const.SMSGBODY);
-//		this.sLink = bundle.getString(Const.SLINK);
-//		this.sStory = bundle.getString(Const.SSTORY);
-//		this.sPhotoPreviewLink = bundle.getString(Const.SPHOTOPREVIEWLINK);
-//		this.sPhotoPreviewName = bundle.getString(Const.SPHOTOPREVIEWNAME);
-//		this.sPhotoPreviewCaption = bundle.getString(Const.SPHOTOPREVIEWCAPTION);
-//		this.sPhotoPreviewDescription = bundle.getString(Const.SPHOTOPREVIEWDESCRIPTION);
-//		//this.zComments = bundle.getParcelableArrayList(Const.COMMENTS);
-//		in.readList(zComments, null);
-//		
-//		this.zFriend = UserFriend.CREATOR.createFromParcel(in);
-//	}
-//	
-//	@Override
-//	public int describeContents() {
-//		return 0;
-//		
-//	}
-//	
-//	@Override
-//	public void writeToParcel(Parcel out, int flags) {
-//		
-//		Bundle bundle = new Bundle();
-//		
-//		if(sHeadImg != null) { bundle.putString( Const.SHEADIMG,sHeadImg);}
-//		if(sName != null) { bundle.putString( Const.SNAME,sName);}
-//		if(sOwnerID != null) { bundle.putString( Const.SOWNERID,sOwnerID);}
-//		if(sCreatedTime != null) { bundle.putString( Const.SCREATEDTIME,sCreatedTime);}
-//		if(sFeedType != null) { bundle.putString( Const.SFEEDTYPE,sFeedType);}
-//		if(sMsgBody != null) { bundle.putString( Const.SMSGBODY,sMsgBody);}
-//		if(sLink != null) { bundle.putString( Const.SLINK,sLink);}
-//		if(sStory != null) { bundle.putString( Const.SSTORY,sStory);}
-//		if(sPhotoPreviewLink != null) { bundle.putString( Const.SPHOTOPREVIEWLINK,sPhotoPreviewLink);}
-//		if(sPhotoPreviewName != null) { bundle.putString( Const.SPHOTOPREVIEWNAME,sPhotoPreviewName);}
-//		if(sPhotoPreviewCaption != null) { bundle.putString( Const.SPHOTOPREVIEWCAPTION,sPhotoPreviewCaption);}
-//		if(sPhotoPreviewDescription != null) { bundle.putString( Const.SPHOTOPREVIEWDESCRIPTION,sPhotoPreviewDescription);}
-//		
-//		bundle.writeToParcel(out, flags);
-//		
-//		if( zFriend != null) {  
-//			//bundle.putParcelable(Const.FRIEND, zFriend);
-//			zFriend.writeToParcel(out, flags);
-//		}
-//		if (zComments != null ) {
-//			//bundle.putParcelableArrayList(Const.COMMENTS, zComments);
-//			out.writeList(zComments);
-//		}
-////		if ( zComments != null && zComments.size() > 0) {
-////			for (int i = 0; i < zComments.size(); i++) {
-////				zComments.get(i).writeToParcel(out, flags);
-////			}
-////		}
-////		if(this.zComments != null) { this.zFriend.writeToParcel(out, flags);}
-//		
-//	}
-//
-//	public static final Parcelable.Creator<FeedEntry> CREATOR = new Parcelable.Creator<FeedEntry>(){
-//
-//		@Override
-//		public FeedEntry createFromParcel(Parcel in) {
-//			return new FeedEntry(in);
-//		}
-//
-//		@Override
-//		public FeedEntry[] newArray(int size) {
-//			return new FeedEntry[size];
-//		}};
 
 }

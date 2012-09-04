@@ -1,12 +1,15 @@
 package com.melonsail.app.melonfriends.daos;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import android.app.Activity;
 import android.content.Context;
 
 import com.melonsail.app.melonfriends.sns.facebook.FBHomeFeedEntry;
 import com.melonsail.app.melonfriends.sns.melon.FeedEntry;
+import com.melonsail.app.melonfriends.utils.Const;
+import com.melonsail.app.melonfriends.utils.Pref;
 
 public class FeedEntryDaos {
 	private Activity mActivity;
@@ -20,34 +23,110 @@ public class FeedEntryDaos {
 		mDBHelper = new DBHelper(context);
 	}
 	
-	public ArrayList<FeedEntry> fGetAll() {
+	/**
+	 * Retrieve all available feed for sns
+	 * Not recommended, as it consumes a lot of memory due to number feeds in each sns
+	 * @param sns
+	 * @return list of feed entries
+	 */
+	public ArrayList<FeedEntry> fGetAll(String sns) {
 		ArrayList<FeedEntry> entries = null;
+		//no where condition, no limit
+		String[][] result = mDBHelper.fGetItemsDesc(DBHelper.T_FEED, sns, null, null);
 		
 		return entries;
 	}
 	
+	/**
+	 * Retrieve a specific feed from sns
+	 * This is generally used for DetailView
+	 * @param sns
+	 * @param feedid
+	 * @return FeedEntry
+	 */
 	public FeedEntry fGetFeedByID(String sns, String feedid) {
 		FeedEntry entry = null;
 		String where = String.format("%s" + "=%s", DBHelper.C_FEED_ID, feedid);
-		String[][] result = mDBHelper.fGetItemsCondition(DBHelper.T_FEED, sns, where);
+		// only 1 feed required, so no limit required
+		String[][] result = mDBHelper.fGetItemsDesc(DBHelper.T_FEED, sns, where, null);
 		
 		return entry;
 	}
 	
+	/**
+	 * Retrieve most recent 10 feed
+	 * This is normally used when user force refresh, or newly login
+	 * @param sns
+	 * @return list of 10 feed entries in updatetime desc order
+	 */
+	public ArrayList<FBHomeFeedEntry> fGetLastest10FeedEntries(String sns) {
+		ArrayList<FBHomeFeedEntry> entries = null;
+		// retrieve 10 feeds from now
+		String from = mDBHelper.fGetDateFormat().format(new Date());
+		entries = fGet10FeedEntries(sns, from);
+		return entries;
+	}
+	
+	/**
+	 * Retrieve 10 feeds from current, or previous reading position
+	 * Position is recorded by the feed update time stored in SharedPreference.
+	 * @param sns
+	 * @return list of 10 feed entries in updatetime desc order
+	 */
+	public ArrayList<FBHomeFeedEntry> fGetNext10FeedEntries(String sns) {
+		ArrayList<FBHomeFeedEntry> entries = null;
+		//update time for different sns stored in SP
+		String from = Pref.getMyStringPref(mContext, sns + Const.SNS_READITEM_UPDATETIME);
+		entries = fGet10FeedEntries(sns, from);
+		return entries;
+	}
+	
+	/**
+	 * TODO: transform value to objects
+	 * @param sns
+	 * @param from
+	 * @return
+	 */
 	public ArrayList<FBHomeFeedEntry> fGet10FeedEntries(String sns, String from) {
 		ArrayList<FBHomeFeedEntry> entries = null;
-		
+		String where = String.format("%s" + "<= %s", DBHelper.C_FEED_UPDATED_TIME, from);
+		String[][] result = mDBHelper.fGetItemsDesc(DBHelper.T_FEED, sns, where, DBHelper.LIMIT);
 		
 		return entries;
 	}
 	
-	public ArrayList<FeedEntry> fGetUnreadFeed(String sns) {
+	/**
+	 * Retrieve feed newer than feed last read by users
+	 * @param sns
+	 * @param from
+	 * @return
+	 */
+	public ArrayList<FBHomeFeedEntry> fGetToReadFeedEntries(String sns, String from) {
+		ArrayList<FBHomeFeedEntry> entries = null;
+		String where = String.format("%s" + ">= %s", DBHelper.C_FEED_UPDATED_TIME, from);
+		String[][] result = mDBHelper.fGetItemsDesc(DBHelper.T_FEED, sns, where, null);
+		
+		return entries;
+	}
+	
+	/**
+	 * Retrieve feed has not been read yet.
+	 * For notification purpose
+	 * @param sns
+	 * @return
+	 */
+	public ArrayList<FeedEntry> fGetUnreadFeedCount(String sns) {
 		ArrayList<FeedEntry> entries = null;
 		
 		
 		return entries;
 	}
 	
+	/**
+	 * Map DB values to Feed Objects
+	 * @param value
+	 * @return
+	 */
 	private FeedEntry fTransformValueToObject(String[] value) {
 		FeedEntry entry = new FeedEntry();
 		int index = 0;
@@ -68,14 +147,13 @@ public class FeedEntryDaos {
 		entry.setsPhotoPreviewCaption(value[index++]);			//pic/album caption
 		entry.setsPhotoPreviewDescription(value[index++]);		//pic/album description
 		
-		entry.setsIcon(value[index++]);
-		entry.setsType(value[index++]);
-		entry.setsIsRead(value[index++]);
-		entry.setsCntLikes(value[index++]);
+		entry.setsIcon(value[index++]);							//icon
+		entry.setsFeedType(value[index++]);						//feedtype
+		entry.setsIsRead(value[index++]);						//is_read status
+		entry.setsCntLikes(value[index++]);						// how many likes
 		
 		entry.setsCreatedTime(value[index++]);					//created time
 		entry.setsUpdatedTime(value[index++]);					//created time
-		entry.setsFeedType(value[index++]);
 		
 		return entry;
 	}

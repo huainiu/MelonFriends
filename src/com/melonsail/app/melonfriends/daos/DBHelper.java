@@ -25,12 +25,6 @@ public class DBHelper {
     static final String ORDER_DESC = " DESC";
     static final String LIMIT = " LIMIT 10";
     
-    //sns network type
-    static final String SNS_FACEBOOK = "Facebook";
-    static final String SNS_RENREN = "Renren";
-    static final String SNS_SINA = "Sina";
-    static final String SNS_TWITTER = "Twitter";
-
     // database tables
     static final String T_USER = "User";
     static final String T_FEED = "Feed";
@@ -46,6 +40,7 @@ public class DBHelper {
     static final String C_USER_HEADURL = "headurl";
 
     // Feed Columns
+    static final String[] C_FEED_COLS = {};
     static final String C_FEED_ID = "id";
     static final String C_FEED_FROM = "feedFrom";
     static final String C_FEED_OWNER_ID = "feed_owner_id";
@@ -214,6 +209,9 @@ public class DBHelper {
 	public SQLiteDatabase fGetDB() {
 		return mSQLiteDB;
 	}
+	public SimpleDateFormat fGetDateFormat() {
+		return simpleDateFormat;
+	}
 	
 	public String[] fGetColNammes(String tableName) {
 		String[] result = null;
@@ -232,7 +230,7 @@ public class DBHelper {
 		long ret = 0;
 		ContentValues values  = new ContentValues();
 
-		values.put(C_FEED_SNS, SNS_FACEBOOK);
+		values.put(C_FEED_SNS, Const.SNS_FACEBOOK);
 		values.put(C_FEED_ISREAD, "0");
 		values.put(C_FEED_ID, entry.getId());
 		values.put(C_FEED_MSG, entry.getMessage());
@@ -264,9 +262,13 @@ public class DBHelper {
 			Log.w(TAG, "Unable to parse date string \"" + entry.getCreated_time() + "\"");
 		}
 		
-		if (fIfItemExist(T_FEED, entry.getId(), Const.SNS_FACEBOOK)) {
-			String whereClause = C_FEED_ID + "=? and " + C_FEED_SNS + "=?";
-			String[] selectArgs = new String[] {entry.getId(), Const.SNS_FACEBOOK};
+		String whereClause = C_FEED_ID + "=? and " + C_FEED_SNS + "=?";
+		String[] selectArgs = new String[] {entry.getId(), Const.SNS_FACEBOOK};
+		String[][] item = fGetItems(T_FEED, whereClause, selectArgs, ORDER_DESC);
+		
+		if (item != null ) {
+			// keep the update time of the particular feed constant so it won't affect sorting
+			values.put(C_FEED_UPDATED_TIME, simpleDateFormat.format(item[0][19]));
 			ret = mSQLiteDB.update(T_FEED, values, whereClause, selectArgs);
 		} else {
 			ret = mSQLiteDB.insert(T_FEED, null, values);
@@ -274,16 +276,6 @@ public class DBHelper {
 		return ret;
 	}
 	
-	private boolean fIfItemExist(String table, String id, String sns ) {
-		String whereClause = C_FEED_ID + "=? and " + C_FEED_SNS + "=?";
-		String[] selectArgs = new String[] {id, Const.SNS_FACEBOOK};
-		String[][] item = fGetItems(table, whereClause, selectArgs, ORDER_DESC);
-		if (item != null) {
-			return true;
-		} else {
-			return false;
-		}
-	}
 	
 	private String[][] fGetItems (String table, String where, String[] selectArgs, String orderby) {
 		//String where = C_FEED_SNS + " = ? and " + C_FEED_ID + " = ?";
@@ -320,16 +312,14 @@ public class DBHelper {
 		return fGetItems(table, where, selectArgs, ORDER_DESC);
 	}
 	
-	public String[][] fGetItemsCondition (String table, String sns, String where) {
-		String where2 = C_FEED_SNS + " = ? and ";
-		//some protection on where clause input
-		if (where == null) {
-			where = "";
-		} else {
-			where = " and " + where;
-		}
+	public String[][] fGetItemsDesc (String table, String sns, String where, String limit) {
+		String where2 = C_FEED_SNS + " = ?";
+		//protection on where and limit clause input
+		where = (where == null) ? "": " and " + where;
+		limit = (limit == null) ? "": limit;
 		String[] selectArgs = new String[] {sns};
-		return fGetItems(table, where2 + where, selectArgs, ORDER_DESC + LIMIT);
+		return fGetItems(table, where2 + where, selectArgs, ORDER_DESC + limit);
 	}
+
 	
 }

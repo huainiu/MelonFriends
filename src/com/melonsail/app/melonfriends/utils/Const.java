@@ -37,6 +37,7 @@ public class Const {
 	public static final String SNS = "sns";
 	public static final String SNS_ACTIVE = "sns_active";
 	public static final String SNS_TOKEN = "_token";
+	public static final String SNS_READITEM_UPDATETIME = "_readitem_updatetime";
 	public static final String SNS_SIGN_ON = "SnsSignOn";
 	
 	public static final String DELIMETER = ";";
