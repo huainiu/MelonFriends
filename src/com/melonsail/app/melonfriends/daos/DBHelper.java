@@ -13,6 +13,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.melonsail.app.melonfriends.sns.facebook.FBHomeFeedEntry;
+import com.melonsail.app.melonfriends.sns.facebook.FBHomeFeedEntryComments.FBFeedEntryComment;
+import com.melonsail.app.melonfriends.sns.facebook.FBHomeFeedEntryFrom;
 import com.melonsail.app.melonfriends.utils.Const;
 
 public class DBHelper {
@@ -60,7 +62,7 @@ public class DBHelper {
     static final String C_FEED_ISREAD = "isread";
     static final String C_FEED_CREATED_TIME = "created_time";
     static final String C_FEED_UPDATED_TIME = "updated_time";
-    static final String C_FEED_ISLIKED = "0";
+    static final String C_FEED_ISLIKED = "isliked";
     
     // Comments Columns
     static final String C_COMMENTS_ID = "id";
@@ -224,7 +226,40 @@ public class DBHelper {
 	    return result;
 	}
 	
+	/**
+	 * Insert facebook friends information
+	 * TODO: Development more complete information by using graph API for friends information
+	 * @param friend
+	 * @return
+	 */
+	public long fInsertFriend(FBHomeFeedEntryFrom friend) {
+		long ret = 0;
+		
+		ContentValues values  = new ContentValues();
+		
+		values.put(C_USER_ID, friend.getId());
+		values.put(C_USER_NAME, friend.getName());
+		values.put(C_USER_HEADURL, friend.getHeadurl());
+		values.put(C_USER_SNS, Const.SNS_FACEBOOK);
+		
+		String whereClause = C_USER_ID + "=? and " + C_FEED_SNS + "=?";
+		String[] selectArgs = new String[] {friend.getId(), Const.SNS_FACEBOOK};
+		String[][] item = fGetItems(T_USER, whereClause, selectArgs, null);
+		
+		if (item != null ) {
+			ret = mSQLiteDB.update(T_USER, values, whereClause, selectArgs);
+		} else {
+			ret = mSQLiteDB.insert(T_USER, null, values);
+		}
+		return ret;
+	}
 
+	/**
+	 * Insert facebook feed
+	 * TODO: combine with other social networks
+	 * @param entry
+	 * @return
+	 */
 	public long fInsertFeed(FBHomeFeedEntry entry) {
 		// check if exist
 		long ret = 0;
@@ -264,11 +299,10 @@ public class DBHelper {
 		
 		String whereClause = C_FEED_ID + "=? and " + C_FEED_SNS + "=?";
 		String[] selectArgs = new String[] {entry.getId(), Const.SNS_FACEBOOK};
-		String[][] item = fGetItems(T_FEED, whereClause, selectArgs, ORDER_DESC);
-		
-		if (item != null ) {
+		String[][] item = fGetItems(T_FEED, whereClause, selectArgs, null);
+		if (item != null && item.length > 0 ) {
 			// keep the update time of the particular feed constant so it won't affect sorting
-			values.put(C_FEED_UPDATED_TIME, simpleDateFormat.format(item[0][19]));
+			values.put(C_FEED_UPDATED_TIME, item[0][18]);
 			ret = mSQLiteDB.update(T_FEED, values, whereClause, selectArgs);
 		} else {
 			ret = mSQLiteDB.insert(T_FEED, null, values);
@@ -276,6 +310,32 @@ public class DBHelper {
 		return ret;
 	}
 	
+	public long fInsertComments(FBFeedEntryComment comment) {
+		long ret = 0;
+		
+		ContentValues values  = new ContentValues();
+		values.put(C_COMMENTS_SNS, Const.SNS_FACEBOOK);
+		values.put(C_COMMENTS_ID, comment.getId());
+		//comment_id = 564125882_10150574078615883_7136761 -> user id, feed id, comment id
+		String comment_feedid = comment.getId().split("_")[1];
+		values.put(C_COMMENTS_FEEDID, comment_feedid);
+		values.put(C_COMMENTS_USERID, comment.getFrom().getId());
+		values.put(C_COMMENTS_USERNAME, comment.getFrom().getName());
+		values.put(C_COMMENTS_USERHEADURL, comment.getFrom().getHeadurl());
+		values.put(C_COMMENTS_MSG, comment.getMessage());
+		values.put(C_COMMENTS_CREATED_TIME, comment.getCreated_time());	
+		
+		String whereClause = C_FEED_ID + "=? and " + C_FEED_SNS + "=?";
+		String[] selectArgs = new String[] {comment.getId(), Const.SNS_FACEBOOK};
+		String[][] item = fGetItems(T_COMMENTS, whereClause, selectArgs, null);
+		if (item  != null ) {
+			ret = mSQLiteDB.update(T_COMMENTS, values, whereClause, selectArgs);
+		} else {
+			ret = mSQLiteDB.insert(T_COMMENTS, null, values);
+		}
+		
+		return ret;
+	}
 	
 	private String[][] fGetItems (String table, String where, String[] selectArgs, String orderby) {
 		//String where = C_FEED_SNS + " = ? and " + C_FEED_ID + " = ?";
@@ -321,5 +381,4 @@ public class DBHelper {
 		return fGetItems(table, where2 + where, selectArgs, ORDER_DESC + limit);
 	}
 
-	
 }

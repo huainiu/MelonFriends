@@ -255,7 +255,6 @@ public class MainController implements Controller {
 
 		@Override
 		public void onCreate(Bundle savedInstanceState) {
-			// TODO Auto-generated method stub
 			super.onCreate(savedInstanceState);
 			position = getArguments() != null ? getArguments().getInt(Const.SNS): 0;
 			snsName = getTag();
@@ -270,7 +269,7 @@ public class MainController implements Controller {
 		@Override
 		public void onActivityCreated(Bundle savedInstanceState) {
 			super.onActivityCreated(savedInstanceState);
-			this.setListAdapter(mSnsOrg.fGetMaiViewFeedAdapterList().get(position));
+			this.setListAdapter(mSnsOrg.fGetMainViewFeedAdapterList().get(position));
 			lstViewFeedPreview = (PullToRefreshListView) this.getListView();
 			lstViewFeedPreview.setOnRefreshListener(new OnRefreshListener() {
 				@Override
@@ -286,9 +285,13 @@ public class MainController implements Controller {
 
 	@Override
 	public void fRefreshView() {
+		//refresh toolbars
 		mleftPanelController.fRefreshView();
 		mPagerAdapter.notifyDataSetChanged();
 		mIndicator.notifyDataSetChanged();
+		
+		//refresh the content
+		//TODO:how to
 	}
 
 }

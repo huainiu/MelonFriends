@@ -5,13 +5,19 @@ import java.util.Date;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 
+import com.melonsail.app.melonfriends.sns.facebook.FBHomeFeed;
 import com.melonsail.app.melonfriends.sns.facebook.FBHomeFeedEntry;
+import com.melonsail.app.melonfriends.sns.facebook.FBHomeFeedEntryComments;
+import com.melonsail.app.melonfriends.sns.facebook.FBHomeFeedEntryComments.FBFeedEntryComment;
 import com.melonsail.app.melonfriends.sns.melon.FeedEntry;
 import com.melonsail.app.melonfriends.utils.Const;
 import com.melonsail.app.melonfriends.utils.Pref;
 
 public class FeedEntryDaos {
+	private static final String TAG = "FeedEntryDaos";
+	
 	private Activity mActivity;
 	private Context mContext;
 	
@@ -22,6 +28,46 @@ public class FeedEntryDaos {
 		
 		mDBHelper = new DBHelper(context);
 	}
+	/**
+	 * Insert feed into db from JSON reply
+	 * Insert feed related users and comments as well
+	 * @param entries
+	 */
+	public void fInsertFeed(FBHomeFeed entries) {
+		if(entries != null && entries.getData()!=null) {
+			Log.i(TAG, "FB get single feed from list#" + entries.getData().size());
+			for(int i= 0; i<entries.getData().size();i++) {
+				FBHomeFeedEntry entry = (FBHomeFeedEntry) entries.getData().get(i);
+				//String fromHeadUrl = "https://graph.facebook.com/" + fromID + "/picture";
+				String fromHeadUrl = String.format(Const.USER_IMG_URL_FB, entry.getFrom().getId());
+				entry.getFrom().setHeadurl(fromHeadUrl);
+				
+				if (entry.getType().equals("photo")) {
+					//retrieve original photo source					
+				}
+				
+				//insert feed
+				Log.i(TAG, "FB insert feed");
+				mDBHelper.fInsertFeed(entry);
+				//insert friends
+				// to be enhanced with more complete friends' info with seperate graph request
+				Log.i(TAG, "FB insert friend");
+				mDBHelper.fInsertFriend(entry.getFrom());
+				
+				//insert comments
+				FBHomeFeedEntryComments comments = entry.getComments();
+				Log.i(TAG, "FB insert comment #:" + comments.getCount());
+				if (comments != null && Integer.parseInt(comments.getCount()) > 0) {
+					for (FBFeedEntryComment comment : comments.getData()) {
+						if (comment != null ) {
+							Log.i(TAG, "FB insert comment from:" + comment.getFrom().getName());
+							mDBHelper.fInsertComments(comment);
+						}
+					}
+				}
+			}
+		}
+	}
 	
 	/**
 	 * Retrieve all available feed for sns
@@ -30,10 +76,12 @@ public class FeedEntryDaos {
 	 * @return list of feed entries
 	 */
 	public ArrayList<FeedEntry> fGetAll(String sns) {
-		ArrayList<FeedEntry> entries = null;
+		ArrayList<FeedEntry> entries = new ArrayList<FeedEntry>();
 		//no where condition, no limit
 		String[][] result = mDBHelper.fGetItemsDesc(DBHelper.T_FEED, sns, null, null);
-		
+		for (int i= 0; i < result.length; i++) {
+			entries.add(fTransformValueToObject(result[i]));
+		}
 		return entries;
 	}
 	
@@ -49,7 +97,9 @@ public class FeedEntryDaos {
 		String where = String.format("%s" + "=%s", DBHelper.C_FEED_ID, feedid);
 		// only 1 feed required, so no limit required
 		String[][] result = mDBHelper.fGetItemsDesc(DBHelper.T_FEED, sns, where, null);
-		
+		for (int i= 0; i < result.length; i++) {
+			entry = fTransformValueToObject(result[i]);
+		}
 		return entry;
 	}
 	
@@ -59,8 +109,8 @@ public class FeedEntryDaos {
 	 * @param sns
 	 * @return list of 10 feed entries in updatetime desc order
 	 */
-	public ArrayList<FBHomeFeedEntry> fGetLastest10FeedEntries(String sns) {
-		ArrayList<FBHomeFeedEntry> entries = null;
+	public ArrayList<FeedEntry> fGetLastest10FeedEntries(String sns) {
+		ArrayList<FeedEntry> entries = null;
 		// retrieve 10 feeds from now
 		String from = mDBHelper.fGetDateFormat().format(new Date());
 		entries = fGet10FeedEntries(sns, from);
@@ -73,8 +123,8 @@ public class FeedEntryDaos {
 	 * @param sns
 	 * @return list of 10 feed entries in updatetime desc order
 	 */
-	public ArrayList<FBHomeFeedEntry> fGetNext10FeedEntries(String sns) {
-		ArrayList<FBHomeFeedEntry> entries = null;
+	public ArrayList<FeedEntry> fGetNext10FeedEntries(String sns) {
+		ArrayList<FeedEntry> entries = null;
 		//update time for different sns stored in SP
 		String from = Pref.getMyStringPref(mContext, sns + Const.SNS_READITEM_UPDATETIME);
 		entries = fGet10FeedEntries(sns, from);
@@ -87,11 +137,13 @@ public class FeedEntryDaos {
 	 * @param from
 	 * @return
 	 */
-	public ArrayList<FBHomeFeedEntry> fGet10FeedEntries(String sns, String from) {
-		ArrayList<FBHomeFeedEntry> entries = null;
+	private ArrayList<FeedEntry> fGet10FeedEntries(String sns, String from) {
+		ArrayList<FeedEntry> entries = new ArrayList<FeedEntry>();
 		String where = String.format("%s" + "<= %s", DBHelper.C_FEED_UPDATED_TIME, from);
 		String[][] result = mDBHelper.fGetItemsDesc(DBHelper.T_FEED, sns, where, DBHelper.LIMIT);
-		
+		for (int i= 0; i < result.length; i++) {
+			entries.add(fTransformValueToObject(result[i]));
+		}
 		return entries;
 	}
 	
@@ -101,11 +153,13 @@ public class FeedEntryDaos {
 	 * @param from
 	 * @return
 	 */
-	public ArrayList<FBHomeFeedEntry> fGetToReadFeedEntries(String sns, String from) {
-		ArrayList<FBHomeFeedEntry> entries = null;
+	public ArrayList<FeedEntry> fGetToReadFeedEntries(String sns, String from) {
+		ArrayList<FeedEntry> entries = new ArrayList<FeedEntry>();
 		String where = String.format("%s" + ">= %s", DBHelper.C_FEED_UPDATED_TIME, from);
 		String[][] result = mDBHelper.fGetItemsDesc(DBHelper.T_FEED, sns, where, null);
-		
+		for (int i= 0; i < result.length; i++) {
+			entries.add(fTransformValueToObject(result[i]));
+		}
 		return entries;
 	}
 	

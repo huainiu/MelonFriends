@@ -7,6 +7,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.melonsail.app.melonfriends.daos.FeedEntryDaos;
+import com.melonsail.app.melonfriends.sns.melon.FeedEntry;
+import com.melonsail.app.melonfriends.utils.Const;
+import com.melonsail.app.melonfriends.utils.Pref;
+
 public abstract class SnsUtil {
 	static final String TAG = "SnsUtil";
 	protected String snsName;
@@ -16,6 +21,7 @@ public abstract class SnsUtil {
 	protected String accessToken;
 	
 	protected ArrayList<SnsCallBackListener> listeners;
+	protected FeedEntryDaos feedDao;
 	
 	public abstract SnsUtil fGetSnsInstance();
 	public abstract boolean isSessionValid();
@@ -23,6 +29,7 @@ public abstract class SnsUtil {
 	public abstract void fSetAccessToken(String token);
 	
 	public abstract void fGetNewsFeeds(Context context);
+	//public abstract void fDisplayNewsFeeds(Activity activiy);
 	
 	public abstract void fPublishFeeds(Bundle params);
 	public abstract void fUploadPic(String message, String selectedImagePath);
@@ -67,6 +74,19 @@ public abstract class SnsUtil {
 	}
 	public void removeListeners(SnsCallBackListener listener) {
 		this.listeners.remove(listener);
+	}
+	
+	public ArrayList<FeedEntry> fDisplayFeeds(Context context, String snsName) {
+		ArrayList<FeedEntry> feedList = feedDao.fGetLastest10FeedEntries(snsName);
+		FeedEntry lastItem = null;
+		
+		fSaveLastLoadedFeed(lastItem, context, snsName);
+		return feedList;
+	}
+	
+	private void fSaveLastLoadedFeed(FeedEntry lastItem, Context context, String snsName) {
+		// TODO Auto-generated method stub
+		Pref.setMyStringPref(context, snsName, lastItem.getsUpdatedTime());
 	}
 	
 }

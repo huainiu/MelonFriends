@@ -11,7 +11,7 @@ public class FBHomeFeedEntry {
 	private String message;
 	private List<FBHomeFeedEntryTags> message_tags;
 	private String story;
-	private List<FBHomeFeedEntryTags> story_tags;
+	//private List<FBHomeFeedEntryTags> story_tags;
 	private String picture;
 	private String raw_picture;
 	private String link;
@@ -192,11 +192,11 @@ public class FBHomeFeedEntry {
 		return message_tags;
 	}
 
-	public void setStory_tags(List<FBHomeFeedEntryTags> story_tags) {
-		this.story_tags = story_tags;
-	}
-
-	public List<FBHomeFeedEntryTags> getStory_tags() {
-		return story_tags;
-	}
+//	public void setStory_tags(List<FBHomeFeedEntryTags> story_tags) {
+//		this.story_tags = story_tags;
+//	}
+//
+//	public List<FBHomeFeedEntryTags> getStory_tags() {
+//		return story_tags;
+//	}
 }

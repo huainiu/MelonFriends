@@ -17,6 +17,7 @@ import com.facebook.android.Facebook;
 import com.facebook.android.Facebook.DialogListener;
 import com.facebook.android.FacebookError;
 import com.google.gson.Gson;
+import com.melonsail.app.melonfriends.daos.FeedEntryDaos;
 import com.melonsail.app.melonfriends.sns.SnsCallBackListener;
 import com.melonsail.app.melonfriends.sns.SnsUtil;
 import com.melonsail.app.melonfriends.utils.Const;
@@ -40,11 +41,13 @@ public class FacebookUtil extends SnsUtil {
 	public FacebookUtil(Activity activity) {
 		this();
 		this.mActivity = activity;
+		this.feedDao = new FeedEntryDaos(activity);
 	}
 	
 	public FacebookUtil(Context context) {
 		this();
 		this.mContext = context;
+		this.feedDao = new FeedEntryDaos(context);
 	}
 	
 	public FacebookUtil() {
@@ -143,6 +146,8 @@ public class FacebookUtil extends SnsUtil {
 					} else {
 						FBHomeFeed bean = new Gson().fromJson(response, FBHomeFeed.class);
 						// store in db
+						feedDao.fInsertFeed(bean);
+						Log.i(TAG, "feed inserted #feed: " + bean.getData().size());
 						fNotifyComplete(Const.MSG_UI_RECEIVE_NEWFEED);
 					}
 				}

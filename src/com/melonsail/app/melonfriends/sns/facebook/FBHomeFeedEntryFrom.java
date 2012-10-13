@@ -5,6 +5,7 @@ public class FBHomeFeedEntryFrom {
 	
 	private String id;
 	private String name;
+	private String headurl;
 
 	public void setId(String id) {
 		this.id = id;
@@ -20,6 +21,14 @@ public class FBHomeFeedEntryFrom {
 
 	public String getName() {
 		return name;
+	}
+
+	public void setHeadurl(String headurl) {
+		this.headurl = headurl;
+	}
+
+	public String getHeadurl() {
+		return headurl;
 	}
 	   
 }

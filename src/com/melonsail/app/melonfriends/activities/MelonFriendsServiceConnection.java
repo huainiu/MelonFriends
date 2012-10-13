@@ -37,7 +37,13 @@ public class MelonFriendsServiceConnection {
 
 		@Override
 		public void handleMessage(Message msg) {
-			Log.v(TAG, "Message Received on UI!" + msg);
+			switch (msg.what) {
+				case Const.MSG_UI_RECEIVE_NEWFEED:
+					Log.i(TAG, "MSG_UI_RECEIVE_NEWFEED: Display UI");
+					((MainActivity)mActivity).fGetController().fRefreshView();
+				break;
+			}
+			Log.i(TAG, "Message Received on UI!" + msg);
 		}
 	}
 	

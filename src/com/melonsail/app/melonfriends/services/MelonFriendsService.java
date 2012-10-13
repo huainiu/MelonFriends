@@ -80,8 +80,6 @@ public class MelonFriendsService extends Service  {
 	
 	public void fSnsGetNewFeed(Message msg) {
 		int snsIndex = msg.arg1;
-		// simulate feed retrieval behavior
-		//Thread.sleep(10000);
 		mSnsOrg.fGetActiveSnsList().get(snsIndex).fGetNewsFeeds(this);
 	}
 	
@@ -119,7 +117,7 @@ public class MelonFriendsService extends Service  {
 		for (int i=mClients.size()-1; i>=0; i--) {
             try {
                 mClients.get(i).send(Message.obtain(null, serviceMsg, 1, 0));
-                Log.i(TAG, "Reply client message: " + Const.MSG_UI_RECEIVE_NEWFEED);
+                Log.i(TAG, "Reply client message: " + serviceMsg);
             } catch (RemoteException e) {
                 mClients.remove(i);
             }

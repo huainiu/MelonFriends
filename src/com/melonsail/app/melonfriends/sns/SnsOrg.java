@@ -29,7 +29,7 @@ public class SnsOrg implements SnsCallBackListener {
 	private Service mService;
 	private Context mContext;
 	
-	private ArrayList<LstViewFeedAdapter> mMaiViewFeedAdapterList;
+	private ArrayList<LstViewFeedAdapter> mMainViewFeedAdapterList;
 	
 	//SnsUtil
 	private FacebookUtil zFacebookUtil;
@@ -37,7 +37,7 @@ public class SnsOrg implements SnsCallBackListener {
 	public SnsOrg() {
 		mActiveSnsList = new ArrayList<SnsUtil>();
 		mSnsList = new ArrayList<SnsUtil>();
-		mMaiViewFeedAdapterList = new ArrayList<LstViewFeedAdapter>();
+		mMainViewFeedAdapterList = new ArrayList<LstViewFeedAdapter>();
 		mLogos = new HashMap<String, Integer>();
 		
 		mLogos.put(Const.SNS_FACEBOOK, R.drawable.fh_facebook_logo);
@@ -74,16 +74,28 @@ public class SnsOrg implements SnsCallBackListener {
 	public void fInitSnsList() {
 		for(int i=0; i< Const.SNSGROUPS.length; i++) {
 			SnsUtil snsUtil = this.fGetSnsInstance(Const.SNSGROUPS[i]);
-			mMaiViewFeedAdapterList.add(new LstViewFeedAdapter(mActivity, R.layout.feed_item_preview, snsUtil.fGetSNSName()));
+			mMainViewFeedAdapterList.add(new LstViewFeedAdapter(mActivity, R.layout.feed_item_preview, snsUtil.fGetSNSName()));
 			mSnsList.add(snsUtil);
 		}
 	}
 	
 	public SnsUtil fGetSnsInstance(String snsName) {
 		SnsUtil snsUtil = null;
+		snsUtil = fGetActiveSNSByName(snsName);
+		if (snsUtil != null) {
+			return snsUtil;
+		}
 		
+		// sns not in active list, create new instance
 		if(snsName.equals(Const.SNS_FACEBOOK)) {
-			if(this.zFacebookUtil == null) this.zFacebookUtil = new FacebookUtil();
+			if(this.zFacebookUtil == null) {
+				if (mActivity != null) {
+					this.zFacebookUtil = new FacebookUtil(mActivity);
+				} else {
+					this.zFacebookUtil = new FacebookUtil(mService);
+				}
+				
+			}
 			snsUtil = this.zFacebookUtil;
 		} else {
 			snsUtil = new DummySnsUtil(Const.SNS_DUMMY);
@@ -103,6 +115,7 @@ public class SnsOrg implements SnsCallBackListener {
 				snsUtil.fSetAccessToken(token);
 				if (snsUtil.isSessionValid() ) {
 					Log.i(TAG, snsName + " is still active.");
+					snsUtil.addListeners(this);
 					fAddActiveSns(snsName);
 				} else {
 					Log.i(TAG, snsName + " previous sessions expired");
@@ -124,7 +137,6 @@ public class SnsOrg implements SnsCallBackListener {
 	public boolean fAddActiveSns(String snsName) {
 		Log.i(TAG, "SnsOrg.fAddActiveSns: SNS = " + snsName);
 		SnsUtil snsUtil = fGetSnsInstance(snsName);
-		snsUtil.addListeners(this);
 		snsUtil.fSetActive();
 		mActiveSnsList.add(snsUtil);
 		fUpdateActiveSnsInPref();
@@ -195,16 +207,23 @@ public class SnsOrg implements SnsCallBackListener {
 	public void fToggleSnsSelection(String snsName) {
 		if (!fRemoveActiveSns(snsName) ) {
 			SnsUtil snsUtil = fGetSnsInstance(snsName);
+			snsUtil.addListeners(this);
 			snsUtil.fAuth(mActivity);
 		}
 	}
-	
 	
 	public void fActiveSnsGetNewFeed(Context context) {
 		for (SnsUtil util: mActiveSnsList) {
 			util.fGetNewsFeeds(context);
 		}
 	}
+	
+//	public void fActiveSnsDisplayNewFeed(Context context, int pos) {
+//		mActiveSnsList.get(pos).fDisplayNewsFeeds(context);
+//		for (SnsUtil util: mActiveSnsList) {
+//			util.fGetNewsFeeds(context);
+//		}
+//	}
 
 	public void fSetActiveSnsList(ArrayList<SnsUtil> mSnsList) {
 		this.mActiveSnsList = mSnsList;
@@ -230,12 +249,16 @@ public class SnsOrg implements SnsCallBackListener {
 		return mLogos;
 	}
 
-	public void fSetMaiViewFeedAdapterList(ArrayList<LstViewFeedAdapter> mMaiViewFeedAdapterList) {
-		this.mMaiViewFeedAdapterList = mMaiViewFeedAdapterList;
+	public void fAddMainViewFeedAdapterList(LstViewFeedAdapter mMaiViewFeedAdapter) {
+		this.mMainViewFeedAdapterList.add(mMaiViewFeedAdapter);
+	}
+	
+	public void fRemoveMainViewFeedAdapterList(LstViewFeedAdapter mMaiViewFeedAdapter) {
+		this.mMainViewFeedAdapterList.remove(mMaiViewFeedAdapter);
 	}
 
-	public ArrayList<LstViewFeedAdapter> fGetMaiViewFeedAdapterList() {
-		return mMaiViewFeedAdapterList;
+	public ArrayList<LstViewFeedAdapter> fGetMainViewFeedAdapterList() {
+		return mMainViewFeedAdapterList;
 	}
 
 	@Override
