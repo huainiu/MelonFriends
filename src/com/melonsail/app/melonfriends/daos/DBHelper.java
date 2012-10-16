@@ -19,8 +19,7 @@ import com.melonsail.app.melonfriends.utils.Const;
 
 public class DBHelper {
 
-	static final String DATABASE_NAME = "friendhost_feed.db";
-    static final String NEWSFEED_TABLE_NAME = "newsfeed";
+	static final String DATABASE_NAME = "melonfriend.db";
     static final int DATABASE_VERSION = 1;
     
     //query condition
@@ -29,62 +28,96 @@ public class DBHelper {
     
     // database tables
     static final String T_USER = "User";
-    static final String T_FEED = "Feed";
-    static final String T_COMMENTS = "Comments";
-    static final String T_ACTIONS = "Actions";
-    static final String T_TAGS = "Tags";
-    static final String T_ERRORS = "Errors";
+    static final String T_FRIENDSLIST = "FriendsList";
     
-    // User Columns
-    static final String C_USER_ID = "id";
-    static final String C_USER_SNS = "SNS";
+    static final String T_FEED = "Feed";
+    static final String T_LIKE = "Like";
+    static final String T_COMMENT = "Comment";
+    static final String T_TAG = "Tag";
+    
+    static final String T_PHOTO = "Photo";
+    static final String T_ALBUM = "Album";
+    
+    static final String T_ERRORS = "Error";
+    
+    // {{ General keys for tables
+    static final String C_KEY_ID = "id";
+    static final String C_KEY_SNS = "SNS";
+    static final String C_KEY_MELON = "melonkey";
+    // }}
+    
+    // {{ region User 
     static final String C_USER_NAME = "name";
-    static final String C_USER_HEADURL = "headurl";
+    static final String C_USER_SCREENAME = "screenname";
+    static final String C_USER_PROFILEIMG = "profileimg";
+    static final String C_USER_PROFILEIMG_L = "profileimg_large";
+    
+    static final String C_USER_LOCATION = "location";
+    static final String C_USER_WEBSITE = "website";
+    static final String C_USER_GENDER = "gender";
+    static final String C_USER_DESCRIPTION = "description"; // personal quotes
+    
+    static final String C_USER_CNT_FOLLOWERS = "cnt_followers";
+    static final String C_USER_CNT_BIFOLLOWERS = "cnt_bifollowers";
+    static final String C_USER_CNT_FRIENDS = "cnt_friends";
+    static final String C_USER_CNT_FAVORITES = "cnt_favorites";
+    
+    static final String C_USER_RELATIONSHIP = "relationship";
+    // }}
+    
+    // {{ region FriendLists
+    static final String C_FRIENDLIST_FRIENDID = "friendsid";
+    static final String C_FRIENDLIST_RELATIONSHIP = "relationship";
+    // }}
 
-    // Feed Columns
-    static final String[] C_FEED_COLS = {};
-    static final String C_FEED_ID = "id";
-    static final String C_FEED_FROM = "feedFrom";
-    static final String C_FEED_OWNER_ID = "feed_owner_id";
-    static final String C_FEED_SNS = "SNS";
-    static final String C_FEED_MSG = "msg";
+    // {{ region Feed
+    static final String C_FEED_FROM_NAME = "feed_from_name";
+    static final String C_FEED_FROM_ID = "feed_from_id";
+    static final String C_FEED_FROM_IMG = "feed_from_img";
+    static final String C_FEED_MSG = "msg"; //text
     static final String C_FEED_STORY = "story";
+    
     static final String C_FEED_PIC = "pic";
-    static final String C_FEED_RAW_PIC = "raw_pic";
-    static final String C_FEED_SOURCE = "source";
+    static final String C_FEED_PICL = "pic_large";
     static final String C_FEED_LINK = "link";
-    static final String C_FEED_NAME = "name";
-    static final String C_FEED_CAPTION = "caption";
-    static final String C_FEED_DESCRIPTION = "description";
-    static final String C_FEED_ICON = "icon";
+    static final String C_FEED_NAME = "name"; //name of the link
+    static final String C_FEED_CAPTION = "caption"; //caption of the link
+    static final String C_FEED_DESCRIPTION = "description"; //description of the link
+    
+    static final String C_FEED_SOURCE = "source"; //url to movie file
+    static final String C_FEED_ICON = "icon"; // icon of the post type
+    
     static final String C_FEED_TYPE = "type";
-    static final String C_FEED_CNT_LIKE = "cntlike";
-    static final String C_FEED_ISREAD = "isread";
+    
     static final String C_FEED_CREATED_TIME = "created_time";
     static final String C_FEED_UPDATED_TIME = "updated_time";
+    
+    static final String C_FEED_ISREAD = "isread";
     static final String C_FEED_ISLIKED = "isliked";
+    static final String C_FEED_CNT_LIKE = "cnt_likes";
+    static final String C_FEED_CNT_COMMENT = "cnt_comments";
+    static final String C_FEED_CNT_SHARE = "cnt_share"; //repost
     
-    // Comments Columns
-    static final String C_COMMENTS_ID = "id";
-    static final String C_COMMENTS_SNS = "SNS";
-    static final String C_COMMENTS_FEEDID = "feedid";
-    static final String C_COMMENTS_USERID = "comment_userid";
-    static final String C_COMMENTS_USERNAME = "comment_username";
-    static final String C_COMMENTS_USERHEADURL = "comment_userheadurl";
-    static final String C_COMMENTS_MSG = "msg";
-    static final String C_COMMENTS_CREATED_TIME = "created_time";
+    // special to Sina and Twitter
+    static final String C_FEED_REPLYTO_STATUS_ID = "feed_replyto_status_id";
+    static final String C_FEED_REPLYTO_USER_ID = "feed_replyto_from_id";
+    static final String C_FEED_REPLYTO_SCREENNAME = "feed_replyto_from_name";
+    // }}
     
-    // Action Columns
-    static final String C_ACTIONS_FEEDID = "feedid";
-    static final String C_ACTIONS_NAME = "name";
-    static final String C_ACTIONS_LINK = "link";
+    // {{ region Comment
+    static final String C_COMMENT_FEEDID = "feedid";
+    static final String C_COMMENT_FROM_ID = "comment_from_id";
+    static final String C_COMMENT_FROM_NAME = "comment_from_name";
+    static final String C_COMMENT_FROM_IMG = "comment_from_img";
     
-    // Error DB
-    static final String C_ERROR_MSG = "message";
-    static final String C_ERROR_TIME = "created_time";
-    static final String C_ERROR_SRC = "source";
+    static final String C_COMMENT_MSG = "msg";
+    static final String C_COMMENT_CREATED_TIME = "created_time";
     
-    // Tags DB
+    static final String C_COMMENT_ISLIKED = "isliked";
+    static final String C_COMMENT_CNT_LIKES = "cnt_likes";
+    // }}
+    
+    // {{ region Tags
     static final String C_TAGS_ID = "id";
     static final String C_TAGS_FEEDID = "feedid";
     static final String C_TAGS_SNS = "sns";
@@ -92,24 +125,31 @@ public class DBHelper {
     static final String C_TAGS_OFFSET = "offset";
     static final String C_TAGS_LENTH = "length";
     static final String C_TAGS_TYPE = "type";
+    // }}
+    
+    // {{ region Error
+    static final String C_ERROR_MSG = "message";
+    static final String C_ERROR_TIME = "created_time";
+    static final String C_ERROR_SRC = "source";
+    // }}
     
     // Create table SQL statement
     static final String CREATE_USER_TABLE = "CREATE TABLE " + T_USER + " ("
-										    + C_USER_ID + " TEXT PRIMARY KEY,"
-										    + C_USER_SNS + " TEXT,"
+										    + C_KEY_ID + " TEXT PRIMARY KEY,"
+										    + C_KEY_SNS + " TEXT,"
 										    + C_USER_NAME + " TEXT,"
-										    + C_USER_HEADURL + " TEXT"
+										    + C_USER_PROFILEIMG + " TEXT"
 										    + ");";
     
     static final String CREATE_FEED_TABLE = "CREATE TABLE " + T_FEED + " ("
-										    + C_FEED_ID + " TEXT PRIMARY KEY,"
-										    + C_FEED_SNS + " TEXT,"
-										    + C_FEED_FROM + " TEXT,"
-										    + C_FEED_OWNER_ID + " TEXT,"
+										    + C_KEY_ID + " TEXT PRIMARY KEY,"
+										    + C_KEY_SNS + " TEXT,"
+										    + C_FEED_FROM_NAME + " TEXT,"
+										    + C_FEED_FROM_ID + " TEXT,"
 										    + C_FEED_MSG + " TEXT,"
 										    + C_FEED_STORY + " TEXT,"
 										    + C_FEED_PIC + " TEXT,"
-										    + C_FEED_RAW_PIC + " TEXT,"
+										    + C_FEED_PICL + " TEXT,"
 										    + C_FEED_SOURCE + " TEXT,"
 										    + C_FEED_LINK + " TEXT,"
 										    + C_FEED_NAME + " TEXT,"
@@ -124,22 +164,22 @@ public class DBHelper {
 										    + C_FEED_ISLIKED + " TEXT"
 										    + ");";
     
-    static final String CREATE_COMMENTS_TABLE = "CREATE TABLE " + T_COMMENTS + " ("
-										    + C_COMMENTS_ID + " TEXT PRIMARY KEY,"
-										    + C_COMMENTS_SNS + " TEXT,"
-										    + C_COMMENTS_FEEDID + " TEXT,"
-										    + C_COMMENTS_USERID + " TEXT,"
-										    + C_COMMENTS_USERNAME + " TEXT,"
-										    + C_COMMENTS_USERHEADURL + " TEXT,"
-										    + C_COMMENTS_MSG + " TEXT,"
-										    + C_COMMENTS_CREATED_TIME + " TEXT"
+    static final String CREATE_COMMENTS_TABLE = "CREATE TABLE " + T_COMMENT + " ("
+										    + C_KEY_ID + " TEXT PRIMARY KEY,"
+										    + C_KEY_SNS + " TEXT,"
+										    + C_COMMENT_FEEDID + " TEXT,"
+										    + C_COMMENT_FROM_ID + " TEXT,"
+										    + C_COMMENT_FROM_NAME + " TEXT,"
+										    + C_COMMENT_FROM_IMG + " TEXT,"
+										    + C_COMMENT_MSG + " TEXT,"
+										    + C_COMMENT_CREATED_TIME + " TEXT"
 										    + ");";
     
-    static final String CREATE_ACTIONS_TABLE = "CREATE TABLE " + T_ACTIONS + " ("
-										    + C_ACTIONS_FEEDID + " TEXT PRIMARY KEY,"
-										    + C_ACTIONS_NAME + " TEXT,"
-										    + C_ACTIONS_LINK + " TEXT"
-										    + ");";
+//    static final String CREATE_ACTIONS_TABLE = "CREATE TABLE " + T_ACTIONS + " ("
+//										    + C_ACTIONS_FEEDID + " TEXT PRIMARY KEY,"
+//										    + C_ACTIONS_NAME + " TEXT,"
+//										    + C_ACTIONS_LINK + " TEXT"
+//										    + ");";
     
     static final String CREATE_ERRORS_TABLE = "CREATE TABLE " + T_ERRORS + " ("
 										    + C_ERROR_SRC + " TEXT PRIMARY KEY,"
@@ -147,7 +187,7 @@ public class DBHelper {
 										    + C_ERROR_TIME + " TEXT"
 										    + ");";
     
-    static final String CREATE_TAGS_TABLE = "CREATE TABLE " + T_TAGS + " ("
+    static final String CREATE_TAGS_TABLE = "CREATE TABLE " + T_TAG + " ("
 										    + C_TAGS_ID + " TEXT PRIMARY KEY,"
 										    + C_TAGS_SNS + " TEXT,"
 										    + C_TAGS_FEEDID + " TEXT,"
@@ -171,7 +211,7 @@ public class DBHelper {
 			db.execSQL(CREATE_USER_TABLE);
 			db.execSQL(CREATE_FEED_TABLE);
 			db.execSQL(CREATE_COMMENTS_TABLE);
-			db.execSQL(CREATE_ACTIONS_TABLE);
+			//db.execSQL(CREATE_ACTIONS_TABLE);
 			db.execSQL(CREATE_ERRORS_TABLE);
 		}
 
@@ -183,7 +223,7 @@ public class DBHelper {
 			db.execSQL("DROP TABLE IF EXISTS " + CREATE_USER_TABLE);
 			db.execSQL("DROP TABLE IF EXISTS " + CREATE_FEED_TABLE);
 			db.execSQL("DROP TABLE IF EXISTS " + CREATE_COMMENTS_TABLE);
-			db.execSQL("DROP TABLE IF EXISTS " + CREATE_ACTIONS_TABLE);
+			//db.execSQL("DROP TABLE IF EXISTS " + CREATE_ACTIONS_TABLE);
 			db.execSQL("DROP TABLE IF EXISTS " + CREATE_ERRORS_TABLE);
 			
 			onCreate(db);
@@ -237,12 +277,12 @@ public class DBHelper {
 		
 		ContentValues values  = new ContentValues();
 		
-		values.put(C_USER_ID, friend.getId());
+		values.put(C_KEY_ID, friend.getId());
 		values.put(C_USER_NAME, friend.getName());
-		values.put(C_USER_HEADURL, friend.getHeadurl());
-		values.put(C_USER_SNS, Const.SNS_FACEBOOK);
+		values.put(C_USER_PROFILEIMG, friend.getHeadurl());
+		values.put(C_KEY_SNS, Const.SNS_FACEBOOK);
 		
-		String whereClause = C_USER_ID + "=? and " + C_FEED_SNS + "=?";
+		String whereClause = C_KEY_ID + "=? and " + C_KEY_SNS + "=?";
 		String[] selectArgs = new String[] {friend.getId(), Const.SNS_FACEBOOK};
 		String[][] item = fGetItems(T_USER, whereClause, selectArgs, null);
 		
@@ -265,15 +305,15 @@ public class DBHelper {
 		long ret = 0;
 		ContentValues values  = new ContentValues();
 
-		values.put(C_FEED_SNS, Const.SNS_FACEBOOK);
+		values.put(C_KEY_SNS, Const.SNS_FACEBOOK);
 		values.put(C_FEED_ISREAD, "0");
-		values.put(C_FEED_ID, entry.getId());
+		values.put(C_KEY_ID, entry.getId());
 		values.put(C_FEED_MSG, entry.getMessage());
 		values.put(C_FEED_STORY, entry.getStory());
-		values.put(C_FEED_FROM, entry.getFrom().getName());
-		values.put(C_FEED_OWNER_ID, entry.getFrom().getId());
+		values.put(C_FEED_FROM_NAME, entry.getFrom().getName());
+		values.put(C_FEED_FROM_ID, entry.getFrom().getId());
 		values.put(C_FEED_PIC, entry.getPicture());
-		values.put(C_FEED_RAW_PIC, entry.getRawPhoto());
+		values.put(C_FEED_PICL, entry.getRawPhoto());
 		values.put(C_FEED_SOURCE, entry.getSource());
 		values.put(C_FEED_LINK, entry.getLink());
 		values.put(C_FEED_NAME, entry.getName());
@@ -297,7 +337,7 @@ public class DBHelper {
 			Log.w(TAG, "Unable to parse date string \"" + entry.getCreated_time() + "\"");
 		}
 		
-		String whereClause = C_FEED_ID + "=? and " + C_FEED_SNS + "=?";
+		String whereClause = C_KEY_ID + "=? and " + C_KEY_SNS + "=?";
 		String[] selectArgs = new String[] {entry.getId(), Const.SNS_FACEBOOK};
 		String[][] item = fGetItems(T_FEED, whereClause, selectArgs, null);
 		if (item != null && item.length > 0 ) {
@@ -314,24 +354,24 @@ public class DBHelper {
 		long ret = 0;
 		
 		ContentValues values  = new ContentValues();
-		values.put(C_COMMENTS_SNS, Const.SNS_FACEBOOK);
-		values.put(C_COMMENTS_ID, comment.getId());
+		values.put(C_KEY_SNS, Const.SNS_FACEBOOK);
+		values.put(C_KEY_ID, comment.getId());
 		//comment_id = 564125882_10150574078615883_7136761 -> user id, feed id, comment id
 		String comment_feedid = comment.getId().split("_")[1];
-		values.put(C_COMMENTS_FEEDID, comment_feedid);
-		values.put(C_COMMENTS_USERID, comment.getFrom().getId());
-		values.put(C_COMMENTS_USERNAME, comment.getFrom().getName());
-		values.put(C_COMMENTS_USERHEADURL, comment.getFrom().getHeadurl());
-		values.put(C_COMMENTS_MSG, comment.getMessage());
-		values.put(C_COMMENTS_CREATED_TIME, comment.getCreated_time());	
+		values.put(C_COMMENT_FEEDID, comment_feedid);
+		values.put(C_COMMENT_FROM_ID, comment.getFrom().getId());
+		values.put(C_COMMENT_FROM_NAME, comment.getFrom().getName());
+		values.put(C_COMMENT_FROM_IMG, comment.getFrom().getHeadurl());
+		values.put(C_COMMENT_MSG, comment.getMessage());
+		values.put(C_COMMENT_CREATED_TIME, comment.getCreated_time());	
 		
-		String whereClause = C_FEED_ID + "=? and " + C_FEED_SNS + "=?";
+		String whereClause = C_KEY_ID + "=? and " + C_KEY_SNS + "=?";
 		String[] selectArgs = new String[] {comment.getId(), Const.SNS_FACEBOOK};
-		String[][] item = fGetItems(T_COMMENTS, whereClause, selectArgs, null);
+		String[][] item = fGetItems(T_COMMENT, whereClause, selectArgs, null);
 		if (item  != null ) {
-			ret = mSQLiteDB.update(T_COMMENTS, values, whereClause, selectArgs);
+			ret = mSQLiteDB.update(T_COMMENT, values, whereClause, selectArgs);
 		} else {
-			ret = mSQLiteDB.insert(T_COMMENTS, null, values);
+			ret = mSQLiteDB.insert(T_COMMENT, null, values);
 		}
 		
 		return ret;
@@ -367,13 +407,13 @@ public class DBHelper {
 	}
 	
 	public String[][] fGetAllItems( String table, String sns ) {
-		String where = C_FEED_SNS + " = ? and " ;
+		String where = C_KEY_SNS + " = ? and " ;
 		String[] selectArgs = new String[] {sns};
 		return fGetItems(table, where, selectArgs, ORDER_DESC);
 	}
 	
 	public String[][] fGetItemsDesc (String table, String sns, String where, String limit) {
-		String where2 = C_FEED_SNS + " = ?";
+		String where2 = C_KEY_SNS + " = ?";
 		//protection on where and limit clause input
 		where = (where == null) ? "": " and " + where;
 		limit = (limit == null) ? "": limit;

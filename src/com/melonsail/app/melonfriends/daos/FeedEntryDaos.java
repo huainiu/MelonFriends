@@ -94,7 +94,7 @@ public class FeedEntryDaos {
 	 */
 	public FeedEntry fGetFeedByID(String sns, String feedid) {
 		FeedEntry entry = null;
-		String where = String.format("%s" + "=%s", DBHelper.C_FEED_ID, feedid);
+		String where = String.format("%s" + "=%s", DBHelper.C_KEY_ID, feedid);
 		// only 1 feed required, so no limit required
 		String[][] result = mDBHelper.fGetItemsDesc(DBHelper.T_FEED, sns, where, null);
 		for (int i= 0; i < result.length; i++) {
