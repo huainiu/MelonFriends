@@ -133,35 +133,60 @@ public class DBHelper {
     static final String C_ERROR_SRC = "source";
     // }}
     
-    // Create table SQL statement
+    // {{ region Create user table 
     static final String CREATE_USER_TABLE = "CREATE TABLE " + T_USER + " ("
 										    + C_KEY_ID + " TEXT PRIMARY KEY,"
 										    + C_KEY_SNS + " TEXT,"
 										    + C_USER_NAME + " TEXT,"
-										    + C_USER_PROFILEIMG + " TEXT"
+										    + C_USER_PROFILEIMG + " TEXT,"
+										    + C_USER_PROFILEIMG_L + " TEXT,"
+										    + C_USER_LOCATION + " TEXT,"
+										    + C_USER_WEBSITE + " TEXT,"
+										    + C_USER_GENDER + " TEXT,"
+										    + C_USER_DESCRIPTION + " TEXT,"
+										    + C_USER_CNT_FOLLOWERS + " TEXT,"
+										    + C_USER_CNT_BIFOLLOWERS + " TEXT,"
+										    + C_USER_CNT_FRIENDS + " TEXT,"
+										    + C_USER_CNT_FAVORITES + " TEXT,"
+										    + C_USER_RELATIONSHIP + " TEXT,"
+										    + C_USER_CNT_FOLLOWERS + " TEXT,"
 										    + ");";
     
+    static final String CREATE_FRIENDLIST_TABLE = "CREATE TABLE " + T_FRIENDSLIST + " ("
+										    + C_KEY_ID + " TEXT PRIMARY KEY,"
+										    + C_KEY_SNS + " TEXT,"
+										    + C_FRIENDLIST_FRIENDID + " TEXT,"
+										    + C_FRIENDLIST_RELATIONSHIP + " TEXT"
+    										+ ");";
+    // }}
+    // {{ region Create feed & comment table 
     static final String CREATE_FEED_TABLE = "CREATE TABLE " + T_FEED + " ("
 										    + C_KEY_ID + " TEXT PRIMARY KEY,"
 										    + C_KEY_SNS + " TEXT,"
 										    + C_FEED_FROM_NAME + " TEXT,"
 										    + C_FEED_FROM_ID + " TEXT,"
+										    + C_FEED_FROM_IMG + " TEXT,"
 										    + C_FEED_MSG + " TEXT,"
 										    + C_FEED_STORY + " TEXT,"
 										    + C_FEED_PIC + " TEXT,"
 										    + C_FEED_PICL + " TEXT,"
-										    + C_FEED_SOURCE + " TEXT,"
 										    + C_FEED_LINK + " TEXT,"
 										    + C_FEED_NAME + " TEXT,"
 										    + C_FEED_CAPTION + " TEXT,"
 										    + C_FEED_DESCRIPTION + " TEXT,"
+										    + C_FEED_SOURCE + " TEXT,"
 										    + C_FEED_ICON + " TEXT,"
 										    + C_FEED_TYPE + " TEXT,"
 										    + C_FEED_ISREAD + " TEXT,"
+										    + C_FEED_ISLIKED + " TEXT,"
 										    + C_FEED_CNT_LIKE + " TEXT,"
+										    + C_FEED_CNT_COMMENT + " TEXT,"
+										    + C_FEED_CNT_SHARE + " TEXT,"
+										    + C_FEED_REPLYTO_STATUS_ID + " TEXT,"
+										    + C_FEED_REPLYTO_USER_ID + " TEXT,"
+										    + C_FEED_REPLYTO_SCREENNAME + " TEXT,"
 										    + C_FEED_CREATED_TIME + " TEXT,"
 										    + C_FEED_UPDATED_TIME + " TEXT"
-										    + C_FEED_ISLIKED + " TEXT"
 										    + ");";
     
     static final String CREATE_COMMENTS_TABLE = "CREATE TABLE " + T_COMMENT + " ("
@@ -172,19 +197,9 @@ public class DBHelper {
 										    + C_COMMENT_FROM_NAME + " TEXT,"
 										    + C_COMMENT_FROM_IMG + " TEXT,"
 										    + C_COMMENT_MSG + " TEXT,"
-										    + C_COMMENT_CREATED_TIME + " TEXT"
-										    + ");";
-    
-//    static final String CREATE_ACTIONS_TABLE = "CREATE TABLE " + T_ACTIONS + " ("
-//										    + C_ACTIONS_FEEDID + " TEXT PRIMARY KEY,"
-//										    + C_ACTIONS_NAME + " TEXT,"
-//										    + C_ACTIONS_LINK + " TEXT"
-//										    + ");";
-    
-    static final String CREATE_ERRORS_TABLE = "CREATE TABLE " + T_ERRORS + " ("
-										    + C_ERROR_SRC + " TEXT PRIMARY KEY,"
-										    + C_ERROR_MSG + " TEXT,"
-										    + C_ERROR_TIME + " TEXT"
+										    + C_COMMENT_CREATED_TIME + " TEXT,"
+										    + C_COMMENT_ISLIKED + " TEXT,"
+										    + C_COMMENT_CNT_LIKES + " TEXT"
 										    + ");";
     
     static final String CREATE_TAGS_TABLE = "CREATE TABLE " + T_TAG + " ("
@@ -196,7 +211,16 @@ public class DBHelper {
 										    + C_TAGS_OFFSET + " TEXT,"
 										    + C_TAGS_LENTH + " TEXT"
 										    + ");";
-	private static final String TAG = "DBHelper";
+    
+    static final String CREATE_ERRORS_TABLE = "CREATE TABLE " + T_ERRORS + " ("
+										    + C_ERROR_SRC + " TEXT PRIMARY KEY,"
+										    + C_ERROR_MSG + " TEXT,"
+										    + C_ERROR_TIME + " TEXT"
+										    + ");";
+    
+    // }}
+	
+    private static final String TAG = "DBHelper";
 
     private static SimpleDateFormat simpleDateFormat;
     private static class DatabaseHelper extends SQLiteOpenHelper {
