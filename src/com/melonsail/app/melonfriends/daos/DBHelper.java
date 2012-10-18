@@ -86,6 +86,7 @@ public class DBHelper {
     
     static final String C_FEED_SOURCE = "source"; //url to movie file
     static final String C_FEED_ICON = "icon"; // icon of the post type
+    static final String C_FEED_ANNOTATION = "annotation"; // application info
     
     static final String C_FEED_TYPE = "type";
     
@@ -176,6 +177,7 @@ public class DBHelper {
 										    + C_FEED_DESCRIPTION + " TEXT,"
 										    + C_FEED_SOURCE + " TEXT,"
 										    + C_FEED_ICON + " TEXT,"
+										    + C_FEED_ANNOTATION + " TEXT,"
 										    + C_FEED_TYPE + " TEXT,"
 										    + C_FEED_ISREAD + " TEXT,"
 										    + C_FEED_ISLIKED + " TEXT,"
