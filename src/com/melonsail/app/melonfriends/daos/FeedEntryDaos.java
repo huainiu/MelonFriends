@@ -5,6 +5,7 @@ import java.util.Date;
 
 import android.app.Activity;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.melonsail.app.melonfriends.sns.facebook.FBHomeFeed;
@@ -23,10 +24,17 @@ public class FeedEntryDaos {
 	
 	private DBHelper mDBHelper;
 	
+	private String[] sSQLInputParams = {"\'Facebook\'", "123456"};
+	private String sSQLScript;
+	
 	public FeedEntryDaos(Context context) {
 		this.mContext = context;
 		
 		mDBHelper = new DBHelper(context);
+		
+		//for testing purpose only
+		sSQLScript = XMLSQLParser.fGetSQLScript(context, "sSelectUserBySNS", sSQLInputParams);
+		Log.i(TAG, "Script: " + sSQLScript);
 	}
 	/**
 	 * Insert feed into db from JSON reply

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Root>
+    <Statement >
+        <Details scriptId="sSelectUserBySNS" author="WL">
+            <![CDATA[
+                Declare @sns as varchar(128)
+                set @sns = ?
+                select * from user where sns = @sns
+            ]]>
+        </Details>
+    </Statement>
+    <Statement >
+        <Details scriptId="sSelectFeedBySNS" author="WL">
+            <![CDATA[
+                Declare @sns as varchar(128)
+                Declare @id as varchar(128)
+                set @sns = ?
+                set @id = ?
+                select * from feed where sns = @sns and id = @id
+            ]]>
+        </Details>
+    </Statement>
+</Root>

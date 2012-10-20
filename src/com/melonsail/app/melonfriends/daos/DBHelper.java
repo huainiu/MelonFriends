@@ -149,8 +149,7 @@ public class DBHelper {
 										    + C_USER_CNT_BIFOLLOWERS + " TEXT,"
 										    + C_USER_CNT_FRIENDS + " TEXT,"
 										    + C_USER_CNT_FAVORITES + " TEXT,"
-										    + C_USER_RELATIONSHIP + " TEXT,"
-										    + C_USER_CNT_FOLLOWERS + " TEXT,"
+										    + C_USER_RELATIONSHIP + " TEXT"
 										    + ");";
     
     static final String CREATE_FRIENDLIST_TABLE = "CREATE TABLE " + T_FRIENDSLIST + " ("
