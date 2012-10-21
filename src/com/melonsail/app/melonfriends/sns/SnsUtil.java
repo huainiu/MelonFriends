@@ -77,7 +77,18 @@ public abstract class SnsUtil {
 	}
 	
 	public ArrayList<FeedEntry> fDisplayFeeds(Context context, String snsName) {
-		ArrayList<FeedEntry> feedList = feedDao.fGetLastest10FeedEntries(snsName);
+		//ArrayList<FeedEntry> feedList = feedDao.fGetLastest10FeedEntries(snsName);
+		
+		String sParamPattern = "%s";
+		
+		ArrayList<String> params = new ArrayList<String>();
+		params.add(String.format(sParamPattern, snsName));  //sns = sns
+		//String from = mDBHelper.fGetDateFormat().format(new Date());
+		String from = Pref.getMyStringPref(context, snsName + Const.SNS_READITEM_UPDATETIME);
+		params.add(String.format(sParamPattern, from)); //updated_time < from
+		params.add(String.format(sParamPattern, "10")); //limit 10
+		ArrayList<FeedEntry> feedList = feedDao.fGetFeedEntries("sqlSelectFeedBySNSBeforeLimit", (String[]) params.toArray());
+		
 		FeedEntry lastItem = null;
 		
 		fSaveLastLoadedFeed(lastItem, context, snsName);

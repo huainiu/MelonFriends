@@ -205,28 +205,38 @@ public class FeedEntryDaos {
 		int index = 0;
 		
 		entry.setsID(value[index++]);
-		entry.setsSNS(value[index++]);							//name
-		entry.setsName(value[index++]);							//name
+		entry.setsSNS(value[index++]);							//sns
+		entry.setsOwnerName(value[index++]);					//feed owner name
 		entry.setsOwnerID(value[index++]);						//feed owner id
-		entry.setsMsgBody(value[index++]);						//message
+		entry.setsOwnerImg(value[index++]);						//feed owner img
+		entry.setsMsg(value[index++]);							//message
 		entry.setsStory(value[index++]);						//story
 		
-		entry.setsPhotoPreviewLink(value[index++]);				//pic url
-		entry.setsPhotoLargeLink(value[index++]);				//raw photo url
-		entry.setsSource(value[index++]);						//source
-		entry.setsLink(value[index++]);							//links
+		entry.setsPhotoUrl(value[index++]);						//pic url
+		entry.setsPhotoUrl_L(value[index++]);					//raw photo url
 		
-		entry.setsPhotoPreviewName(value[index++]);				//pic/album name
-		entry.setsPhotoPreviewCaption(value[index++]);			//pic/album caption
-		entry.setsPhotoPreviewDescription(value[index++]);		//pic/album description
+		entry.setsLink(value[index++]);							//links
+		entry.setsPhotoName(value[index++]);					//pic/album name
+		entry.setsPhotoCaption(value[index++]);					//pic/album caption
+		entry.setsPhotoDescription(value[index++]);				//pic/album description
 		
 		entry.setsIcon(value[index++]);							//icon
+		entry.setsSource(value[index++]);						//source
+		entry.setsAnnotation(value[index++]);					//annotation
 		entry.setsFeedType(value[index++]);						//feedtype
-		entry.setsIsRead(value[index++]);						//is_read status
-		entry.setsCntLikes(value[index++]);						// how many likes
+		
+		entry.setsIsRead(value[index++]);						//is_read
+		entry.setsIsLiked(value[index++]);						//is_liked
+		entry.setsCountLikes(value[index++]);					// #likes
+		entry.setsCountComments(value[index++]);				// #comments
+		entry.setsCountShares(value[index++]);					// #shares
+		
+		entry.setsFeed_Replyto_Status_ID(value[index++]);
+		entry.setsFeed_Replyto_From_ID(value[index++]);
+		entry.setsFeed_Replyto_From_Name(value[index++]);
 		
 		entry.setsCreatedTime(value[index++]);					//created time
-		entry.setsUpdatedTime(value[index++]);					//created time
+		entry.setsUpdatedTime(value[index++]);					//updated time
 		
 		return entry;
 	}
@@ -234,7 +244,7 @@ public class FeedEntryDaos {
 	private String[] fTransformObject2Value(FBHomeFeedEntry entry, String table) {
 		String[] colNames = mDBHelper.fGetColNames(table);
 		String[] params = new String[colNames.length - 3];
-		String sParamPattern = "\'%s\'";
+		String sParamPattern = "%s";
 		
 		int i = 0;
 		params[i++] = String.format(sParamPattern, entry.getId() );
@@ -327,6 +337,7 @@ public class FeedEntryDaos {
 	 * @param entries
 	 */
 	public void fInsertFeed(FBHomeFeed entries, String temp) {
+
 		if(entries != null && entries.getData()!=null) {
 			Log.i(TAG, "FB get single feed from list#" + entries.getData().size());
 			
@@ -348,5 +359,59 @@ public class FeedEntryDaos {
 				//mDBHelper.fExec(sSQLScript, sSQLInputParams);
 			}
 		}
+	}
+	
+	/**
+	 * Retrieve the specific feed
+	 * @param sns
+	 * @param feedid
+	 * @return
+	 */
+	public FeedEntry fGetFeedByID(String sns, String feedid, String temp) {
+		FeedEntry entry = null;
+		// only 1 feed required, so no limit required
+		Log.i(TAG, "Get feed from " + sns + "feedid " + feedid);
+		String sParamPattern = "%s";
+		ArrayList<String> params = new ArrayList<String>();
+		params.add(String.format(sParamPattern, sns));  //sns = sns
+		params.add(String.format(sParamPattern, feedid)); //limit 10
+		sSQLInputParams = (String[]) params.toArray();
+		sSQLScript = XMLSQLParser.fGetSQLScript(mContext, "sqlSelectFeedByIDSNS");
+		
+		String[][] result = mDBHelper.fExec(sSQLScript, sSQLInputParams);
+		
+		for (int i= 0; i < result.length; i++) {
+			entry = fTransformValue2Object(result[i]);
+		}
+		return entry;
+	}
+
+	/**
+	 * Retrieve multiple feed entries
+	 * Sort by update time desc
+	 * @param sns
+	 * @param from
+	 * @return
+	 */
+	public ArrayList<FeedEntry> fGetFeedEntries(String queryName, String[] params) {
+		ArrayList<FeedEntry> entries = new ArrayList<FeedEntry>();
+		//String sParamPattern = "%s";
+		//String from = mDBHelper.fGetDateFormat().format(new Date());
+		//String from = Pref.getMyStringPref(mContext, sns + Const.SNS_READITEM_UPDATETIME);
+		//ArrayList<String> params = new ArrayList<String>();
+		//params.add(String.format(sParamPattern, sns));  //sns = sns
+		//params.add(String.format(sParamPattern, from)); //updated_time < from
+		//params.add(String.format(sParamPattern, "10")); //limit 10
+		
+		Log.i(TAG, "Get multiple feeds: " + queryName);
+		sSQLScript = XMLSQLParser.fGetSQLScript(mContext, queryName);
+		
+		String[][] result = mDBHelper.fExec(sSQLScript, params);
+		
+		for (int i= 0; i < result.length; i++) {
+			entries.add(fTransformValue2Object(result[i]));
+		}
+		
+		return entries;
 	}
 }

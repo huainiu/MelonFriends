@@ -156,7 +156,7 @@ public class LstViewFeedAdapter extends BaseAdapter{
 				((LinkEnabledTextView)v).IsLinkedTxtClicked = false;
 			}});
 		
-		feedItemUIComponent.ImgHeadLoad(feedArrayList.get(position).getzFriend().getHeadurl());
+		feedItemUIComponent.ImgHeadLoad(feedArrayList.get(position).getsOwnerImg());
 		if (feedArrayList == null || feedArrayList.size() < 2) {
 			
 			feedItemUIComponent.getTxv_FeedUser().setText("This is your first time sign in.\n" +
@@ -175,20 +175,20 @@ public class LstViewFeedAdapter extends BaseAdapter{
 			feedItemUIComponent.getTxv_FeedUser().setText(feedArrayList.get(position).getsName());
 			feedItemUIComponent.getTxv_MsgCreationTime().setText(feedArrayList.get(position).getsCreatedTime());
 			try{
-			feedItemUIComponent.TxtMsgBodyLoad(feedArrayList.get(position).getsMsgBody(), feedArrayList.get(position).getsStory());
+			feedItemUIComponent.TxtMsgBodyLoad(feedArrayList.get(position).getsMsg(), feedArrayList.get(position).getsStory());
 			}
 			catch(Exception e)
 			{
 				
 			}
 			
-			feedItemUIComponent.ImgPhotoPreviewLoad(feedArrayList.get(position).getsPhotoPreviewLink());
+			feedItemUIComponent.ImgPhotoPreviewLoad(feedArrayList.get(position).getsPhotoUrl());
 			
-			feedItemUIComponent.TxtImgNameLoad(feedArrayList.get(position).getsPhotoPreviewName());
-			feedItemUIComponent.TxvImgCaptionLoad( feedArrayList.get(position).getsPhotoPreviewCaption());
-			feedItemUIComponent.TxvImgDecription(feedArrayList.get(position).getsPhotoPreviewDescription());
-			feedItemUIComponent.LikeCntLoad(feedArrayList.get(position).getsCntLikes());
-			feedItemUIComponent.CmtCntLoad(feedArrayList.get(position).getsCntCmt());
+			feedItemUIComponent.TxtImgNameLoad(feedArrayList.get(position).getsPhotoName());
+			feedItemUIComponent.TxvImgCaptionLoad( feedArrayList.get(position).getsPhotoCaption());
+			feedItemUIComponent.TxvImgDecription(feedArrayList.get(position).getsPhotoDescription());
+			feedItemUIComponent.LikeCntLoad(feedArrayList.get(position).getsCountLikes());
+			feedItemUIComponent.CmtCntLoad(feedArrayList.get(position).getsCountComment());
 			}
 		}
 		return convertView;
@@ -311,13 +311,13 @@ public class LstViewFeedAdapter extends BaseAdapter{
 			item.setsName(feedMsg[0]);							//name
 			item.setsOwnerID(feedMsg[1]);						//feed owner id
 			item.setsCreatedTime(feedMsg[2]);					//created time
-			item.setsMsgBody(feedMsg[3]);						//message
+			item.setsMsg(feedMsg[3]);						//message
 			item.setsStory(feedMsg[4]);							//story
 			//item.setsStory_tags(feedMsg[4]);							//story_tags
-			item.setsPhotoPreviewLink(feedMsg[5]);				//pic url
-			item.setsPhotoPreviewName(feedMsg[6]);				//pic/album name
-			item.setsPhotoPreviewCaption(feedMsg[7]);			//pic/album caption
-			item.setsPhotoPreviewDescription(feedMsg[8]);		//pic/album description
+			item.setsPhotoUrl(feedMsg[5]);				//pic url
+			item.setsPhotoName(feedMsg[6]);				//pic/album name
+			item.setsPhotoCaption(feedMsg[7]);			//pic/album caption
+			item.setsPhotoDescription(feedMsg[8]);		//pic/album description
 		} else {												//No local feed available
 			item.setsName(feedMsg[0]);
 		}
