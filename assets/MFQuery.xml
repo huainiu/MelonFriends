@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Root>
     <Statement >
-        <Details scriptId="sSelectUserBySNS" author="WL">
+        <Details scriptId="sqlSelectUserBySNS" author="WL">
             <![CDATA[
                 Declare @sns as varchar(128)
                 set @sns = ?
@@ -10,13 +10,28 @@
         </Details>
     </Statement>
     <Statement >
-        <Details scriptId="sSelectFeedBySNS" author="WL">
+        <Details scriptId="sqlSelectFeedBySNS" author="WL">
             <![CDATA[
                 Declare @sns as varchar(128)
                 Declare @id as varchar(128)
                 set @sns = ?
                 set @id = ?
                 select * from feed where sns = @sns and id = @id
+            ]]>
+        </Details>
+    </Statement>
+    <Statement >
+        <Details scriptId="sqlInsertFeed" author="WL">
+            <![CDATA[
+            
+                INSERT OR REPLACE INTO Feed (id, SNS, 
+				    feed_from_name, feed_from_id, feed_from_img,
+				     msg, story, 
+				     pic, pic_large, link, name, caption, description, 
+				     source, icon, annotation, type, 
+				     created_time, updated_time, 
+				     isread, isliked, cnt_likes, cnt_comments, cnt_share)
+				values ( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
             ]]>
         </Details>
     </Statement>

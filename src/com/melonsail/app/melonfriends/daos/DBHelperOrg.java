@@ -17,7 +17,7 @@ import com.melonsail.app.melonfriends.sns.facebook.FBHomeFeedEntryComments.FBFee
 import com.melonsail.app.melonfriends.sns.facebook.FBHomeFeedEntryFrom;
 import com.melonsail.app.melonfriends.utils.Const;
 
-public class DBHelper {
+public class DBHelperOrg {
 
 	static final String DATABASE_NAME = "melonfriend.db";
     static final int DATABASE_VERSION = 1;
@@ -27,18 +27,18 @@ public class DBHelper {
     static final String LIMIT = " LIMIT 10";
     
     // database tables
-    public static final String T_USER = "User";
-    public static final String T_FRIENDSLIST = "FriendsList";
+    static final String T_USER = "User";
+    static final String T_FRIENDSLIST = "FriendsList";
     
-    public static final String T_FEED = "Feed";
-    public static final String T_LIKE = "Like";
-    public static final String T_COMMENT = "Comment";
-    public static final String T_TAG = "Tag";
+    static final String T_FEED = "Feed";
+    static final String T_LIKE = "Like";
+    static final String T_COMMENT = "Comment";
+    static final String T_TAG = "Tag";
     
-    public static final String T_PHOTO = "Photo";
-    public static final String T_ALBUM = "Album";
+    static final String T_PHOTO = "Photo";
+    static final String T_ALBUM = "Album";
     
-    public static final String T_ERRORS = "Error";
+    static final String T_ERRORS = "Error";
     
     // {{ General keys for tables
     static final String C_KEY_ID = "id";
@@ -259,7 +259,7 @@ public class DBHelper {
 	private static DatabaseHelper mDatabaseHelper;
 	private static SQLiteDatabase mSQLiteDB;
 
-	public DBHelper(Context context) {
+	public DBHelperOrg(Context context) {
 		mDatabaseHelper = new DatabaseHelper(context);
 		if (mSQLiteDB == null) {
 			mSQLiteDB = mDatabaseHelper.getWritableDatabase();
@@ -280,20 +280,17 @@ public class DBHelper {
 		return simpleDateFormat;
 	}
 	
-	public String[] fGetColNames(String tableName) {
+	public String[] fGetColNammes(String tableName) {
 		String[] result = null;
 		Cursor cursor = mSQLiteDB.rawQuery(String.format("PRAGMA table_info(%s)", tableName), null);
-		cursor.moveToFirst();
 		int rows = cursor.getCount();
 		result = new String[rows];
 		for (int i = 0; i < rows; ++i) {
 			result[i] = cursor.getString(1);
-			cursor.moveToNext();
 		}
 	    return result;
 	}
 	
-// {{ to be removed DB Functions	
 	/**
 	 * Insert facebook friends information
 	 * TODO: Development more complete information by using graph API for friends information
@@ -448,37 +445,5 @@ public class DBHelper {
 		String[] selectArgs = new String[] {sns};
 		return fGetItems(table, where2 + where, selectArgs, ORDER_DESC + limit);
 	}
-// }}
-	
-	/**
-	 * Single function to handle all db scripts using rawquery
-	 * @param sql
-	 */
-	public String[][] fExec(String sql, String[] params) {
-		//Log.i(TAG, "sql to exec: " + sql);
-		String[][] result = null;
-		Cursor cursor = null;
-		try {
-			cursor = mSQLiteDB.rawQuery(sql, params);
-			cursor.moveToFirst();
-			int rows = cursor.getCount();
-			int cols = cursor.getColumnCount();
-			result = new String[rows][cols];
-	
-			for (int i = 0; i < rows; ++i) {
-				for (int j = 0; j < cols; ++j) {
-					result[i][j] = cursor.getString(j);
-				}
-				cursor.moveToNext();
-			}
-		} catch (SQLException e) {
-			Log.v(TAG, "SQL Fail: " + sql);
-		} finally {
-			if (cursor != null && !cursor.isClosed()) {
-				cursor.close();
-			}
-		}
-		
-		return result;
-	}
+
 }

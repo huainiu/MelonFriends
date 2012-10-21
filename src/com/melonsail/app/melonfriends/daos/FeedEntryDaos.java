@@ -1,11 +1,17 @@
 package com.melonsail.app.melonfriends.daos;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.melonsail.app.melonfriends.sns.facebook.FBHomeFeed;
@@ -33,7 +39,7 @@ public class FeedEntryDaos {
 		mDBHelper = new DBHelper(context);
 		
 		//for testing purpose only
-		sSQLScript = XMLSQLParser.fGetSQLScript(context, "sSelectUserBySNS", sSQLInputParams);
+		sSQLScript = XMLSQLParser.fGetSQLScript(context, "sSelectUserBySNS");
 		Log.i(TAG, "Script: " + sSQLScript);
 	}
 	/**
@@ -63,15 +69,19 @@ public class FeedEntryDaos {
 				mDBHelper.fInsertFriend(entry.getFrom());
 				
 				//insert comments
-				FBHomeFeedEntryComments comments = entry.getComments();
-				Log.i(TAG, "FB insert comment #:" + comments.getCount());
-				if (comments != null && Integer.parseInt(comments.getCount()) > 0) {
-					for (FBFeedEntryComment comment : comments.getData()) {
-						if (comment != null ) {
-							Log.i(TAG, "FB insert comment from:" + comment.getFrom().getName());
-							mDBHelper.fInsertComments(comment);
+				try {
+					FBHomeFeedEntryComments comments = entry.getComments();
+					Log.i(TAG, "FB insert comment #:" + comments.getCount());
+					if (comments != null && Integer.parseInt(comments.getCount()) > 0) {
+						for (FBFeedEntryComment comment : comments.getData()) {
+							if (comment != null ) {
+								Log.i(TAG, "FB insert comment from:" + comment.getFrom().getName());
+								mDBHelper.fInsertComments(comment);
+							}
 						}
 					}
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			}
 		}
@@ -88,7 +98,7 @@ public class FeedEntryDaos {
 		//no where condition, no limit
 		String[][] result = mDBHelper.fGetItemsDesc(DBHelper.T_FEED, sns, null, null);
 		for (int i= 0; i < result.length; i++) {
-			entries.add(fTransformValueToObject(result[i]));
+			entries.add(fTransformValue2Object(result[i]));
 		}
 		return entries;
 	}
@@ -106,7 +116,7 @@ public class FeedEntryDaos {
 		// only 1 feed required, so no limit required
 		String[][] result = mDBHelper.fGetItemsDesc(DBHelper.T_FEED, sns, where, null);
 		for (int i= 0; i < result.length; i++) {
-			entry = fTransformValueToObject(result[i]);
+			entry = fTransformValue2Object(result[i]);
 		}
 		return entry;
 	}
@@ -150,7 +160,7 @@ public class FeedEntryDaos {
 		String where = String.format("%s" + "<= %s", DBHelper.C_FEED_UPDATED_TIME, from);
 		String[][] result = mDBHelper.fGetItemsDesc(DBHelper.T_FEED, sns, where, DBHelper.LIMIT);
 		for (int i= 0; i < result.length; i++) {
-			entries.add(fTransformValueToObject(result[i]));
+			entries.add(fTransformValue2Object(result[i]));
 		}
 		return entries;
 	}
@@ -166,7 +176,7 @@ public class FeedEntryDaos {
 		String where = String.format("%s" + ">= %s", DBHelper.C_FEED_UPDATED_TIME, from);
 		String[][] result = mDBHelper.fGetItemsDesc(DBHelper.T_FEED, sns, where, null);
 		for (int i= 0; i < result.length; i++) {
-			entries.add(fTransformValueToObject(result[i]));
+			entries.add(fTransformValue2Object(result[i]));
 		}
 		return entries;
 	}
@@ -184,12 +194,13 @@ public class FeedEntryDaos {
 		return entries;
 	}
 	
+	// {{ data vs object conversion
 	/**
 	 * Map DB values to Feed Objects
 	 * @param value
 	 * @return
 	 */
-	private FeedEntry fTransformValueToObject(String[] value) {
+	private FeedEntry fTransformValue2Object(String[] value) {
 		FeedEntry entry = new FeedEntry();
 		int index = 0;
 		
@@ -220,4 +231,122 @@ public class FeedEntryDaos {
 		return entry;
 	}
 
+	private String[] fTransformObject2Value(FBHomeFeedEntry entry, String table) {
+		String[] colNames = mDBHelper.fGetColNames(table);
+		String[] params = new String[colNames.length - 3];
+		String sParamPattern = "\'%s\'";
+		
+		int i = 0;
+		params[i++] = String.format(sParamPattern, entry.getId() );
+		params[i++] = String.format(sParamPattern, Const.SNS_FACEBOOK);
+		params[i++] = String.format(sParamPattern, entry.getFrom().getId());
+		params[i++] = String.format(sParamPattern, entry.getFrom().getName() );
+		params[i++] = String.format(sParamPattern, entry.getFrom().getHeadurl() );
+		params[i++] = String.format(sParamPattern, entry.getMessage() );
+		params[i++] = String.format(sParamPattern, entry.getStory() );
+		params[i++] = String.format(sParamPattern, entry.getPicture() );
+		params[i++] = String.format(sParamPattern, entry.getRawPhoto() );
+		params[i++] = String.format(sParamPattern, entry.getLink() );
+		params[i++] = String.format(sParamPattern, entry.getName() );
+		params[i++] = String.format(sParamPattern, entry.getCaption() );
+		params[i++] = String.format(sParamPattern, entry.getDescription() );
+		params[i++] = String.format(sParamPattern, entry.getSource() );
+		params[i++] = String.format(sParamPattern, entry.getIcon() );
+		params[i++] = String.format(sParamPattern, ""); //entry.getAnnotation();
+		params[i++] = String.format(sParamPattern, entry.getType() );
+		Log.i(TAG, "type i = " + i); // i = 17
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss+SSSS");
+		try {
+			Date dCreatedTime = sdf.parse(entry.getCreated_time());
+			Date dUpdatedTime = sdf.parse(entry.getUpdated_time());
+			params[i++] = String.format(sParamPattern, mDBHelper.fGetDateFormat().format(dCreatedTime) );
+			params[i++] = String.format(sParamPattern, mDBHelper.fGetDateFormat().format(dUpdatedTime) );
+		} catch (Exception e) {
+			Log.w(TAG, "Unable to parse date string \"" + entry.getCreated_time() + "\"");
+		}
+		Log.i(TAG, "updatetime i = " + i); // i= 19
+		params[i++] = String.format(sParamPattern, "0" /*isread ??*/ );
+		params[i++] = String.format(sParamPattern, "0" /*islike ??*/ );
+		try {
+			params[i++] = String.format(sParamPattern, entry.getComments().getCount() );
+		} catch (NullPointerException e) {
+			params[i - 1] = String.format(sParamPattern, "0");
+			Log.w(TAG, "No comment, i: " + i); //i = 22
+		}
+		try {
+			params[i++] = String.format(sParamPattern, entry.getLikes().getCount() );
+		} catch (NullPointerException e) {
+			params[i - 1] = String.format(sParamPattern, "0");
+			Log.w(TAG, "No like, i: " + i); // i = 23
+		}
+		params[i++] = String.format(sParamPattern, "0" /*Facebook do not have share count*/);
+
+		return params;
+	}
+	// }}
+
+	// {{ retrieve additional feed info
+	private String fGetFacebookRawPic(String picUrl) {
+		String picRawUrl = null;
+		if ( picUrl != null ) {
+			String response = "";
+			Bundle mBundle = new Bundle();
+			String sToken = Pref.getMyStringPref(mContext, Const.SNS_FACEBOOK + Const.SNS_TOKEN);
+			mBundle.putString("access_token", sToken);
+			String url = "https://graph.facebook.com/" + picUrl.split("_")[1];
+			try {
+				response = com.facebook.android.Util.openUrl(url, "GET", mBundle);
+				JSONObject picSrcResponse = new JSONObject(response);
+				picRawUrl = picSrcResponse.getString("source");
+			} catch (JSONException e) {
+				e.printStackTrace();
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return picRawUrl;
+	}
+	
+	private void fRetrieveAdditionalFeedInfo(FBHomeFeedEntry entry) {
+		//String fromHeadUrl = "https://graph.facebook.com/" + fromID + "/picture";
+		String fromHeadUrl = String.format(Const.USER_IMG_URL_FB, entry.getFrom().getId());
+		entry.getFrom().setHeadurl(fromHeadUrl);
+		
+		//retrieve large photo if feed type is photo
+		if (entry.getType().equals("photo")) {
+			entry.setRawPhoto( fGetFacebookRawPic(entry.getPicture()) );					
+		}
+	}
+	// }}
+	
+	/**
+	 * Insert feed into db from JSON reply
+	 * Insert feed related comments as well
+	 * @param entries
+	 */
+	public void fInsertFeed(FBHomeFeed entries, String temp) {
+		if(entries != null && entries.getData()!=null) {
+			Log.i(TAG, "FB get single feed from list#" + entries.getData().size());
+			
+			for(int i= 0; i<entries.getData().size();i++) {
+				FBHomeFeedEntry entry = (FBHomeFeedEntry) entries.getData().get(i);
+				fRetrieveAdditionalFeedInfo(entry);
+				
+				//insert feed
+				Log.i(TAG, "FB insert feed");
+				sSQLInputParams = fTransformObject2Value(entry, DBHelper.T_FEED);
+				sSQLScript = XMLSQLParser.fGetSQLScript(mContext, "sqlInsertFeed");
+				mDBHelper.fExec(sSQLScript, sSQLInputParams);
+				
+				//insert comments
+				FBHomeFeedEntryComments comments = entry.getComments();
+				Log.i(TAG, "FB insert comment #:" + comments.getCount());
+				//sSQLInputParams = fTransformObject2Value(entry, DBHelper.T_COMMENT);
+				sSQLScript = XMLSQLParser.fGetSQLScript(mContext, "sqlInsertComment");
+				//mDBHelper.fExec(sSQLScript, sSQLInputParams);
+			}
+		}
+	}
 }

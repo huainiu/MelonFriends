@@ -33,7 +33,7 @@ public class XMLSQLParser {
 	 * @param inputParams
 	 * @return
 	 */
-	public static String fGetSQLScript(Context context, String scriptID, String[] inputParams) {
+	public static String fGetSQLScript(Context context, String scriptID) {
 		String script = "";
 		// load xml documents
 		Document document = fGetDocument( context, sXML_Filename );
@@ -50,7 +50,7 @@ public class XMLSQLParser {
 		}
 		
 		// replace input params
-		script = fParseParams2SQL(script, inputParams);
+		// script = fParseParams2SQL(script, inputParams);
 		
 		Log.i(TAG, script);
 		return script;

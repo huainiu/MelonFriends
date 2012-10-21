@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
@@ -14,10 +15,10 @@ import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
 
-import com.melonsail.app.melonfriends.sns.SnsCallBackListener;
 import com.melonsail.app.melonfriends.sns.SnsOrg;
 import com.melonsail.app.melonfriends.utils.Const;
 
+@SuppressLint("HandlerLeak")
 public class MelonFriendsService extends Service  {
 	
 	private static final String TAG = MelonFriendsService.class.getSimpleName();

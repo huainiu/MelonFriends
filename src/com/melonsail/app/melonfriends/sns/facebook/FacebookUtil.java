@@ -146,7 +146,8 @@ public class FacebookUtil extends SnsUtil {
 					} else {
 						FBHomeFeed bean = new Gson().fromJson(response, FBHomeFeed.class);
 						// store in db
-						feedDao.fInsertFeed(bean);
+						//feedDao.fInsertFeed(bean);
+						feedDao.fInsertFeed(bean, "");
 						Log.i(TAG, "feed inserted #feed: " + bean.getData().size());
 						fNotifyComplete(Const.MSG_UI_RECEIVE_NEWFEED);
 					}

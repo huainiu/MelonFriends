@@ -1,26 +1,31 @@
 package com.melonsail.app.melonfriends.sns.facebook;
 
-import java.util.List;
-
 public class FBHomeFeedEntry {
 	
-	private String caption;
 	private String id;
-	private String icon;
-	private String name;
+	
 	private String message;
-	private List<FBHomeFeedEntryTags> message_tags;
+	private FBHomeFeedEntryTags message_tags;
 	private String story;
-	//private List<FBHomeFeedEntryTags> story_tags;
+	private FBHomeFeedEntryTags story_tags;
+	
 	private String picture;
 	private String raw_picture;
 	private String link;
+	private String name;
 	private String description;
+	private String caption;
+	
 	private String source;
-	private String attribution;
+	private String icon;
+	private String annotation;
+	
 	private String updated_time;
 	private String created_time;
+	
 	private String type;
+	
+	private FBHomeFeedEntryTags with_tags;
 	   
 	//Nested classes for From entries
 	private FBHomeFeedEntryFrom from;
@@ -28,7 +33,7 @@ public class FBHomeFeedEntry {
 	private FBHomeeedEntryLikes likes;
 	
 	//Nested collection for Actions entries
-	private List<FBHomeFeedEntryAction> actions;
+	//private List<FBHomeFeedEntryAction> actions;
 	
 	//No Arg constructor
 	public FBHomeFeedEntry() {}
@@ -82,11 +87,11 @@ public class FBHomeFeedEntry {
 	}
 
 	public void setAttribution(String attribution) {
-		this.attribution = attribution;
+		this.annotation = attribution;
 	}
 
 	public String getAttribution() {
-		return attribution;
+		return annotation;
 	}
 
 	public void setUpdated_time(String updated_time) {
@@ -119,14 +124,6 @@ public class FBHomeFeedEntry {
 
 	public FBHomeFeedEntryFrom getFrom() {
 		return from;
-	}
-
-	public void setActions(List<FBHomeFeedEntryAction> actions) {
-		this.actions = actions;
-	}
-
-	public List<FBHomeFeedEntryAction> getActions() {
-		return actions;
 	}
 
 	public void setDescription(String description) {
@@ -177,26 +174,34 @@ public class FBHomeFeedEntry {
 		return likes;
 	}
 
-	public void getRawPhoto(String links) {
+	public void setRawPhoto(String links) {
 		this.raw_picture = links;
 	}
 	public String getRawPhoto() {
 		return raw_picture;
 	}
 
-	public void setMessage_tags(List<FBHomeFeedEntryTags> message_tags) {
+	public void setMessage_tags(FBHomeFeedEntryTags message_tags) {
 		this.message_tags = message_tags;
 	}
 
-	public List<FBHomeFeedEntryTags> getMessage_tags() {
+	public FBHomeFeedEntryTags getMessage_tags() {
 		return message_tags;
 	}
 
-//	public void setStory_tags(List<FBHomeFeedEntryTags> story_tags) {
-//		this.story_tags = story_tags;
-//	}
-//
-//	public List<FBHomeFeedEntryTags> getStory_tags() {
-//		return story_tags;
-//	}
+	public void setStory_tags(FBHomeFeedEntryTags story_tags) {
+		this.story_tags = story_tags;
+	}
+
+	public FBHomeFeedEntryTags getStory_tags() {
+		return story_tags;
+	}
+
+	public void setWith_tags(FBHomeFeedEntryTags with_tags) {
+		this.with_tags = with_tags;
+	}
+
+	public FBHomeFeedEntryTags getWith_tags() {
+		return with_tags;
+	}
 }

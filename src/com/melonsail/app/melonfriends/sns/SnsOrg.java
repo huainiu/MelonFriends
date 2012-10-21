@@ -213,6 +213,7 @@ public class SnsOrg implements SnsCallBackListener {
 	}
 	
 	public void fActiveSnsGetNewFeed(Context context) {
+		Log.i(TAG, "fActiveSnsGetNewFeed");
 		for (SnsUtil util: mActiveSnsList) {
 			util.fGetNewsFeeds(context);
 		}
