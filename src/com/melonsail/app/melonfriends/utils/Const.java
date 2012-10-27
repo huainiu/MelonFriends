@@ -1,6 +1,12 @@
 package com.melonsail.app.melonfriends.utils;
 
+import java.text.SimpleDateFormat;
+
 public class Const {
+	
+	// date format 
+	public static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ");
+	
 	// Messenger Request
 	public static final int MSG_CLIENT_REGISTER = 101;
 	public static final int MSG_CLIENT_UNREGISTER = 102;
@@ -39,6 +45,7 @@ public class Const {
 	public static final String SNS_TOKEN = "_token";
 	public static final String SNS_READITEM_UPDATETIME = "_readitem_updatetime";
 	public static final String SNS_SIGN_ON = "SnsSignOn";
+	public static final String SNS_PULL_TO_REFRESH = "sns_pull_to_refresh";
 	
 	public static final String DELIMETER = ";";
 	

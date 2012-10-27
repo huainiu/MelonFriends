@@ -52,7 +52,7 @@ public class XMLSQLParser {
 		// replace input params
 		// script = fParseParams2SQL(script, inputParams);
 		
-		Log.i(TAG, script);
+		// Log.i(TAG, script);
 		return script;
 	}
 	

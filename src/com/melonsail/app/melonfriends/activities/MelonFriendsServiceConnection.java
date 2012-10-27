@@ -18,6 +18,7 @@ import android.util.Log;
 
 import com.melonsail.app.melonfriends.services.MelonFriendsService;
 import com.melonsail.app.melonfriends.utils.Const;
+import com.melonsail.app.melonfriends.utils.Pref;
 
 public class MelonFriendsServiceConnection {
 
@@ -40,7 +41,11 @@ public class MelonFriendsServiceConnection {
 			switch (msg.what) {
 				case Const.MSG_UI_RECEIVE_NEWFEED:
 					Log.i(TAG, "MSG_UI_RECEIVE_NEWFEED: Display UI");
-					((MainActivity)mActivity).fGetController().fRefreshView();
+					String sns_pull2refresh = Pref.getMyStringPref(mActivity, Const.SNS_PULL_TO_REFRESH);
+					if ( sns_pull2refresh.length() > 0 ) {
+						((MainActivity)mActivity).fGetController().fRefreshContentView(sns_pull2refresh);
+					}
+					
 				break;
 			}
 			Log.i(TAG, "Message Received on UI!" + msg);
@@ -96,8 +101,6 @@ public class MelonFriendsServiceConnection {
 				outgoingMessenger.send(msg);
 				
 			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
-				//e.printStackTrace();
 				Log.v(TAG, " Message Send Error " + e.toString());
 			}
 		}

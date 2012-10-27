@@ -342,8 +342,14 @@ public class LeftPanelController implements Controller {
 	}
 
 	@Override
-	public void fRefreshView() {
+	public void fRefreshPanelView() {
 		snsAccntLstAdapter.notifyDataSetChanged();
+	}
+
+	@Override
+	public void fRefreshContentView(String snsName) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.melonsail.app.melonfriends.controller;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,7 +25,9 @@ import com.melonsail.app.melonfriends.R;
 import com.melonsail.app.melonfriends.activities.MelonFriendsServiceConnection;
 import com.melonsail.app.melonfriends.activities.PublishActivity;
 import com.melonsail.app.melonfriends.sns.SnsOrg;
+import com.melonsail.app.melonfriends.sns.melon.FeedEntry;
 import com.melonsail.app.melonfriends.utils.Const;
+import com.melonsail.app.melonfriends.utils.Pref;
 import com.melonsail.app.melonfriends.views.PullToRefreshListView;
 import com.melonsail.app.melonfriends.views.PullToRefreshListView.OnRefreshListener;
 import com.melonsail.app.melonfriends.views.SlidingPanel;
@@ -276,6 +280,9 @@ public class MainController implements Controller {
 				public void onRefresh() {
 					Log.i(TAG, "Request service to retrieve new feed");
 					mServiceConn.fSendMessage(Const.MSG_SERVICE_GET_NEWFEED, position, 0);
+					
+					//adhoc feed retrieval request triggered by sns_pull_to_refresh
+					Pref.setMyStringPref(getActivity(), Const.SNS_PULL_TO_REFRESH, snsName);
 				}
 			});
 		}
@@ -284,14 +291,31 @@ public class MainController implements Controller {
 
 
 	@Override
-	public void fRefreshView() {
+	public void fRefreshPanelView() {
 		//refresh toolbars
-		mleftPanelController.fRefreshView();
+		mleftPanelController.fRefreshPanelView();
 		mPagerAdapter.notifyDataSetChanged();
 		mIndicator.notifyDataSetChanged();
+	}
+	
+	@Override
+	public void fRefreshContentView(String snsName) {
+		ArrayList<FeedEntry> feeds = mSnsOrg.fGetActiveSNSByName(snsName).fDisplayFeeds(mActivity, snsName);
 		
-		//refresh the content
-		//TODO:how to
+		// retrieve the correct adapter and add feeds into it
+		for ( LstViewFeedAdapter adapter : mSnsOrg.fGetMainViewFeedAdapterList()) {
+			if (adapter.getSnsName().equals(snsName)) {
+				for (FeedEntry item: feeds) {
+					adapter.addItem(item);
+				}
+				break;
+			}
+		}
+		
+		// Clear pull_to_refresh records
+		Pref.setMyStringPref(mActivity, Const.SNS_PULL_TO_REFRESH, "");
+		
+		mSnsOrg.fGetMainViewFeedAdapterList().get(0).notifyDataSetChanged();
 	}
 
 }

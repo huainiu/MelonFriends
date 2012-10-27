@@ -1,11 +1,13 @@
 package com.melonsail.app.melonfriends.sns;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.melonsail.app.melonfriends.daos.FeedEntryDaos;
 import com.melonsail.app.melonfriends.sns.melon.FeedEntry;
@@ -76,6 +78,15 @@ public abstract class SnsUtil {
 		this.listeners.remove(listener);
 	}
 	
+	/**
+	 * Retrieve feed from db, convert to feed object
+	 * TODO: 1. display when users left out when they exist
+	 * 		 2. continuous retrieval when user scrolling down
+	 *       3. display latest ones when user pull2refresh
+	 * @param context
+	 * @param snsName
+	 * @return
+	 */
 	public ArrayList<FeedEntry> fDisplayFeeds(Context context, String snsName) {
 		//ArrayList<FeedEntry> feedList = feedDao.fGetLastest10FeedEntries(snsName);
 		
@@ -83,21 +94,24 @@ public abstract class SnsUtil {
 		
 		ArrayList<String> params = new ArrayList<String>();
 		params.add(String.format(sParamPattern, snsName));  //sns = sns
-		//String from = mDBHelper.fGetDateFormat().format(new Date());
+
+		// retrieve last read feed updated_time
 		String from = Pref.getMyStringPref(context, snsName + Const.SNS_READITEM_UPDATETIME);
+		
+		if (from.length() <= 0) { // no previous record, so use latest date info as default
+			from = Const.simpleDateFormat.format(new Date());
+		}
+		
 		params.add(String.format(sParamPattern, from)); //updated_time < from
-		params.add(String.format(sParamPattern, "10")); //limit 10
-		ArrayList<FeedEntry> feedList = feedDao.fGetFeedEntries("sqlSelectFeedBySNSBeforeLimit", (String[]) params.toArray());
-		
-		FeedEntry lastItem = null;
-		
-		fSaveLastLoadedFeed(lastItem, context, snsName);
+		params.add(String.format(sParamPattern, "5")); //limit 10
+		String[] paramStrs = params.toArray(new String[params.size()]);
+		ArrayList<FeedEntry> feedList = feedDao.fGetFeedEntries("sqlSelectFeedBySNSBeforeLimit",paramStrs);
+		Log.i(TAG, "Retrieved feed for display number = " + feedList.size());
+
+		// save last read feed updated_time for next retrieve
+		FeedEntry lastItem = feedList.get(feedList.size() - 1);
+		Pref.setMyStringPref(context, snsName + Const.SNS_READITEM_UPDATETIME, lastItem.getsUpdatedTime());
 		return feedList;
-	}
-	
-	private void fSaveLastLoadedFeed(FeedEntry lastItem, Context context, String snsName) {
-		// TODO Auto-generated method stub
-		Pref.setMyStringPref(context, snsName, lastItem.getsUpdatedTime());
 	}
 	
 }

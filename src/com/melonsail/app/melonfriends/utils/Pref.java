@@ -1,5 +1,7 @@
 package com.melonsail.app.melonfriends.utils;
 
+import java.util.Date;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -11,7 +13,7 @@ public class Pref {
     }
 
     public static String getMyStringPref(Context context, String key) {
-        return getPrefs(context).getString(key, "");
+    	return getPrefs(context).getString(key, "");
     }
 
     public static int getMyIntPref(Context context, String key) {

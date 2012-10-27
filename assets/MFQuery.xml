@@ -19,7 +19,24 @@
     <Statement category="read" target="feed">
         <Details scriptId="sqlSelectFeedBySNSBeforeLimit" author="WL">
             <![CDATA[
-                select * from feed where sns = ? and updated_time < ? order by updated_time desc limit ?
+                CREATE TEMP TABLE t (ID TEXT, SNS TEXT)
+
+				INSERT INTO t (ID, SNS)
+				select id, sns from feed where sns = ? and updated_time <= ? order by updated_time desc limit ?
+				
+				update feed
+				set isread = '1'
+				where id in
+				(select id from t);
+				
+				select * from feed, t where feed.id = t.id and feed.sns = t.sns
+            ]]>
+        </Details>
+    </Statement>
+    <Statement category="read" target="feed">
+        <Details scriptId="sqlSelectFeedBySNSUnread" author="WL">
+            <![CDATA[
+                select * from feed where sns = ? and isread = '0'
             ]]>
         </Details>
     </Statement>

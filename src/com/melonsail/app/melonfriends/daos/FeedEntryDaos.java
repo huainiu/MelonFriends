@@ -42,10 +42,13 @@ public class FeedEntryDaos {
 		sSQLScript = XMLSQLParser.fGetSQLScript(context, "sSelectUserBySNS");
 		Log.i(TAG, "Script: " + sSQLScript);
 	}
+
+	//{{ deprecated DB methods
 	/**
 	 * Insert feed into db from JSON reply
 	 * Insert feed related users and comments as well
 	 * @param entries
+	 * @deprecated
 	 */
 	public void fInsertFeed(FBHomeFeed entries) {
 		if(entries != null && entries.getData()!=null) {
@@ -92,6 +95,7 @@ public class FeedEntryDaos {
 	 * Not recommended, as it consumes a lot of memory due to number feeds in each sns
 	 * @param sns
 	 * @return list of feed entries
+	 * @deprecated
 	 */
 	public ArrayList<FeedEntry> fGetAll(String sns) {
 		ArrayList<FeedEntry> entries = new ArrayList<FeedEntry>();
@@ -109,6 +113,7 @@ public class FeedEntryDaos {
 	 * @param sns
 	 * @param feedid
 	 * @return FeedEntry
+	 * @deprecated
 	 */
 	public FeedEntry fGetFeedByID(String sns, String feedid) {
 		FeedEntry entry = null;
@@ -126,11 +131,12 @@ public class FeedEntryDaos {
 	 * This is normally used when user force refresh, or newly login
 	 * @param sns
 	 * @return list of 10 feed entries in updatetime desc order
+	 * @deprecated
 	 */
 	public ArrayList<FeedEntry> fGetLastest10FeedEntries(String sns) {
 		ArrayList<FeedEntry> entries = null;
 		// retrieve 10 feeds from now
-		String from = mDBHelper.fGetDateFormat().format(new Date());
+		String from = Const.simpleDateFormat.format(new Date());
 		entries = fGet10FeedEntries(sns, from);
 		return entries;
 	}
@@ -140,6 +146,7 @@ public class FeedEntryDaos {
 	 * Position is recorded by the feed update time stored in SharedPreference.
 	 * @param sns
 	 * @return list of 10 feed entries in updatetime desc order
+	 * @deprecated
 	 */
 	public ArrayList<FeedEntry> fGetNext10FeedEntries(String sns) {
 		ArrayList<FeedEntry> entries = null;
@@ -154,6 +161,7 @@ public class FeedEntryDaos {
 	 * @param sns
 	 * @param from
 	 * @return
+	 * @deprecated
 	 */
 	private ArrayList<FeedEntry> fGet10FeedEntries(String sns, String from) {
 		ArrayList<FeedEntry> entries = new ArrayList<FeedEntry>();
@@ -170,6 +178,7 @@ public class FeedEntryDaos {
 	 * @param sns
 	 * @param from
 	 * @return
+	 * @deprecated
 	 */
 	public ArrayList<FeedEntry> fGetToReadFeedEntries(String sns, String from) {
 		ArrayList<FeedEntry> entries = new ArrayList<FeedEntry>();
@@ -186,6 +195,7 @@ public class FeedEntryDaos {
 	 * For notification purpose
 	 * @param sns
 	 * @return
+	 * @deprecated
 	 */
 	public ArrayList<FeedEntry> fGetUnreadFeedCount(String sns) {
 		ArrayList<FeedEntry> entries = null;
@@ -193,6 +203,7 @@ public class FeedEntryDaos {
 		
 		return entries;
 	}
+	// }}
 	
 	// {{ data vs object conversion
 	/**
@@ -269,8 +280,8 @@ public class FeedEntryDaos {
 		try {
 			Date dCreatedTime = sdf.parse(entry.getCreated_time());
 			Date dUpdatedTime = sdf.parse(entry.getUpdated_time());
-			params[i++] = String.format(sParamPattern, mDBHelper.fGetDateFormat().format(dCreatedTime) );
-			params[i++] = String.format(sParamPattern, mDBHelper.fGetDateFormat().format(dUpdatedTime) );
+			params[i++] = String.format(sParamPattern, Const.simpleDateFormat.format(dCreatedTime) );
+			params[i++] = String.format(sParamPattern, Const.simpleDateFormat.format(dUpdatedTime) );
 		} catch (Exception e) {
 			Log.w(TAG, "Unable to parse date string \"" + entry.getCreated_time() + "\"");
 		}
@@ -339,21 +350,21 @@ public class FeedEntryDaos {
 	public void fInsertFeed(FBHomeFeed entries, String temp) {
 
 		if(entries != null && entries.getData()!=null) {
-			Log.i(TAG, "FB get single feed from list#" + entries.getData().size());
+			//Log.i(TAG, "FB get single feed from list#" + entries.getData().size());
 			
 			for(int i= 0; i<entries.getData().size();i++) {
 				FBHomeFeedEntry entry = (FBHomeFeedEntry) entries.getData().get(i);
 				fRetrieveAdditionalFeedInfo(entry);
 				
 				//insert feed
-				Log.i(TAG, "FB insert feed");
+				//Log.i(TAG, "FB insert feed");
 				sSQLInputParams = fTransformObject2Value(entry, DBHelper.T_FEED);
 				sSQLScript = XMLSQLParser.fGetSQLScript(mContext, "sqlInsertFeed");
 				mDBHelper.fExec(sSQLScript, sSQLInputParams);
 				
 				//insert comments
 				FBHomeFeedEntryComments comments = entry.getComments();
-				Log.i(TAG, "FB insert comment #:" + comments.getCount());
+				//Log.i(TAG, "FB insert comment #:" + comments.getCount());
 				//sSQLInputParams = fTransformObject2Value(entry, DBHelper.T_COMMENT);
 				sSQLScript = XMLSQLParser.fGetSQLScript(mContext, "sqlInsertComment");
 				//mDBHelper.fExec(sSQLScript, sSQLInputParams);
@@ -395,13 +406,6 @@ public class FeedEntryDaos {
 	 */
 	public ArrayList<FeedEntry> fGetFeedEntries(String queryName, String[] params) {
 		ArrayList<FeedEntry> entries = new ArrayList<FeedEntry>();
-		//String sParamPattern = "%s";
-		//String from = mDBHelper.fGetDateFormat().format(new Date());
-		//String from = Pref.getMyStringPref(mContext, sns + Const.SNS_READITEM_UPDATETIME);
-		//ArrayList<String> params = new ArrayList<String>();
-		//params.add(String.format(sParamPattern, sns));  //sns = sns
-		//params.add(String.format(sParamPattern, from)); //updated_time < from
-		//params.add(String.format(sParamPattern, "10")); //limit 10
 		
 		Log.i(TAG, "Get multiple feeds: " + queryName);
 		sSQLScript = XMLSQLParser.fGetSQLScript(mContext, queryName);

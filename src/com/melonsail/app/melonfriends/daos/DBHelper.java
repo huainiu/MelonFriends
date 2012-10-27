@@ -223,12 +223,10 @@ public class DBHelper {
 	
     private static final String TAG = "DBHelper";
 
-    private static SimpleDateFormat simpleDateFormat;
     private static class DatabaseHelper extends SQLiteOpenHelper {
     	
 		DatabaseHelper(Context context) {
 	        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-	        simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ");
 	    }
 
 		@Override
@@ -275,9 +273,6 @@ public class DBHelper {
 	
 	public SQLiteDatabase fGetDB() {
 		return mSQLiteDB;
-	}
-	public SimpleDateFormat fGetDateFormat() {
-		return simpleDateFormat;
 	}
 	
 	public String[] fGetColNames(String tableName) {
@@ -359,8 +354,8 @@ public class DBHelper {
 		try {
 			Date dCreatedTime = sdf.parse(entry.getCreated_time());
 			Date dUpdatedTime = sdf.parse(entry.getUpdated_time());
-			values.put(C_FEED_CREATED_TIME, simpleDateFormat.format(dCreatedTime));
-			values.put(C_FEED_UPDATED_TIME, simpleDateFormat.format(dUpdatedTime));
+			values.put(C_FEED_CREATED_TIME, Const.simpleDateFormat.format(dCreatedTime));
+			values.put(C_FEED_UPDATED_TIME, Const.simpleDateFormat.format(dUpdatedTime));
 		} catch (ParseException e) {
 			Log.w(TAG, "Unable to parse date string \"" + entry.getCreated_time() + "\"");
 		}

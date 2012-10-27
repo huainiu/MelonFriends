@@ -150,7 +150,7 @@ public class SnsOrg implements SnsCallBackListener {
 	 * Used by activity
 	 */
 	private void fRefreshView() {
-		((MainActivity)mActivity).fGetController().fRefreshView();
+		((MainActivity)mActivity).fGetController().fRefreshPanelView();
 	}
 	
 	/**
