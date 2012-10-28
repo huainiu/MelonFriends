@@ -283,6 +283,8 @@ public class MainController implements Controller {
 					
 					//adhoc feed retrieval request triggered by sns_pull_to_refresh
 					Pref.setMyStringPref(getActivity(), Const.SNS_PULL_TO_REFRESH, snsName);
+					// reset readitem_updatetime to now
+					Pref.setMyStringPref(getActivity(), snsName + Const.SNS_READITEM_UPDATETIME, "");
 				}
 			});
 		}
@@ -303,8 +305,10 @@ public class MainController implements Controller {
 		ArrayList<FeedEntry> feeds = mSnsOrg.fGetActiveSNSByName(snsName).fDisplayFeeds(mActivity, snsName);
 		
 		// retrieve the correct adapter and add feeds into it
+		LstViewFeedAdapter adapter1 = null;
 		for ( LstViewFeedAdapter adapter : mSnsOrg.fGetMainViewFeedAdapterList()) {
 			if (adapter.getSnsName().equals(snsName)) {
+				adapter1 = adapter;
 				for (FeedEntry item: feeds) {
 					adapter.addItem(item);
 				}
@@ -315,7 +319,7 @@ public class MainController implements Controller {
 		// Clear pull_to_refresh records
 		Pref.setMyStringPref(mActivity, Const.SNS_PULL_TO_REFRESH, "");
 		
-		mSnsOrg.fGetMainViewFeedAdapterList().get(0).notifyDataSetChanged();
+		adapter1.notifyDataSetChanged();
 	}
 
 }

@@ -103,7 +103,7 @@ public abstract class SnsUtil {
 		}
 		
 		params.add(String.format(sParamPattern, from)); //updated_time < from
-		params.add(String.format(sParamPattern, "5")); //limit 10
+		params.add("5"); //limit 10
 		String[] paramStrs = params.toArray(new String[params.size()]);
 		ArrayList<FeedEntry> feedList = feedDao.fGetFeedEntries("sqlSelectFeedBySNSBeforeLimit",paramStrs);
 		Log.i(TAG, "Retrieved feed for display number = " + feedList.size());
