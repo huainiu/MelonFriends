@@ -410,7 +410,17 @@ public class FeedEntryDaos {
 		Log.i(TAG, "Get multiple feeds: " + queryName);
 		sSQLScript = XMLSQLParser.fGetSQLScript(mContext, queryName);
 		
-		String[][] result = mDBHelper.fExec(sSQLScript, params);
+		// execute scripts line by line
+		String[] queries = sSQLScript.split(";");
+		String[][] result = null;
+		for (String query : queries) {
+			if (query.contains("?")) {
+				result = mDBHelper.fExec(query, params);
+			} else {
+				result = mDBHelper.fExec(query, null);
+			}
+			
+		}
 		
 		for (int i= 0; i < result.length; i++) {
 			entries.add(fTransformValue2Object(result[i]));

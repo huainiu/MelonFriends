@@ -19,18 +19,18 @@
     <Statement category="read" target="feed">
         <Details scriptId="sqlSelectFeedBySNSBeforeLimit" author="WL">
             <![CDATA[
-                DROP TABLE IF EXISTS t;
-                CREATE TEMP TABLE t (ID TEXT, SNS TEXT);
+                DROP TABLE IF EXISTS t_tmp;
+                CREATE TABLE t_tmp (ID TEXT, SNS TEXT);
 
-				INSERT INTO t (ID, SNS)
+				INSERT INTO t_tmp (ID, SNS)
 				select id, sns from feed where sns = ? and updated_time <= ? order by updated_time desc limit ?;
 				
 				update feed
 				set isread = '1'
 				where id in
-				(select id from t);
+				(select id from t_tmp);
 				
-				select * from feed, t where feed.id = t.id and feed.sns = t.sns order by updated_time desc;
+				select * from feed, t_tmp where feed.id = t_tmp.id and feed.sns = t_tmp.sns order by updated_time desc
             ]]>
         </Details>
     </Statement>
