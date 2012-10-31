@@ -271,12 +271,14 @@ public class FeedEntryDaos {
 		comment.setCommentedHeadUrl(value[index++]);				//comment owner url
 		
 		comment.setCommentedMsg(value[index++]);						//message
+		comment.setCommentedSource(value[index++]);						//source
 		comment.setCommentedTime(value[index++]);						//comment time
 		
 		comment.setCommentedIsLiked(value[index++]);				//isLiked
 		comment.setCommentedCntLikes(value[index++]);				//cntLikes
 		//return comment;
 	}
+	
 	private String[] fTransformObject2Value(FBHomeFeedEntry entry, String table) {
 		String[] colNames = mDBHelper.fGetColNames(table);
 		String[] params = new String[colNames.length - 3];
@@ -298,7 +300,7 @@ public class FeedEntryDaos {
 		params[i++] = String.format(sParamPattern, entry.getDescription() );
 		params[i++] = String.format(sParamPattern, entry.getSource() );
 		params[i++] = String.format(sParamPattern, entry.getIcon() );
-		params[i++] = String.format(sParamPattern, ""); //entry.getAnnotation();
+		params[i++] = String.format(sParamPattern, entry.getApplication().getName()); //entry.getAnnotation();
 		params[i++] = String.format(sParamPattern, entry.getType() );
 		Log.i(TAG, "type i = " + i); // i = 17
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss+SSSS");
@@ -346,6 +348,7 @@ public class FeedEntryDaos {
 		params[i++] = String.format(sParamPattern, comment.getFrom().getHeadurl() );
 		
 		params[i++] = String.format(sParamPattern, comment.getMessage() );
+		params[i++] = String.format(sParamPattern, "" ); //comment_annotation /application/source
 		params[i++] = String.format(sParamPattern, comment.getCreated_time() );
 		params[i++] = String.format(sParamPattern, comment.getUser_likes() ); //comment_is_like
 		params[i++] = String.format(sParamPattern, comment.getLikes() ); // comment_cnt_likes

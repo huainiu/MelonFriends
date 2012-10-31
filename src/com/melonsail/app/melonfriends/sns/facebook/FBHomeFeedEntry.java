@@ -30,7 +30,25 @@ public class FBHomeFeedEntry {
 	//Nested classes for From entries
 	private FBHomeFeedEntryFrom from;
 	private FBHomeFeedEntryComments comments;
-	private FBHomeeedEntryLikes likes;
+	private FBHomFeedEntryLikes likes;
+	private FBHomeFeedApplication application;
+	
+	public class FBHomeFeedApplication {
+		private String id;
+		private String name;
+		public void setId(String id) {
+			this.id = id;
+		}
+		public String getId() {
+			return id;
+		}
+		public void setName(String name) {
+			this.name = name;
+		}
+		public String getName() {
+			return name;
+		}
+	}
 	
 	//Nested collection for Actions entries
 	//private List<FBHomeFeedEntryAction> actions;
@@ -166,11 +184,11 @@ public class FBHomeFeedEntry {
 		return comments;
 	}
 
-	public void setLikes(FBHomeeedEntryLikes likes) {
+	public void setLikes(FBHomFeedEntryLikes likes) {
 		this.likes = likes;
 	}
 
-	public FBHomeeedEntryLikes getLikes() {
+	public FBHomFeedEntryLikes getLikes() {
 		return likes;
 	}
 
@@ -203,5 +221,13 @@ public class FBHomeFeedEntry {
 
 	public FBHomeFeedEntryTags getWith_tags() {
 		return with_tags;
+	}
+
+	public void setApplication(FBHomeFeedApplication application) {
+		this.application = application;
+	}
+
+	public FBHomeFeedApplication getApplication() {
+		return application;
 	}
 }

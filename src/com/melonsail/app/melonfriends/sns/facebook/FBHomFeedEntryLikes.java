@@ -2,7 +2,7 @@ package com.melonsail.app.melonfriends.sns.facebook;
 
 import java.util.List;
 
-public class FBHomeeedEntryLikes  {
+public class FBHomFeedEntryLikes  {
 
 	private String count;
 	private List<FBFeedEntryLike> data;

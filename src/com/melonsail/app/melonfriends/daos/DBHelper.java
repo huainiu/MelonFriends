@@ -114,6 +114,8 @@ public class DBHelper {
     static final String C_COMMENT_MSG = "msg";
     static final String C_COMMENT_CREATED_TIME = "created_time";
     
+    static final String C_COMMENT_ANNOTATION = "annotation";
+    
     static final String C_COMMENT_ISLIKED = "isliked";
     static final String C_COMMENT_CNT_LIKES = "cnt_likes";
     // }}
@@ -198,6 +200,7 @@ public class DBHelper {
 										    + C_COMMENT_FROM_NAME + " TEXT,"
 										    + C_COMMENT_FROM_IMG + " TEXT,"
 										    + C_COMMENT_MSG + " TEXT,"
+										    + C_COMMENT_ANNOTATION + " TEXT,"
 										    + C_COMMENT_CREATED_TIME + " TEXT,"
 										    + C_COMMENT_ISLIKED + " TEXT,"
 										    + C_COMMENT_CNT_LIKES + " TEXT"
@@ -243,11 +246,10 @@ public class DBHelper {
 			Log.w(TAG, "Upgrading database from version " + oldVersion + " to " + newVersion + ", which will destroy all old data");
 			
 			// delete all tables, no backup here
-			db.execSQL("DROP TABLE IF EXISTS " + CREATE_USER_TABLE);
-			db.execSQL("DROP TABLE IF EXISTS " + CREATE_FEED_TABLE);
-			db.execSQL("DROP TABLE IF EXISTS " + CREATE_COMMENTS_TABLE);
-			//db.execSQL("DROP TABLE IF EXISTS " + CREATE_ACTIONS_TABLE);
-			db.execSQL("DROP TABLE IF EXISTS " + CREATE_ERRORS_TABLE);
+			db.execSQL("DROP TABLE IF EXISTS " + T_USER + " " + CREATE_USER_TABLE);
+			db.execSQL("DROP TABLE IF EXISTS " + T_FEED + " " + CREATE_FEED_TABLE);
+			db.execSQL("DROP TABLE IF EXISTS " + T_COMMENT + " " + CREATE_COMMENTS_TABLE);
+			db.execSQL("DROP TABLE IF EXISTS " + T_ERRORS + " " + CREATE_ERRORS_TABLE);
 			
 			onCreate(db);
 		}

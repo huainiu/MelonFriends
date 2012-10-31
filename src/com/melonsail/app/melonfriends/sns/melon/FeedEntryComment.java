@@ -7,6 +7,7 @@ public class FeedEntryComment /*implements Parcelable*/ {
 	
 	private String commentedID;
 	private String commentedTime;
+	private String commentedSource;
 	private String commentedMsg;
 	private String commentedUserID;
 	private String commentedName;
@@ -81,6 +82,14 @@ public class FeedEntryComment /*implements Parcelable*/ {
 
 	public String getCommentedIsLiked() {
 		return commentedIsLiked;
+	}
+
+	public void setCommentedSource(String commentedSource) {
+		this.commentedSource = commentedSource;
+	}
+
+	public String getCommentedSource() {
+		return commentedSource;
 	}
 	
 //	public FeedEntryComment(Parcel in) {

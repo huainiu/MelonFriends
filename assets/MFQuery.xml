@@ -39,6 +39,20 @@
             ]]>
         </Details>
     </Statement>
+    <Statement category="read" target="comment">
+        <Details scriptId="sqlSelectCommentBySNSFeedID" author="WL">
+            <![CDATA[
+                select * from comment where sns = ? and feedid = ?
+            ]]>
+        </Details>
+    </Statement>
+    <Statement category="read" target="comment">
+        <Details scriptId="sqlSelectCommentBySNSID" author="WL">
+            <![CDATA[
+                select * from comment where sns = ? and id = ?
+            ]]>
+        </Details>
+    </Statement>
     <Statement category="upsert" target="feed">
         <Details scriptId="sqlInsertFeed" author="WL">
             <![CDATA[
@@ -50,6 +64,18 @@
 				     created_time, updated_time, 
 				     isread, isliked, cnt_likes, cnt_comments, cnt_share)
 				values ( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+            ]]>
+        </Details>
+    </Statement>
+    <Statement category="upsert" target="comment">
+        <Details scriptId="sqlInsertComment" author="WL">
+            <![CDATA[
+                INSERT OR REPLACE INTO Comment (id, SNS, 
+                    feedid, 
+                    comment_from_id, comment_from_name, comment_from_img,
+                    msg, annotation, 
+                    created_time, isliked, cnt_likes)
+                values ( ?,?,?,?,?,?,?,?,?,?,?)
             ]]>
         </Details>
     </Statement>
