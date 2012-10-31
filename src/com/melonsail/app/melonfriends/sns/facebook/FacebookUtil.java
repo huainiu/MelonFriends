@@ -139,7 +139,7 @@ public class FacebookUtil extends SnsUtil {
 				@Override
 				public void onComplete(final String response, Object state) {
 					Log.i(TAG, "FacebookUtil.fGetNewsFeeds: reponse = " + response);
-					if (response.contains("error")) {
+					if (response.contains("\"error\":")) {
 						fDeleteAccessKeySP(context);
 						Log.i(TAG, "FB response contains error");
 						fNotifyComplete(Const.MSG_UI_RECEIVE_NEWFEED_ERROR);

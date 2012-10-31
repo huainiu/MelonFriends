@@ -17,8 +17,9 @@ import android.util.Log;
 import com.melonsail.app.melonfriends.sns.facebook.FBHomeFeed;
 import com.melonsail.app.melonfriends.sns.facebook.FBHomeFeedEntry;
 import com.melonsail.app.melonfriends.sns.facebook.FBHomeFeedEntryComments;
-import com.melonsail.app.melonfriends.sns.facebook.FBHomeFeedEntryComments.FBFeedEntryComment;
+import com.melonsail.app.melonfriends.sns.facebook.FBHomeFeedEntryComments.FBHomeFeedEntryComment;
 import com.melonsail.app.melonfriends.sns.melon.FeedEntry;
+import com.melonsail.app.melonfriends.sns.melon.FeedEntryComment;
 import com.melonsail.app.melonfriends.utils.Const;
 import com.melonsail.app.melonfriends.utils.Pref;
 
@@ -56,8 +57,6 @@ public class FeedEntryDaos {
 			for(int i= 0; i<entries.getData().size();i++) {
 				FBHomeFeedEntry entry = (FBHomeFeedEntry) entries.getData().get(i);
 				//String fromHeadUrl = "https://graph.facebook.com/" + fromID + "/picture";
-				String fromHeadUrl = String.format(Const.USER_IMG_URL_FB, entry.getFrom().getId());
-				entry.getFrom().setHeadurl(fromHeadUrl);
 				
 				if (entry.getType().equals("photo")) {
 					//retrieve original photo source					
@@ -76,7 +75,7 @@ public class FeedEntryDaos {
 					FBHomeFeedEntryComments comments = entry.getComments();
 					Log.i(TAG, "FB insert comment #:" + comments.getCount());
 					if (comments != null && Integer.parseInt(comments.getCount()) > 0) {
-						for (FBFeedEntryComment comment : comments.getData()) {
+						for (FBHomeFeedEntryComment comment : comments.getData()) {
 							if (comment != null ) {
 								Log.i(TAG, "FB insert comment from:" + comment.getFrom().getName());
 								mDBHelper.fInsertComments(comment);
@@ -102,7 +101,9 @@ public class FeedEntryDaos {
 		//no where condition, no limit
 		String[][] result = mDBHelper.fGetItemsDesc(DBHelper.T_FEED, sns, null, null);
 		for (int i= 0; i < result.length; i++) {
-			entries.add(fTransformValue2Object(result[i]));
+			FeedEntry entry = new FeedEntry();
+			fTransformValue2Object(result[i], entry);
+			entries.add(entry);
 		}
 		return entries;
 	}
@@ -116,12 +117,12 @@ public class FeedEntryDaos {
 	 * @deprecated
 	 */
 	public FeedEntry fGetFeedByID(String sns, String feedid) {
-		FeedEntry entry = null;
+		FeedEntry entry = new FeedEntry();
 		String where = String.format("%s" + "=%s", DBHelper.C_KEY_ID, feedid);
 		// only 1 feed required, so no limit required
 		String[][] result = mDBHelper.fGetItemsDesc(DBHelper.T_FEED, sns, where, null);
 		for (int i= 0; i < result.length; i++) {
-			entry = fTransformValue2Object(result[i]);
+			fTransformValue2Object(result[i], entry);
 		}
 		return entry;
 	}
@@ -168,7 +169,9 @@ public class FeedEntryDaos {
 		String where = String.format("%s" + "<= %s", DBHelper.C_FEED_UPDATED_TIME, from);
 		String[][] result = mDBHelper.fGetItemsDesc(DBHelper.T_FEED, sns, where, DBHelper.LIMIT);
 		for (int i= 0; i < result.length; i++) {
-			entries.add(fTransformValue2Object(result[i]));
+			FeedEntry entry = new FeedEntry();
+			fTransformValue2Object(result[i], entry);
+			entries.add(entry);
 		}
 		return entries;
 	}
@@ -185,7 +188,9 @@ public class FeedEntryDaos {
 		String where = String.format("%s" + ">= %s", DBHelper.C_FEED_UPDATED_TIME, from);
 		String[][] result = mDBHelper.fGetItemsDesc(DBHelper.T_FEED, sns, where, null);
 		for (int i= 0; i < result.length; i++) {
-			entries.add(fTransformValue2Object(result[i]));
+			FeedEntry entry = new FeedEntry();
+			fTransformValue2Object(result[i], entry);
+			entries.add(entry);
 		}
 		return entries;
 	}
@@ -211,8 +216,8 @@ public class FeedEntryDaos {
 	 * @param value
 	 * @return
 	 */
-	private FeedEntry fTransformValue2Object(String[] value) {
-		FeedEntry entry = new FeedEntry();
+	private void fTransformValue2Object(String[] value, FeedEntry entry) {
+		//FeedEntry entry = new FeedEntry();
 		int index = 0;
 		
 		entry.setsID(value[index++]);
@@ -249,9 +254,29 @@ public class FeedEntryDaos {
 		entry.setsCreatedTime(value[index++]);					//created time
 		entry.setsUpdatedTime(value[index++]);					//updated time
 		
-		return entry;
+		//return entry;
 	}
 
+	private void fTransformValue2Object(String[] value, FeedEntryComment comment) {
+		//FeedEntryComment comment = new FeedEntryComment();
+		
+		int index = 0;
+		comment.setCommentedID(value[index++]);
+		comment.setSns(value[index++]);							//sns
+		
+		comment.setCommentedfeedID(value[index++]);				//feed id
+		
+		comment.setCommentedUserID(value[index++]);				//comment owner id
+		comment.setCommentedName(value[index++]);					//comment owner name
+		comment.setCommentedHeadUrl(value[index++]);				//comment owner url
+		
+		comment.setCommentedMsg(value[index++]);						//message
+		comment.setCommentedTime(value[index++]);						//comment time
+		
+		comment.setCommentedIsLiked(value[index++]);				//isLiked
+		comment.setCommentedCntLikes(value[index++]);				//cntLikes
+		//return comment;
+	}
 	private String[] fTransformObject2Value(FBHomeFeedEntry entry, String table) {
 		String[] colNames = mDBHelper.fGetColNames(table);
 		String[] params = new String[colNames.length - 3];
@@ -304,6 +329,28 @@ public class FeedEntryDaos {
 
 		return params;
 	}
+	
+	private String[] fTransformObject2Value(FBHomeFeedEntryComment comment, String table, String commentedFeedID) {
+		String[] colNames = mDBHelper.fGetColNames(table);
+		String[] params = new String[colNames.length - 3];
+		String sParamPattern = "%s";
+		
+		int i = 0;
+		params[i++] = String.format(sParamPattern, comment.getId() );
+		params[i++] = String.format(sParamPattern, Const.SNS_FACEBOOK);
+		
+		params[i++] = String.format(sParamPattern, commentedFeedID);
+		
+		params[i++] = String.format(sParamPattern, comment.getFrom().getId());
+		params[i++] = String.format(sParamPattern, comment.getFrom().getName() );
+		params[i++] = String.format(sParamPattern, comment.getFrom().getHeadurl() );
+		
+		params[i++] = String.format(sParamPattern, comment.getMessage() );
+		params[i++] = String.format(sParamPattern, comment.getCreated_time() );
+		params[i++] = String.format(sParamPattern, comment.getUser_likes() ); //comment_is_like
+		params[i++] = String.format(sParamPattern, comment.getLikes() ); // comment_cnt_likes
+		return params;
+	}
 	// }}
 
 	// {{ retrieve additional feed info
@@ -331,9 +378,6 @@ public class FeedEntryDaos {
 	}
 	
 	private void fRetrieveAdditionalFeedInfo(FBHomeFeedEntry entry) {
-		//String fromHeadUrl = "https://graph.facebook.com/" + fromID + "/picture";
-		String fromHeadUrl = String.format(Const.USER_IMG_URL_FB, entry.getFrom().getId());
-		entry.getFrom().setHeadurl(fromHeadUrl);
 		
 		//retrieve large photo if feed type is photo
 		if (entry.getType().equals("photo")) {
@@ -349,26 +393,41 @@ public class FeedEntryDaos {
 	 */
 	public void fInsertFeed(FBHomeFeed entries, String temp) {
 
-		if(entries != null && entries.getData()!=null) {
-			//Log.i(TAG, "FB get single feed from list#" + entries.getData().size());
-			
-			for(int i= 0; i<entries.getData().size();i++) {
-				FBHomeFeedEntry entry = (FBHomeFeedEntry) entries.getData().get(i);
-				fRetrieveAdditionalFeedInfo(entry);
+		int i = 0;
+		int j = 0;
+		try {
+			if(entries != null && entries.getData()!=null) {
+				//Log.i(TAG, "FB get single feed from list#" + entries.getData().size());
 				
-				//insert feed
-				//Log.i(TAG, "FB insert feed");
-				sSQLInputParams = fTransformObject2Value(entry, DBHelper.T_FEED);
-				sSQLScript = XMLSQLParser.fGetSQLScript(mContext, "sqlInsertFeed");
-				mDBHelper.fExec(sSQLScript, sSQLInputParams);
-				
-				//insert comments
-				FBHomeFeedEntryComments comments = entry.getComments();
-				//Log.i(TAG, "FB insert comment #:" + comments.getCount());
-				//sSQLInputParams = fTransformObject2Value(entry, DBHelper.T_COMMENT);
-				sSQLScript = XMLSQLParser.fGetSQLScript(mContext, "sqlInsertComment");
-				//mDBHelper.fExec(sSQLScript, sSQLInputParams);
+				for( i= 0; i<entries.getData().size();i++) {
+					FBHomeFeedEntry entry = (FBHomeFeedEntry) entries.getData().get(i);
+					fRetrieveAdditionalFeedInfo(entry);
+					
+					//insert feed
+					//Log.i(TAG, "FB insert feed");
+					sSQLInputParams = fTransformObject2Value(entry, DBHelper.T_FEED);
+					sSQLScript = XMLSQLParser.fGetSQLScript(mContext, "sqlInsertFeed");
+					mDBHelper.fExec(sSQLScript, sSQLInputParams);
+					
+					//insert comments
+					FBHomeFeedEntryComments comments = entry.getComments();
+					try {
+						if ( comments != null && comments.getData() != null) {
+							Log.i(TAG, "FB insert comment #:" + comments.getCount());
+							for(j= 0; j<comments.getData().size();j++) {
+								FBHomeFeedEntryComment comment = comments.getData().get(j);
+								sSQLInputParams = fTransformObject2Value(comment, DBHelper.T_COMMENT, entry.getId());
+								sSQLScript = XMLSQLParser.fGetSQLScript(mContext, "sqlInsertComment");
+								mDBHelper.fExec(sSQLScript, sSQLInputParams);
+							}
+						}
+					} catch (Exception e) {
+						Log.e(TAG, "Error inserting comment " + j);
+					}
+				}
 			}
+		} catch (Exception e) {
+			Log.e(TAG, "Error inserting feed " + i);
 		}
 	}
 	
@@ -379,7 +438,7 @@ public class FeedEntryDaos {
 	 * @return
 	 */
 	public FeedEntry fGetFeedByID(String sns, String feedid, String temp) {
-		FeedEntry entry = null;
+		FeedEntry entry = new FeedEntry();
 		// only 1 feed required, so no limit required
 		Log.i(TAG, "Get feed from " + sns + "feedid " + feedid);
 		String sParamPattern = "%s";
@@ -392,7 +451,7 @@ public class FeedEntryDaos {
 		String[][] result = mDBHelper.fExec(sSQLScript, sSQLInputParams);
 		
 		for (int i= 0; i < result.length; i++) {
-			entry = fTransformValue2Object(result[i]);
+			fTransformValue2Object(result[i], entry);
 		}
 		return entry;
 	}
@@ -423,7 +482,9 @@ public class FeedEntryDaos {
 		}
 		
 		for (int i= 0; i < result.length; i++) {
-			entries.add(fTransformValue2Object(result[i]));
+			FeedEntry entry = new FeedEntry();
+			fTransformValue2Object(result[i], entry);
+			entries.add(entry);
 		}
 		
 		return entries;

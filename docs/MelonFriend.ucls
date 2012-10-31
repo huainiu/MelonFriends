@@ -1,0 +1,545 @@
+<class-diagram version="1.0.10" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true">  
+  <class id="1" corner="BOTTOM_RIGHT" language="java" 
+    name="com.melonsail.app.melonfriends.services.MelonFriendsService.IncomingHandler" project="MelonFriends" 
+    file="/MelonFriends/src/com/melonsail/app/melonfriends/services/MelonFriendsService.java" binary="false">    
+    <position x="2933" y="795" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="2" corner="BOTTOM_RIGHT" language="java" name="com.melonsail.app.melonfriends.sns.melon.FeedEntry" 
+    project="MelonFriends" file="/MelonFriends/src/com/melonsail/app/melonfriends/sns/melon/FeedEntry.java" 
+    binary="false">    
+    <position x="2688" y="1574" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="3" corner="BOTTOM_RIGHT" language="java" name="com.melonsail.app.melonfriends.sns.SnsUtil" 
+    project="MelonFriends" file="/MelonFriends/src/com/melonsail/app/melonfriends/sns/SnsUtil.java" binary="false">    
+    <position x="2142" y="1538" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="4" corner="BOTTOM_RIGHT" language="java" 
+    name="com.melonsail.app.melonfriends.sns.facebook.FBHomeFeedEntryTags.FBFeedEndtryTag" project="MelonFriends" 
+    file="/MelonFriends/src/com/melonsail/app/melonfriends/sns/facebook/FBHomeFeedEntryTags.java" binary="false">    
+    <position x="1290" y="1043" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="5" corner="BOTTOM_RIGHT" language="java" name="com.melonsail.app.melonfriends.sns.SnsOrg" 
+    project="MelonFriends" file="/MelonFriends/src/com/melonsail/app/melonfriends/sns/SnsOrg.java" binary="false">    
+    <position x="2493" y="1196" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="6" corner="BOTTOM_RIGHT" language="java" name="com.melonsail.app.melonfriends.sns.facebook.FacebookUtil" 
+    project="MelonFriends" file="/MelonFriends/src/com/melonsail/app/melonfriends/sns/facebook/FacebookUtil.java" 
+    binary="false">    
+    <position x="2268" y="1690" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="7" corner="BOTTOM_RIGHT" language="java" name="com.melonsail.app.melonfriends.sns.melon.FeedTags" 
+    project="MelonFriends" file="/MelonFriends/src/com/melonsail/app/melonfriends/sns/melon/FeedTags.java" 
+    binary="false">    
+    <position x="2606" y="1748" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="8" corner="BOTTOM_RIGHT" language="java" 
+    name="com.melonsail.app.melonfriends.controller.MainController.SnsFeedListFragment" project="MelonFriends" 
+    file="/MelonFriends/src/com/melonsail/app/melonfriends/controller/MainController.java" binary="false">    
+    <position x="2680" y="524" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="9" corner="BOTTOM_RIGHT" language="java" 
+    name="com.melonsail.app.melonfriends.controller.LstViewFeedAdapter" project="MelonFriends" 
+    file="/MelonFriends/src/com/melonsail/app/melonfriends/controller/LstViewFeedAdapter.java" binary="false">    
+    <position x="2680" y="1467" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="10" corner="BOTTOM_RIGHT" language="java" 
+    name="com.melonsail.app.melonfriends.sns.facebook.FBHomeFeedEntryComments" project="MelonFriends" 
+    file="/MelonFriends/src/com/melonsail/app/melonfriends/sns/facebook/FBHomeFeedEntryComments.java" binary="false">    
+    <position x="764" y="900" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="11" corner="BOTTOM_RIGHT" language="java" 
+    name="com.melonsail.app.melonfriends.controller.MainController.SnsPagerAdapter" project="MelonFriends" 
+    file="/MelonFriends/src/com/melonsail/app/melonfriends/controller/MainController.java" binary="false">    
+    <position x="2666" y="646" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="12" corner="BOTTOM_RIGHT" language="java" 
+    name="com.melonsail.app.melonfriends.services.MelonFriendsService" project="MelonFriends" 
+    file="/MelonFriends/src/com/melonsail/app/melonfriends/services/MelonFriendsService.java" binary="false">    
+    <position x="2934" y="537" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="13" corner="BOTTOM_RIGHT" language="java" 
+    name="com.melonsail.app.melonfriends.sns.facebook.FBHomeFeedEntryComments.FBHomeFeedEntryComment" 
+    project="MelonFriends" 
+    file="/MelonFriends/src/com/melonsail/app/melonfriends/sns/facebook/FBHomeFeedEntryComments.java" binary="false">    
+    <position x="745" y="1033" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="14" corner="BOTTOM_RIGHT" language="java" 
+    name="com.melonsail.app.melonfriends.sns.facebook.FBHomeeedEntryLikes" project="MelonFriends" 
+    file="/MelonFriends/src/com/melonsail/app/melonfriends/sns/facebook/FBHomeeedEntryLikes.java" binary="false">    
+    <position x="1014" y="904" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="15" corner="BOTTOM_RIGHT" language="java" 
+    name="com.melonsail.app.melonfriends.controller.LeftPanelController" project="MelonFriends" 
+    file="/MelonFriends/src/com/melonsail/app/melonfriends/controller/LeftPanelController.java" binary="false">    
+    <position x="2120" y="816" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="16" corner="BOTTOM_RIGHT" language="java" 
+    name="com.melonsail.app.melonfriends.sns.facebook.FBHomeFeedEntryFrom" project="MelonFriends" 
+    file="/MelonFriends/src/com/melonsail/app/melonfriends/sns/facebook/FBHomeFeedEntryFrom.java" binary="false">    
+    <position x="525" y="900" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="17" corner="BOTTOM_RIGHT" language="java" name="com.melonsail.app.melonfriends.sns.DummySnsUtil" 
+    project="MelonFriends" file="/MelonFriends/src/com/melonsail/app/melonfriends/sns/DummySnsUtil.java" binary="false">    
+    <position x="2261" y="1795" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <interface id="18" corner="BOTTOM_RIGHT" language="java" name="com.melonsail.app.melonfriends.controller.Controller" 
+    project="MelonFriends" file="/MelonFriends/src/com/melonsail/app/melonfriends/controller/Controller.java" 
+    binary="false">    
+    <position x="2108" y="403" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <class id="19" corner="BOTTOM_RIGHT" language="java" name="com.melonsail.app.melonfriends.daos.FeedEntryDaos" 
+    project="MelonFriends" file="/MelonFriends/src/com/melonsail/app/melonfriends/daos/FeedEntryDaos.java" 
+    binary="false">    
+    <position x="1947" y="1734" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="20" corner="BOTTOM_RIGHT" language="java" name="com.melonsail.app.melonfriends.controller.MainController" 
+    project="MelonFriends" file="/MelonFriends/src/com/melonsail/app/melonfriends/controller/MainController.java" 
+    binary="false">    
+    <position x="2303" y="381" width="207" height="332"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="21" corner="BOTTOM_RIGHT" language="java" 
+    name="com.melonsail.app.melonfriends.sns.facebook.FBHomeFeedEntryTags" project="MelonFriends" 
+    file="/MelonFriends/src/com/melonsail/app/melonfriends/sns/facebook/FBHomeFeedEntryTags.java" binary="false">    
+    <position x="1284" y="903" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="22" corner="BOTTOM_RIGHT" language="java" 
+    name="com.melonsail.app.melonfriends.activities.MelonFriendsServiceConnection" project="MelonFriends" 
+    file="/MelonFriends/src/com/melonsail/app/melonfriends/activities/MelonFriendsServiceConnection.java" binary="false">    
+    <position x="2188" y="1194" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="23" corner="BOTTOM_RIGHT" language="java" name="com.melonsail.app.melonfriends.sns.facebook.FBHomeFeed" 
+    project="MelonFriends" file="/MelonFriends/src/com/melonsail/app/melonfriends/sns/facebook/FBHomeFeed.java" 
+    binary="false">    
+    <position x="1055" y="638" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <interface id="24" corner="BOTTOM_RIGHT" language="java" name="com.melonsail.app.melonfriends.sns.SnsCallBackListener" 
+    project="MelonFriends" file="/MelonFriends/src/com/melonsail/app/melonfriends/sns/SnsCallBackListener.java" 
+    binary="false">    
+    <position x="2141" y="1374" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <class id="25" corner="BOTTOM_RIGHT" language="java" name="com.melonsail.app.melonfriends.activities.MainActivity" 
+    project="MelonFriends" file="/MelonFriends/src/com/melonsail/app/melonfriends/activities/MainActivity.java" 
+    binary="false">    
+    <position x="2404" y="412" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="26" corner="BOTTOM_RIGHT" language="java" 
+    name="com.melonsail.app.melonfriends.sns.facebook.FBHomeeedEntryLikes.FBFeedEntryLike" project="MelonFriends" 
+    file="/MelonFriends/src/com/melonsail/app/melonfriends/sns/facebook/FBHomeeedEntryLikes.java" binary="false">    
+    <position x="1019" y="1046" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="27" corner="BOTTOM_RIGHT" language="java" name="com.melonsail.app.melonfriends.daos.DBHelper" 
+    project="MelonFriends" file="/MelonFriends/src/com/melonsail/app/melonfriends/daos/DBHelper.java" binary="false">    
+    <position x="1944" y="1859" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="28" corner="BOTTOM_RIGHT" language="java" 
+    name="com.melonsail.app.melonfriends.sns.facebook.FBHomeFeedEntry" project="MelonFriends" 
+    file="/MelonFriends/src/com/melonsail/app/melonfriends/sns/facebook/FBHomeFeedEntry.java" binary="false">    
+    <position x="910" y="381" width="296" height="791"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="29" corner="BOTTOM_RIGHT" language="java" name="com.melonsail.app.melonfriends.sns.melon.FeedEntryComment" 
+    project="MelonFriends" file="/MelonFriends/src/com/melonsail/app/melonfriends/sns/melon/FeedEntryComment.java" 
+    binary="false">    
+    <position x="2824" y="1747" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="30" corner="BOTTOM_RIGHT" language="java" 
+    name="com.melonsail.app.melonfriends.controller.LeftPanelController.LstAdapter" project="MelonFriends" 
+    file="/MelonFriends/src/com/melonsail/app/melonfriends/controller/LeftPanelController.java" binary="false">    
+    <position x="1829" y="1533" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="31" corner="BOTTOM_RIGHT" language="java" name="com.melonsail.app.melonfriends.sns.melon.UserFriend" 
+    project="MelonFriends" file="/MelonFriends/src/com/melonsail/app/melonfriends/sns/melon/UserFriend.java" 
+    binary="false">    
+    <position x="2953" y="1673" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="32" corner="BOTTOM_RIGHT" language="java" name="com.melonsail.app.melonfriends.sns.melon.FeedEntryLike" 
+    project="MelonFriends" file="/MelonFriends/src/com/melonsail/app/melonfriends/sns/melon/FeedEntryLike.java" 
+    binary="false">    
+    <position x="2946" y="1569" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <association id="33">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="34" name="mSnsOrg"/>      
+      <multiplicity id="35" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="36">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="37" name="zComments"/>      
+      <multiplicity id="38" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="29" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="39">    
+    <end type="SOURCE" refId="20"/>    
+    <end type="TARGET" refId="11"/>  
+  </nesting>  
+  <association id="40">    
+    <end type="SOURCE" refId="20" navigable="false">      
+      <attribute id="41" name="mServiceConn"/>      
+      <multiplicity id="42" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="22" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="43">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="44" name="mMainViewFeedAdapterList"/>      
+      <multiplicity id="45" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="46">    
+    <end type="SOURCE" refId="20" navigable="false">      
+      <attribute id="47" name="mSnsOrg"/>      
+      <multiplicity id="48" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="49">    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="50" name="data"/>      
+      <multiplicity id="51" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="26" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="52">    
+    <end type="SOURCE" refId="23" navigable="false">      
+      <attribute id="53" name="data"/>      
+      <multiplicity id="54" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="28" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="55">    
+    <end type="SOURCE" refId="21" navigable="false">      
+      <attribute id="56" name="data"/>      
+      <multiplicity id="57" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="58">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="3"/>  
+  </generalization>  
+  <association id="59">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="60" name="mServiceConn"/>      
+      <multiplicity id="61" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="22" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="62">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="63" name="mSnsOrg"/>      
+      <multiplicity id="64" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="65">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="66" name="feedDao"/>      
+      <multiplicity id="67" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="19" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="68">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="69" name="feedArrayList"/>      
+      <multiplicity id="70" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="71">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="1"/>  
+  </nesting>  
+  <realization id="72">    
+    <bendpoint x="2170" y="542"/>    
+    <end type="SOURCE" refId="20"/>    
+    <end type="TARGET" refId="18"/>  
+  </realization>  
+  <nesting id="73">    
+    <end type="SOURCE" refId="20"/>    
+    <end type="TARGET" refId="8"/>  
+  </nesting>  
+  <association id="74">    
+    <end type="SOURCE" refId="28" navigable="false">      
+      <attribute id="75" name="likes"/>      
+      <multiplicity id="76" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="14" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="77">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="78" name="zFacebookUtil"/>      
+      <multiplicity id="79" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="80">    
+    <end type="SOURCE" refId="28" navigable="false">      
+      <attribute id="81" name="comments"/>      
+      <multiplicity id="82" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="83">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="84" name="from"/>      
+      <multiplicity id="85" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="16" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="86">    
+    <end type="SOURCE" refId="28" navigable="false">      
+      <attribute id="87" name="story_tags"/>      
+      <multiplicity id="88" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="21" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="89">    
+    <end type="SOURCE" refId="20" navigable="false">      
+      <attribute id="90" name="mleftPanelController"/>      
+      <multiplicity id="91" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="15" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="92">    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="3"/>  
+  </generalization>  
+  <association id="93">    
+    <bendpoint x="1829" y="1186"/>    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="94" name="feedBksLstAdapter"/>      
+      <multiplicity id="95" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="30" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="96">    
+    <end type="SOURCE" refId="25" navigable="false">      
+      <attribute id="97" name="controller"/>      
+      <multiplicity id="98" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="20" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="99">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="100" name="zStory_Tags"/>      
+      <multiplicity id="101" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="102">    
+    <end type="SOURCE" refId="19" navigable="false">      
+      <attribute id="103" name="mDBHelper"/>      
+      <multiplicity id="104" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="27" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="105">    
+    <end type="SOURCE" refId="30" navigable="false">      
+      <attribute id="106" name="arrayList"/>      
+      <multiplicity id="107" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="108">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="109" name="mSnsList"/>      
+      <multiplicity id="110" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="111">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="112" name="data"/>      
+      <multiplicity id="113" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="114">    
+    <bendpoint x="2140" y="1281"/>    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="24"/>  
+  </realization>  
+  <association id="115">    
+    <end type="SOURCE" refId="28" navigable="false">      
+      <attribute id="116" name="from"/>      
+      <multiplicity id="117" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="16" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="118">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="18"/>  
+  </realization>  
+  <association id="119">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="120" name="listeners"/>      
+      <multiplicity id="121" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="24" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    visibility="true">    
+    <attributes public="false" package="false" protected="true" private="false"/>    
+    <operations public="true" package="true" protected="true" private="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

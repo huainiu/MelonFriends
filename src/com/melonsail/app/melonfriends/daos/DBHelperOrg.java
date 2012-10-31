@@ -13,7 +13,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.melonsail.app.melonfriends.sns.facebook.FBHomeFeedEntry;
-import com.melonsail.app.melonfriends.sns.facebook.FBHomeFeedEntryComments.FBFeedEntryComment;
+import com.melonsail.app.melonfriends.sns.facebook.FBHomeFeedEntryComments.FBHomeFeedEntryComment;
 import com.melonsail.app.melonfriends.sns.facebook.FBHomeFeedEntryFrom;
 import com.melonsail.app.melonfriends.utils.Const;
 
@@ -375,7 +375,7 @@ public class DBHelperOrg {
 		return ret;
 	}
 	
-	public long fInsertComments(FBFeedEntryComment comment) {
+	public long fInsertComments(FBHomeFeedEntryComment comment) {
 		long ret = 0;
 		
 		ContentValues values  = new ContentValues();

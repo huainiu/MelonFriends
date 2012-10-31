@@ -6,14 +6,17 @@ import java.util.List;
 public class FBHomeFeedEntryComments {
 
 	private String count;
-	private List<FBFeedEntryComment> data;
+	private List<FBHomeFeedEntryComment> data;
 	
-	public class FBFeedEntryComment {
+	public class FBHomeFeedEntryComment {
 		private FBHomeFeedEntryFrom from;
 		
 		private String id;
 		private String message;
 		private String created_time;
+		
+		private String likes;
+		private String user_likes;
 		
 		public void setFrom(FBHomeFeedEntryFrom from) {
 			this.from = from;
@@ -39,6 +42,18 @@ public class FBHomeFeedEntryComments {
 		public String getId() {
 			return id;
 		}
+		public void setLikes(String likes) {
+			this.likes = likes;
+		}
+		public String getLikes() {
+			return likes;
+		}
+		public void setUser_likes(String user_likes) {
+			this.user_likes = user_likes;
+		}
+		public String getUser_likes() {
+			return user_likes;
+		}
 		
 	}
 	
@@ -49,11 +64,11 @@ public class FBHomeFeedEntryComments {
 		return count;
 	}
 
-	public void setData(List<FBFeedEntryComment> data) {
+	public void setData(List<FBHomeFeedEntryComment> data) {
 		this.data = data;
 	}
 
-	public List<FBFeedEntryComment> getData() {
+	public List<FBHomeFeedEntryComment> getData() {
 		return data;
 	}
 	

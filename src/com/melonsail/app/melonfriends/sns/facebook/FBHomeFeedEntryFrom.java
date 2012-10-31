@@ -1,7 +1,8 @@
 package com.melonsail.app.melonfriends.sns.facebook;
 
-
 public class FBHomeFeedEntryFrom {
+	
+	static final String USER_IMG_URL_FB = "https://graph.facebook.com/%s/picture";
 	
 	private String id;
 	private String name;
@@ -28,6 +29,7 @@ public class FBHomeFeedEntryFrom {
 	}
 
 	public String getHeadurl() {
+		headurl = String.format(USER_IMG_URL_FB, id);
 		return headurl;
 	}
 	   

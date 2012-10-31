@@ -81,6 +81,7 @@ public class MelonFriendsService extends Service  {
 	
 	public void fSnsGetNewFeed(Message msg) {
 		int snsIndex = msg.arg1;
+		Log.i(TAG, "request index = " + snsIndex + " Active List = " + mSnsOrg.fGetActiveSnsList().size());
 		mSnsOrg.fGetActiveSnsList().get(snsIndex).fGetNewsFeeds(this);
 	}
 	

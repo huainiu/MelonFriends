@@ -3,9 +3,7 @@
     <Statement category="read" target="user">
         <Details scriptId="sqlSelectUserBySNS" author="WL">
             <![CDATA[
-                Declare @sns as varchar(128)
-                set @sns = ?
-                select * from user where sns = @sns
+                select * from user where sns = ?
             ]]>
         </Details>
     </Statement>
@@ -44,7 +42,6 @@
     <Statement category="upsert" target="feed">
         <Details scriptId="sqlInsertFeed" author="WL">
             <![CDATA[
-            
                 INSERT OR REPLACE INTO Feed (id, SNS, 
 				    feed_from_name, feed_from_id, feed_from_img,
 				     msg, story, 

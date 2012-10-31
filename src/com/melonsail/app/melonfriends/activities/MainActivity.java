@@ -9,7 +9,9 @@ import com.melonsail.app.melonfriends.R;
 import com.melonsail.app.melonfriends.controller.Controller;
 import com.melonsail.app.melonfriends.controller.MainController;
 import com.melonsail.app.melonfriends.services.MelonFriendsService;
+import com.melonsail.app.melonfriends.utils.Const;
 import com.melonsail.app.melonfriends.utils.FlurryUtil;
+import com.melonsail.app.melonfriends.utils.Pref;
 
 public class MainActivity extends FragmentActivity {
 
@@ -67,8 +69,11 @@ public class MainActivity extends FragmentActivity {
 	protected void onStop() {
 		super.onStop();
 		controller.fUnBindService();
+		
+		//Pref.setMyStringPref(this, snsName + Const.SNS_READITEM_UPDATETIME, "");
+		//Pref.setMyStringPref(this, Const.SNS_PULL_TO_REFRESH, "");
 		FlurryUtil.onStop(this);
-	}
+	}	
 
     
     private void fAnalyseIntent() {

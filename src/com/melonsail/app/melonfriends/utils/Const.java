@@ -34,7 +34,6 @@ public class Const {
 	public static final String SNS_TWITTER="Twitter";
 	public static final String SNS_DUMMY = "Dummy";
 	
-	public static final String USER_IMG_URL_FB = "https://graph.facebook.com/%s/picture";
 	public static final String LOGIN_ID_FACEBOOK = "Login_ID_Facebook";
 	public static final String LOGIN_HEAD_RENREN = "Login_Head_Renren";
 	public static final String LOGIN_HEAD_SINA = "Login_Head_Sina";

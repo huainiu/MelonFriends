@@ -2,7 +2,7 @@ package com.melonsail.app.melonfriends.sns.melon;
 
 public class FeedEntryComment /*implements Parcelable*/ {
 	//for reference only
-	protected String commetedfeedID;
+	protected String commentedfeedID;
 	protected String sns;
 	
 	private String commentedID;
@@ -12,14 +12,17 @@ public class FeedEntryComment /*implements Parcelable*/ {
 	private String commentedName;
 	private String commentedHeadUrl;
 	
+	private String commentedIsLiked;
+	private String commentedCntLikes;
+	
 	public FeedEntryComment() {
 	}
 
-	public void setCommetedfeedID(String commetedfeedID) {
-		this.commetedfeedID = commetedfeedID;
+	public void setCommentedfeedID(String commetedfeedID) {
+		this.commentedfeedID = commetedfeedID;
 	}
-	public String getCommetedfeedID() {
-		return commetedfeedID;
+	public String getCommentedfeedID() {
+		return commentedfeedID;
 	}
 	public void setSns(String sns) {
 		this.sns = sns;
@@ -62,6 +65,22 @@ public class FeedEntryComment /*implements Parcelable*/ {
 	}
 	public String getCommentedHeadUrl() {
 		return commentedHeadUrl;
+	}
+
+	public void setCommentedCntLikes(String commentedCntLikes) {
+		this.commentedCntLikes = commentedCntLikes;
+	}
+
+	public String getCommentedCntLikes() {
+		return commentedCntLikes;
+	}
+
+	public void setCommentedIsLiked(String commentedIsLiked) {
+		this.commentedIsLiked = commentedIsLiked;
+	}
+
+	public String getCommentedIsLiked() {
+		return commentedIsLiked;
 	}
 	
 //	public FeedEntryComment(Parcel in) {
