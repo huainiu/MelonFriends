@@ -34,7 +34,7 @@ import com.melonsail.app.melonfriends.views.SlidingPanel;
 import com.melonsail.app.melonfriends.views.SlidingPanel.PanelSlidingListener;
 import com.melonsail.app.melonfriends.views.TabPageIndicator;
 
-public class MainController implements Controller {
+public class MainController implements Controller, ServiceMessageListener {
 	private static final String TAG = "MainController";
 	
 	private int iContentLayoutId;
@@ -61,15 +61,17 @@ public class MainController implements Controller {
 	private static MelonFriendsServiceConnection mServiceConn;
     public void fBindService() {
 		if(mServiceConn == null) {
-			this.mServiceConn = new MelonFriendsServiceConnection(mActivity);
+			mServiceConn = new MelonFriendsServiceConnection(mActivity, this);
 		}
-		this.mServiceConn.fBindToService();
+		mServiceConn.fBindToService();
 	}
     public void fUnBindService() {
-		if(this.mServiceConn != null) {
-			this.mServiceConn.fUnBindToService();
+		if(mServiceConn != null) {
+			mServiceConn.fUnBindToService();
 		}
 	}
+    
+    // {{ initialize components
 	public void fInit() {
 		fInitSNSOrg();
 		fInitTitle();
@@ -180,20 +182,21 @@ public class MainController implements Controller {
 		mleftPanelController.setServiceConnection(mServiceConn);
 		
 	}
+	//}}
 	
+	// {{ delegate from MainActivity
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		mSnsOrg.fGetSnsInstance(Const.SNS_FACEBOOK).onComplete(requestCode, resultCode, data);
 	}
 	public void fAnaylseIntent(Bundle extras) {
-		// TODO Auto-generated method stub
 		
 	}
 	public void onBackPressed() {
-		// TODO Auto-generated method stub
 		if (!mSlidingPanel.isActivated()) {
 			mActivity.finish();
 		}
 	}
+	// }}
 	
 	public class SnsPagerAdapter extends FragmentStatePagerAdapter
 	{
@@ -236,7 +239,6 @@ public class MainController implements Controller {
 		}
 		
 	}
-	
 	
 	public static class SnsFeedListFragment extends ListFragment {
 		 //private android.view.View v;
@@ -292,6 +294,7 @@ public class MainController implements Controller {
 	}
 
 
+	// {{ refresh view inherent from controller interface
 	@Override
 	public void fRefreshPanelView() {
 		//refresh toolbars
@@ -321,5 +324,22 @@ public class MainController implements Controller {
 		
 		adapter1.notifyDataSetChanged();
 	}
+	// }}
+	
+	
+	@Override
+	public void handleMessage(int what) {
+		switch (what) {
+			case Const.MSG_UI_RECEIVE_NEWFEED:
+				Log.i(TAG, "Message = MSG_UI_RECEIVE_NEWFEED");
+				String sns_pull2refresh = Pref.getMyStringPref(mActivity, Const.SNS_PULL_TO_REFRESH);
+				if ( sns_pull2refresh.length() > 0 ) {
+					Log.i(TAG, sns_pull2refresh + " refresh content");
+					fRefreshContentView(sns_pull2refresh);
+				}
+			break;
+		}
+	}
+
 
 }

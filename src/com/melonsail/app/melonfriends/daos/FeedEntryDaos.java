@@ -158,7 +158,6 @@ public class FeedEntryDaos {
 	}
 	
 	/**
-	 * TODO: transform value to objects
 	 * @param sns
 	 * @param from
 	 * @return

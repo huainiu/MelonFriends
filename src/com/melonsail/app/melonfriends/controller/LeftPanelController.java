@@ -114,7 +114,6 @@ public class LeftPanelController implements Controller {
 
 
 	public void LoadView(Bundle loadData) {
-		// TODO Auto-generated method stub
 		//super.LoadView(loadData);
 		this.acntLstV.setAdapter(snsAccntLstAdapter);
 		this.settingLstV.setAdapter(settingLstAdapter);
@@ -147,21 +146,18 @@ public class LeftPanelController implements Controller {
 
 		@Override
 		public int getCount() {
-			// TODO Auto-generated method stub
 			//return Const.SNSGROUPS.length;
 			return (displayArray != null) ? this.displayArray.length : arrayList.size();
 		}
 
 		@Override
 		public Object getItem(int position) {
-			// TODO Auto-generated method stub
 			//return Const.SNSGROUPS[position];
 			return (displayArray != null) ? displayArray[position] : arrayList.get(position);
 		}
 
 		@Override
 		public long getItemId(int position) {
-			// TODO Auto-generated method stub
 			return position;
 		}
 
@@ -348,7 +344,6 @@ public class LeftPanelController implements Controller {
 
 	@Override
 	public void fRefreshContentView(String snsName) {
-		// TODO Auto-generated method stub
 		
 	}
 

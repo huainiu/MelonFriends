@@ -153,7 +153,6 @@ public class SlidingPanel extends LinearLayout{
 	}
 
 	public void setOpen(boolean open) {
-		// TODO Auto-generated method stub
 		this.isOpen = open;
 	}
 	

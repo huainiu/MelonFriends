@@ -293,7 +293,6 @@ public class DBHelper {
 // {{ to be removed DB Functions	
 	/**
 	 * Insert facebook friends information
-	 * TODO: Development more complete information by using graph API for friends information
 	 * @param friend
 	 * @return
 	 */
@@ -321,9 +320,9 @@ public class DBHelper {
 
 	/**
 	 * Insert facebook feed
-	 * TODO: combine with other social networks
 	 * @param entry
 	 * @return
+	 * @deprecated
 	 */
 	public long fInsertFeed(FBHomeFeedEntry entry) {
 		// check if exist
@@ -375,6 +374,11 @@ public class DBHelper {
 		return ret;
 	}
 	
+	/**
+	 * @deprecated
+	 * @param comment
+	 * @return
+	 */
 	public long fInsertComments(FBHomeFeedEntryComment comment) {
 		long ret = 0;
 		

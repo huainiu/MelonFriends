@@ -293,7 +293,6 @@ public class DBHelperOrg {
 	
 	/**
 	 * Insert facebook friends information
-	 * TODO: Development more complete information by using graph API for friends information
 	 * @param friend
 	 * @return
 	 */
@@ -321,7 +320,6 @@ public class DBHelperOrg {
 
 	/**
 	 * Insert facebook feed
-	 * TODO: combine with other social networks
 	 * @param entry
 	 * @return
 	 */

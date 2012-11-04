@@ -16,6 +16,7 @@ import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
 
+import com.melonsail.app.melonfriends.controller.ServiceMessageListener;
 import com.melonsail.app.melonfriends.services.MelonFriendsService;
 import com.melonsail.app.melonfriends.utils.Const;
 import com.melonsail.app.melonfriends.utils.Pref;
@@ -26,29 +27,47 @@ public class MelonFriendsServiceConnection {
 	private Messenger incomingMessenger;
 	private Messenger outgoingMessenger;
 	
+	private ServiceMessageListener messageListener;
+	
 	//Members from Context
 	private Activity mActivity;
 	
 	public MelonFriendsServiceConnection(Activity activity) {
-		this.incomingMessenger = new Messenger(new IncommingMsgHandler());
+		//messageListener = new
 		this.mActivity = activity;
+		
+		this.incomingMessenger = new Messenger(new IncommingMsgHandler(messageListener));
+	}
+	
+	public MelonFriendsServiceConnection(Activity activity, ServiceMessageListener listener) {
+		this.mActivity = activity;
+		this.messageListener = listener;
+		
+		this.incomingMessenger = new Messenger(new IncommingMsgHandler(listener));
 	}
 	
 	class IncommingMsgHandler extends Handler {
 
+		ServiceMessageListener listener;
+		
+		public IncommingMsgHandler(ServiceMessageListener listener) {
+			this.listener = listener;
+		}
+		
 		@Override
 		public void handleMessage(Message msg) {
-			switch (msg.what) {
-				case Const.MSG_UI_RECEIVE_NEWFEED:
-					Log.i(TAG, "MSG_UI_RECEIVE_NEWFEED: Display UI");
-					String sns_pull2refresh = Pref.getMyStringPref(mActivity, Const.SNS_PULL_TO_REFRESH);
-					if ( sns_pull2refresh.length() > 0 ) {
-						((MainActivity)mActivity).fGetController().fRefreshContentView(sns_pull2refresh);
-					}
-					
-				break;
-			}
-			Log.i(TAG, "Message Received on UI!" + msg);
+//			switch (msg.what) {
+//				case Const.MSG_UI_RECEIVE_NEWFEED:
+//					Log.i(TAG, "MSG_UI_RECEIVE_NEWFEED: Display UI");
+//					String sns_pull2refresh = Pref.getMyStringPref(mActivity, Const.SNS_PULL_TO_REFRESH);
+//					if ( sns_pull2refresh.length() > 0 ) {
+//						((MainActivity)mActivity).fGetController().fRefreshContentView(sns_pull2refresh);
+//					}
+//					
+//				break;
+//			}
+			Log.i(TAG, "Activity: " + mActivity.getLocalClassName() + " receive msg = " + msg);
+			listener.handleMessage(msg.what);
 		}
 	}
 	
@@ -56,7 +75,6 @@ public class MelonFriendsServiceConnection {
 
 		@Override
 		public void onServiceConnected(ComponentName className, IBinder service) {
-			// TODO Auto-generated method stub
 			outgoingMessenger = new Messenger(service);
 			
 			try {
