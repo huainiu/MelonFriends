@@ -1,5 +1,7 @@
 package com.melonsail.app.melonfriends.controller;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,7 +24,9 @@ import android.widget.ListView;
 import com.melonsail.app.melonfriends.R;
 import com.melonsail.app.melonfriends.activities.MelonFriendsServiceConnection;
 import com.melonsail.app.melonfriends.activities.PublishActivity;
+import com.melonsail.app.melonfriends.daos.FeedEntryDaos;
 import com.melonsail.app.melonfriends.sns.SnsOrg;
+import com.melonsail.app.melonfriends.sns.melon.FeedEntry;
 import com.melonsail.app.melonfriends.utils.Const;
 import com.melonsail.app.melonfriends.views.PullToRefreshListView;
 import com.melonsail.app.melonfriends.views.PullToRefreshListView.OnRefreshListener;
@@ -46,6 +50,8 @@ public class MainController implements Controller {
 	private LeftPanelController mleftPanelController;
 	private static SnsOrg mSnsOrg;
 	
+	private static FeedEntryDaos mFeedOrg;
+	
 	//private LeftPanelView leftPanelView;
 	
 	public MainController(Activity activity) {
@@ -61,13 +67,18 @@ public class MainController implements Controller {
 		}
 		this.mServiceConn.fBindToService();
 	}
+    
+    
     public void fUnBindService() {
 		if(this.mServiceConn != null) {
 			this.mServiceConn.fUnBindToService();
 		}
 	}
+    
+    
 	public void fInit() {
 		fInitSNSOrg();
+		//fInitFeedOrg();
 		fInitTitle();
 		fInitContent();
 		
@@ -77,6 +88,11 @@ public class MainController implements Controller {
 	
 	public void fInitSNSOrg() {
 		mSnsOrg = new SnsOrg(mActivity);
+	}
+	
+	public void fInitFeedOrg()
+	{
+		mFeedOrg = new FeedEntryDaos(mActivity);
 	}
 	
 	public void fInitTitle() {
@@ -142,7 +158,6 @@ public class MainController implements Controller {
 				}
 			}
 		});
-    		  	
     }
 	
 	private void fInitPager() {
@@ -180,13 +195,16 @@ public class MainController implements Controller {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		mSnsOrg.fGetSnsInstance(Const.SNS_FACEBOOK).onComplete(requestCode, resultCode, data);
 	}
+	
+	
 	public void fAnaylseIntent(Bundle extras) {
 		// TODO Auto-generated method stub
 		
 	}
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
-		if (!mSlidingPanel.isActivated()) {
+		//if (!mSlidingPanel.isActivated()) {
+		if (!mSlidingPanel.isOpen()) {
 			mActivity.finish();
 		}
 	}
@@ -269,6 +287,8 @@ public class MainController implements Controller {
 		@Override
 		public void onActivityCreated(Bundle savedInstanceState) {
 			super.onActivityCreated(savedInstanceState);
+			
+			
 			this.setListAdapter(mSnsOrg.fGetMainViewFeedAdapterList().get(position));
 			lstViewFeedPreview = (PullToRefreshListView) this.getListView();
 			lstViewFeedPreview.setOnRefreshListener(new OnRefreshListener() {
@@ -279,7 +299,6 @@ public class MainController implements Controller {
 				}
 			});
 		}
-		 
 	}
 
 
@@ -291,7 +310,35 @@ public class MainController implements Controller {
 		mIndicator.notifyDataSetChanged();
 		
 		//refresh the content
-		//TODO:how to
+		//how-to 
+		//For testing purpose only
+		loadContentAdapter();
 	}
 
+
+	private void loadContentAdapter() {
+		
+		for( int i=0; i< mSnsOrg.fGetMainViewFeedAdapterList().size(); i++)
+		{
+			LstViewFeedAdapter feedAdapter =  mSnsOrg.fGetMainViewFeedAdapterList().get(i);
+			feedAdapter.clear();
+			
+			
+			String snsName = mSnsOrg.fGetSnsList().get(i).fGetSNSName(); 
+			//mFeedOrg = new FeedEntryDaos(mActivity);
+			//ArrayList<FeedEntry> feeds = mFeedOrg.fGetAll(snsName);
+			ArrayList<FeedEntry> feeds = mSnsOrg.fGetSnsInstance(snsName).fDisplayFeeds(mActivity, snsName);
+			
+			FeedEntry lastItem = null;
+			
+			if(feeds != null)
+			{
+				for (FeedEntry item : feeds ) {
+					feedAdapter.addItem(item);
+					lastItem = item;
+				}
+				feedAdapter.notifyDataSetChanged();
+			}
+		}
+	}
 }

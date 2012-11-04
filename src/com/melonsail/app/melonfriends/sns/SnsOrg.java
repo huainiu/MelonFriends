@@ -14,6 +14,7 @@ import com.melonsail.app.melonfriends.activities.MainActivity;
 import com.melonsail.app.melonfriends.controller.LstViewFeedAdapter;
 import com.melonsail.app.melonfriends.services.MelonFriendsService;
 import com.melonsail.app.melonfriends.sns.facebook.FacebookUtil;
+import com.melonsail.app.melonfriends.sns.sina.SinaUtil;
 import com.melonsail.app.melonfriends.utils.Const;
 import com.melonsail.app.melonfriends.utils.Pref;
 
@@ -33,6 +34,7 @@ public class SnsOrg implements SnsCallBackListener {
 	
 	//SnsUtil
 	private FacebookUtil zFacebookUtil;
+	private SinaUtil zSinaUtil;
 
 	public SnsOrg() {
 		mActiveSnsList = new ArrayList<SnsUtil>();
@@ -97,9 +99,18 @@ public class SnsOrg implements SnsCallBackListener {
 				
 			}
 			snsUtil = this.zFacebookUtil;
-		} else {
+		} else if(snsName.equals(Const.SNS_SINA))
+		{
+			if(this.zSinaUtil == null)
+			this.zSinaUtil = (mActivity != null) ? (new SinaUtil(mActivity)) : (new SinaUtil(mService.getApplicationContext()));
+			
+			snsUtil = this.zSinaUtil;
+		}
+		else
+		{
 			snsUtil = new DummySnsUtil(Const.SNS_DUMMY);
 		}
+		
 		
 		return snsUtil;
 	}
@@ -137,9 +148,13 @@ public class SnsOrg implements SnsCallBackListener {
 	public boolean fAddActiveSns(String snsName) {
 		Log.i(TAG, "SnsOrg.fAddActiveSns: SNS = " + snsName);
 		SnsUtil snsUtil = fGetSnsInstance(snsName);
-		snsUtil.fSetActive();
-		mActiveSnsList.add(snsUtil);
-		fUpdateActiveSnsInPref();
+		
+		if(!snsUtil.fIsActive())
+		{
+			snsUtil.fSetActive();
+			mActiveSnsList.add(snsUtil);
+			fUpdateActiveSnsInPref();
+		}
 		//fRefreshView();
 		return true;
 	}
@@ -300,8 +315,6 @@ public class SnsOrg implements SnsCallBackListener {
 		} else {//initialized by backend service
 			Pref.setMyStringPref(mService, Const.SNS_ACTIVE, activeSnsName);
 		}
-		
 	}
-
-
+	
 }

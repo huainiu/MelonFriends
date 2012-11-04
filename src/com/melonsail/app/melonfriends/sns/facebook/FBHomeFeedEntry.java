@@ -9,7 +9,7 @@ public class FBHomeFeedEntry {
 	private String icon;
 	private String name;
 	private String message;
-	private List<FBHomeFeedEntryTags> message_tags;
+	//private List<FBHomeFeedEntryTags> message_tags;
 	private String story;
 	//private List<FBHomeFeedEntryTags> story_tags;
 	private String picture;
@@ -184,13 +184,13 @@ public class FBHomeFeedEntry {
 		return raw_picture;
 	}
 
-	public void setMessage_tags(List<FBHomeFeedEntryTags> message_tags) {
-		this.message_tags = message_tags;
-	}
-
-	public List<FBHomeFeedEntryTags> getMessage_tags() {
-		return message_tags;
-	}
+//	public void setMessage_tags(List<FBHomeFeedEntryTags> message_tags) {
+//		this.message_tags = message_tags;
+//	}
+//
+//	public List<FBHomeFeedEntryTags> getMessage_tags() {
+//		return message_tags;
+//	}
 
 //	public void setStory_tags(List<FBHomeFeedEntryTags> story_tags) {
 //		this.story_tags = story_tags;

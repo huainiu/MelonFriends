@@ -49,7 +49,7 @@ public class LeftPanelController implements Controller {
 	
 	public void setServiceConnection(MelonFriendsServiceConnection mServiceConn) {
 		this.mServiceConn = mServiceConn;
-	};
+	}
 	
 	public void setSNSOrg(SnsOrg mSnsOrg) {
 		this.mSnsOrg = mSnsOrg;

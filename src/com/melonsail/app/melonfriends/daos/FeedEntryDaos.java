@@ -2,6 +2,7 @@ package com.melonsail.app.melonfriends.daos;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
@@ -13,8 +14,13 @@ import com.melonsail.app.melonfriends.sns.facebook.FBHomeFeedEntry;
 import com.melonsail.app.melonfriends.sns.facebook.FBHomeFeedEntryComments;
 import com.melonsail.app.melonfriends.sns.facebook.FBHomeFeedEntryComments.FBFeedEntryComment;
 import com.melonsail.app.melonfriends.sns.melon.FeedEntry;
+import com.melonsail.app.melonfriends.sns.melon.UserFriend;
+import com.melonsail.app.melonfriends.sns.sina.WBHomeComment;
+import com.melonsail.app.melonfriends.sns.sina.WBHomeFeed;
 import com.melonsail.app.melonfriends.utils.Const;
 import com.melonsail.app.melonfriends.utils.Pref;
+import com.weibo.net.WBComment;
+import com.weibo.net.WBStatus;
 
 public class FeedEntryDaos {
 	private static final String TAG = "FeedEntryDaos";
@@ -65,7 +71,7 @@ public class FeedEntryDaos {
 				//insert comments
 				FBHomeFeedEntryComments comments = entry.getComments();
 				Log.i(TAG, "FB insert comment #:" + comments.getCount());
-				if (comments != null && Integer.parseInt(comments.getCount()) > 0) {
+				if (comments != null && Integer.parseInt(comments.getCount()) > 0 && comments.getData() != null) {
 					for (FBFeedEntryComment comment : comments.getData()) {
 						if (comment != null ) {
 							Log.i(TAG, "FB insert comment from:" + comment.getFrom().getName());
@@ -74,6 +80,48 @@ public class FeedEntryDaos {
 					}
 				}
 			}
+		}
+	}
+	
+	
+	/***
+	 * Insert Sina Feed into db
+	 * @param bean
+	 */
+	public void fInsertFeed(WBHomeFeed bean) {
+
+		int res = 0;
+		
+		List<WBStatus> friendsTimeLine = bean.getStatuses();
+		
+		for(WBStatus status: friendsTimeLine)
+		{
+			res += mDBHelper.fInsertFeed(status);
+			
+			mDBHelper.fInsertFriend(status.getUser());
+		}
+		
+//		if (res > 0 ) {
+//			int cntUnReadFeed = fGetUnReadNewsFeedSummary(Const.SNS_SINA).length;
+//			fShowNotification(Const.SNS_SINA, cntUnReadFeed, context);
+//		}
+		
+	}
+	
+	
+	/**
+	 * Insert Sina Comment into db
+	 * @param bean
+	 */
+	public void fInsertComment(WBHomeComment bean) {
+		// TODO Auto-generated method stub
+		int res = 0;
+		
+		List<WBComment> comments = bean.getComments();
+		
+		for(WBComment comment : comments)
+		{
+			res += mDBHelper.fInsertComments(comment);
 		}
 	}
 	
@@ -86,7 +134,7 @@ public class FeedEntryDaos {
 	public ArrayList<FeedEntry> fGetAll(String sns) {
 		ArrayList<FeedEntry> entries = new ArrayList<FeedEntry>();
 		//no where condition, no limit
-		String[][] result = mDBHelper.fGetItemsDesc(DBHelper.T_FEED, sns, null, null);
+		String[][] result = mDBHelper.fGetItemsDesc(DBHelper.T_FEED, sns, null, null, DBHelper.C_FEED_CREATED_TIME);
 		for (int i= 0; i < result.length; i++) {
 			entries.add(fTransformValueToObject(result[i]));
 		}
@@ -104,7 +152,7 @@ public class FeedEntryDaos {
 		FeedEntry entry = null;
 		String where = String.format("%s" + "=%s", DBHelper.C_KEY_ID, feedid);
 		// only 1 feed required, so no limit required
-		String[][] result = mDBHelper.fGetItemsDesc(DBHelper.T_FEED, sns, where, null);
+		String[][] result = mDBHelper.fGetItemsDesc(DBHelper.T_FEED, sns, where, null, DBHelper.C_FEED_CREATED_TIME);
 		for (int i= 0; i < result.length; i++) {
 			entry = fTransformValueToObject(result[i]);
 		}
@@ -147,8 +195,10 @@ public class FeedEntryDaos {
 	 */
 	private ArrayList<FeedEntry> fGet10FeedEntries(String sns, String from) {
 		ArrayList<FeedEntry> entries = new ArrayList<FeedEntry>();
-		String where = String.format("%s" + "<= %s", DBHelper.C_FEED_UPDATED_TIME, from);
-		String[][] result = mDBHelper.fGetItemsDesc(DBHelper.T_FEED, sns, where, DBHelper.LIMIT);
+		String where = String.format("%s" + "<= \'%s\'", DBHelper.C_FEED_UPDATED_TIME, from);
+		String[][] result = mDBHelper.fGetItemsDesc(DBHelper.T_FEED, sns, where, DBHelper.LIMIT, DBHelper.C_FEED_UPDATED_TIME);
+		
+		if(result != null)
 		for (int i= 0; i < result.length; i++) {
 			entries.add(fTransformValueToObject(result[i]));
 		}
@@ -164,7 +214,7 @@ public class FeedEntryDaos {
 	public ArrayList<FeedEntry> fGetToReadFeedEntries(String sns, String from) {
 		ArrayList<FeedEntry> entries = new ArrayList<FeedEntry>();
 		String where = String.format("%s" + ">= %s", DBHelper.C_FEED_UPDATED_TIME, from);
-		String[][] result = mDBHelper.fGetItemsDesc(DBHelper.T_FEED, sns, where, null);
+		String[][] result = mDBHelper.fGetItemsDesc(DBHelper.T_FEED, sns, where, null,DBHelper.C_FEED_UPDATED_TIME);
 		for (int i= 0; i < result.length; i++) {
 			entries.add(fTransformValueToObject(result[i]));
 		}
@@ -219,5 +269,10 @@ public class FeedEntryDaos {
 		
 		return entry;
 	}
+	
+	
+
+	
+	
 
 }

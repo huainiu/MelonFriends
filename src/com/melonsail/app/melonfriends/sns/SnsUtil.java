@@ -31,15 +31,15 @@ public abstract class SnsUtil {
 	public abstract void fGetNewsFeeds(Context context);
 	//public abstract void fDisplayNewsFeeds(Activity activiy);
 	
-	public abstract void fPublishFeeds(Bundle params);
-	public abstract void fUploadPic(String message, String selectedImagePath);
+	public abstract void fPublishFeeds(Bundle params, Context context);
+	public abstract void fUploadPic(String message, String selectedImagePath, Context context);
 	
-	public abstract void fPostComment(Bundle params);
+	public abstract void fPostComment(Bundle params, Context context);
 	public abstract void fPostReply(Bundle params);
-	public abstract void fLikeFeeds(Bundle params);
+	public abstract void fLikeFeeds(Bundle params, Context context);
 	public abstract void fUnLikeFeeds(Bundle params);
 	
-	public abstract void fShareFeeds(Bundle params);
+	public abstract void fShareFeeds(Bundle params, Context context);
 	
 	public abstract void fLogout(Bundle params);
 	public abstract void fSaveAccessKeySP(Context context, String key);
@@ -72,11 +72,15 @@ public abstract class SnsUtil {
 	public void addListeners(SnsCallBackListener listener) {
 		this.listeners.add(listener);
 	}
+	
 	public void removeListeners(SnsCallBackListener listener) {
 		this.listeners.remove(listener);
 	}
 	
 	public ArrayList<FeedEntry> fDisplayFeeds(Context context, String snsName) {
+		
+		if(feedDao == null) return null; 
+		
 		ArrayList<FeedEntry> feedList = feedDao.fGetLastest10FeedEntries(snsName);
 		FeedEntry lastItem = null;
 		
@@ -86,6 +90,7 @@ public abstract class SnsUtil {
 	
 	private void fSaveLastLoadedFeed(FeedEntry lastItem, Context context, String snsName) {
 		// TODO Auto-generated method stub
+		if(lastItem != null)
 		Pref.setMyStringPref(context, snsName, lastItem.getsUpdatedTime());
 	}
 	

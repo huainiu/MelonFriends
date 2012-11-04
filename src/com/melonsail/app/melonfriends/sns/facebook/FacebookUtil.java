@@ -180,17 +180,17 @@ public class FacebookUtil extends SnsUtil {
 	}
 
 	@Override
-	public void fPublishFeeds(Bundle params) {
+	public void fPublishFeeds(Bundle params, Context context) {
 		
 	}
 
 	@Override
-	public void fUploadPic(String message, String selectedImagePath) {
+	public void fUploadPic(String message, String selectedImagePath, Context context) {
 		
 	}
 
 	@Override
-	public void fLikeFeeds(Bundle params) {
+	public void fLikeFeeds(Bundle params, Context context) {
 		
 	}
 
@@ -200,7 +200,7 @@ public class FacebookUtil extends SnsUtil {
 	}
 
 	@Override
-	public void fShareFeeds(Bundle params) {
+	public void fShareFeeds(Bundle params, Context context) {
 		
 	}
 
@@ -210,7 +210,7 @@ public class FacebookUtil extends SnsUtil {
 	}
 
 	@Override
-	public void fPostComment(Bundle params) {
+	public void fPostComment(Bundle params, Context context) {
 		
 	}
 

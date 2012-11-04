@@ -21,7 +21,7 @@ import com.melonsail.app.melonfriends.utils.Const;
 public class MelonFriendsService extends Service  {
 	
 	private static final String TAG = MelonFriendsService.class.getSimpleName();
-	private static final int DEFAULT_INTERVAL = 15000;
+	private static final int DEFAULT_INTERVAL = 60000;
 	private static final int DEFAULT_DELAY = 3000;
 	
 	private NotificationManager mNM;
@@ -80,12 +80,15 @@ public class MelonFriendsService extends Service  {
 	
 	public void fSnsGetNewFeed(Message msg) {
 		int snsIndex = msg.arg1;
+		
+		if(mSnsOrg.fGetActiveSnsList().size() > snsIndex)
 		mSnsOrg.fGetActiveSnsList().get(snsIndex).fGetNewsFeeds(this);
 	}
 	
 	class IncomingHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
+        	android.os.Debug.waitForDebugger();
             switch (msg.what) {
                 case Const.MSG_CLIENT_REGISTER:
                     mClients.add(msg.replyTo);

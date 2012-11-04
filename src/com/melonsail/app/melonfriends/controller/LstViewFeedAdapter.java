@@ -252,7 +252,7 @@ public class LstViewFeedAdapter extends BaseAdapter{
 //				txv_MsgBody.setVisibility(View.GONE);
 //			}
 //			String username = feedArrayList.get(position).getsName();
-////			if (username.equals("梁玉萍")) {
+////			if (username.equals("姊佺帀钀�)) {
 ////				System.out.println("");
 ////			}
 //			WebImageView img_PhotoPreview = (WebImageView) convertView.findViewById(R.id.img_photopreview);

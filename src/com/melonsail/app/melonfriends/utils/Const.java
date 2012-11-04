@@ -40,11 +40,13 @@ public class Const {
 	public static final String SNS_READITEM_UPDATETIME = "_readitem_updatetime";
 	public static final String SNS_SIGN_ON = "SnsSignOn";
 	
+	
 	public static final String DELIMETER = ";";
 	
 	//==============DBHelper================================
 	public static final String SP_SINA_TOKENKEY = "SinaTokeyKey";
 	public static final String SP_SINA_TOKENSECRET = "SinaTokeySecret";
+	public static final String SP_SINA_TOKENEXPIRE = "SinaToKeyExpire";
 	
 	//==============Intent===================================
 	public static final String ACTION_DISPLAYFEED = "DisplayFeed";

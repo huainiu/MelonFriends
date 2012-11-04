@@ -16,6 +16,9 @@ import com.melonsail.app.melonfriends.sns.facebook.FBHomeFeedEntry;
 import com.melonsail.app.melonfriends.sns.facebook.FBHomeFeedEntryComments.FBFeedEntryComment;
 import com.melonsail.app.melonfriends.sns.facebook.FBHomeFeedEntryFrom;
 import com.melonsail.app.melonfriends.utils.Const;
+import com.weibo.net.WBComment;
+import com.weibo.net.WBStatus;
+import com.weibo.net.WBUser;
 
 public class DBHelper {
 
@@ -388,7 +391,8 @@ public class DBHelper {
 		values.put(C_COMMENT_FROM_NAME, comment.getFrom().getName());
 		values.put(C_COMMENT_FROM_IMG, comment.getFrom().getHeadurl());
 		values.put(C_COMMENT_MSG, comment.getMessage());
-		values.put(C_COMMENT_CREATED_TIME, comment.getCreated_time());	
+		values.put(C_COMMENT_CREATED_TIME, comment.getCreated_time());
+		
 		
 		String whereClause = C_KEY_ID + "=? and " + C_KEY_SNS + "=?";
 		String[] selectArgs = new String[] {comment.getId(), Const.SNS_FACEBOOK};
@@ -401,6 +405,119 @@ public class DBHelper {
 		
 		return ret;
 	}
+	
+	
+	/**
+	 * Insert Sina User to Table
+	 * @param friend
+	 * @return
+	 */
+	public long fInsertFriend(WBUser friend) {
+	
+		long ret = 0;
+		
+		ContentValues values  = new ContentValues();
+		
+		values.put(C_KEY_ID, friend.getId());
+		values.put(C_USER_NAME, friend.getName());
+		values.put(C_USER_PROFILEIMG, friend.getProfile_image_url());
+		values.put(C_KEY_SNS, Const.SNS_FACEBOOK);
+		
+		String whereClause = C_KEY_ID + "=? and " + C_KEY_SNS + "=?";
+		String[] selectArgs = new String[] {friend.getId()+"", Const.SNS_SINA};
+		String[][] item = fGetItems(T_USER, whereClause, selectArgs, null);
+		
+		if (item != null ) {
+			ret = mSQLiteDB.update(T_USER, values, whereClause, selectArgs);
+		} else {
+			ret = mSQLiteDB.insert(T_USER, null, values);
+		}
+		return ret;
+	}
+	
+	
+	/**
+	 * Insert Sina Feed to DB 
+	 * @param status
+	 * @return
+	 */
+	public long fInsertFeed(WBStatus status)
+	{
+	    long ret = 0;
+		
+		ContentValues values  = new ContentValues();
+		values.put(C_KEY_SNS, Const.SNS_SINA);
+		values.put(C_FEED_ISREAD, "0");
+		values.put(C_KEY_ID, status.getId() + "");
+		values.put(C_FEED_MSG, status.getText());
+		values.put(C_FEED_FROM_NAME, status.getUser().getName());
+		values.put(C_FEED_FROM_ID, status.getUser().getId());
+		values.put(C_FEED_PIC, status.getThumbnail_pic());
+		values.put(C_FEED_PICL, status.getOriginal_pic());
+		values.put(C_FEED_SOURCE, status.getSource());
+		values.put(C_FEED_ISLIKED, status.isFavorited());
+		values.put(C_FEED_REPLYTO_STATUS_ID, status.getIn_reply_to_status_id());
+		values.put(C_FEED_REPLYTO_USER_ID, status.getIn_reply_to_user_id());
+		values.put(C_FEED_REPLYTO_SCREENNAME, status.getIn_reply_to_screen_name());
+		values.put(C_FEED_CNT_COMMENT, status.getComments_count());
+		values.put(C_FEED_CNT_SHARE, status.getReposts_count());
+		
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+		try {
+			Date dCreatedTime = sdf.parse(status.getCreated_at());
+			values.put(C_FEED_UPDATED_TIME, simpleDateFormat.format(dCreatedTime));
+			values.put(C_FEED_CREATED_TIME, simpleDateFormat.format(dCreatedTime));
+		} catch (ParseException e) {
+			Log.w(TAG, "Unable to parse date string \"" + status.getCreated_at() + "\"");
+		}
+		
+		String whereClause = C_KEY_ID + "=? and " + C_KEY_SNS + "=?";
+		String[] selectArgs = new String[] {status.getId()+"", Const.SNS_SINA};
+		String[][] item = fGetItems(T_FEED, whereClause, selectArgs, null);
+		
+		ret = mSQLiteDB.insert(T_FEED, null, values);
+		if (item != null && item.length > 0 ) {
+			// keep the update time of the particular feed constant so it won't affect sorting
+			values.put(C_FEED_UPDATED_TIME, item[0][18]);
+			ret = mSQLiteDB.update(T_FEED, values, whereClause, selectArgs);
+		} else {
+			ret = mSQLiteDB.insert(T_FEED, null, values);
+		}
+		
+		return ret;
+	}
+	
+	/**
+	 * Insert Sina Comment into db
+	 * @param comment
+	 * @return
+	 */
+	public long fInsertComments(WBComment comment) {
+        long ret = 0;
+		
+		ContentValues values  = new ContentValues();
+		values.put(C_KEY_SNS, Const.SNS_SINA);
+		values.put(C_KEY_ID, comment.getId());
+		values.put(C_COMMENT_FEEDID, comment.getStatus().getId());
+		values.put(C_COMMENT_FROM_ID, comment.getUser().getId());
+		values.put(C_COMMENT_FROM_NAME, comment.getUser().getName());
+		values.put(C_COMMENT_FROM_IMG, comment.getUser().getProfile_image_url());
+		values.put(C_COMMENT_MSG, comment.getText());
+		values.put(C_COMMENT_CREATED_TIME, comment.getCreated_at());
+		
+		String whereClause = C_KEY_ID + "=? and " + C_KEY_SNS + "=?";
+		String[] selectArgs = new String[] {comment.getId()+"", Const.SNS_SINA};
+		String[][] item = fGetItems(T_COMMENT, whereClause, selectArgs, null);
+		if (item  != null ) {
+			ret = mSQLiteDB.update(T_COMMENT, values, whereClause, selectArgs);
+		} else {
+			ret = mSQLiteDB.insert(T_COMMENT, null, values);
+		}
+		
+		return ret;
+	}
+	
 	
 	private String[][] fGetItems (String table, String where, String[] selectArgs, String orderby) {
 		//String where = C_FEED_SNS + " = ? and " + C_FEED_ID + " = ?";
@@ -437,13 +554,15 @@ public class DBHelper {
 		return fGetItems(table, where, selectArgs, ORDER_DESC);
 	}
 	
-	public String[][] fGetItemsDesc (String table, String sns, String where, String limit) {
-		String where2 = C_KEY_SNS + " = ?";
+	public String[][] fGetItemsDesc (String table, String sns, String where, String limit, String orderby) {
+		String where2 = C_KEY_SNS + " = ? ";
 		//protection on where and limit clause input
-		where = (where == null) ? "": " and " + where;
+		where = (where == null) ? "": where + " and ";
 		limit = (limit == null) ? "": limit;
 		String[] selectArgs = new String[] {sns};
-		return fGetItems(table, where2 + where, selectArgs, ORDER_DESC + limit);
+		return fGetItems(table,  where + where2, selectArgs,  orderby + ORDER_DESC + limit);
 	}
+
+
 
 }
